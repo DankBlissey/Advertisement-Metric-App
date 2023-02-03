@@ -35,11 +35,11 @@ We will likely have daily meetings or a few times a week. Date and time for the 
 
 We can try to use the "issues" tab in gitlab for tasks but for now this works
 
-- [ ] Look through both project specs
-- [ ] Look through the mark scheme
+- [x] Look through both project specs
+- [x] Look through the mark scheme
 - [ ] Learn git (commits, branches, pull requests, issues etc.)
 - [ ] Revise JavaFX, Maven etc.
-- [ ] Choose a project and submit [this](https://forms.gle/bKm9AQZipRkzfJBa6) form
+- [x] Choose a project and submit [this](https://forms.gle/bKm9AQZipRkzfJBa6) form
 - [ ] Get in touch with supervisor
 
 ## :chart: Burndown Chart
