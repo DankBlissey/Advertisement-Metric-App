@@ -10,14 +10,18 @@ This is not the documentation for the project (yet) but a place where we have al
 - Krish Sahah ([ks3g20](https://secure.ecs.soton.ac.uk/people/ks3g20))
 - Thomas Holwill ([th2g20](https://secure.ecs.soton.ac.uk/people/th2g20))
 - Thomas Stokes ([tgs1g21](https://secure.ecs.soton.ac.uk/people/tgs1g21))
-- Supervisor: unknown for now
+- Supervisor: Behrad Koohy ([bk2g18](https://secure.ecs.soton.ac.uk/people/bk2g18))
 
 ## :paperclip: Links
 
-- Discord [server](https://discord.gg/Y8J24SaA) for communication, meetings, learning resources & collective logbook
 - SEG Project [Wiki](https://secure.ecs.soton.ac.uk/noteswiki/w/COMP2211_Notes)
 - Project option 1: [Runway Re-declaration Tool](https://secure.ecs.soton.ac.uk/noteswiki/w/Runway_Re-declaration_Tool_2018)
 - Project option 2: [Ad Auction Dashboard](https://secure.ecs.soton.ac.uk/noteswiki/w/Ad_Auction_Dashboard_2018)
+- Discord [server](https://discord.gg/Y8J24SaA) for communication, meetings, learning resources & collective logbook
+- Teams channel for communication with the superviser [here](https://teams.microsoft.com/l/channel/19%3amIUAXT7Yn0A5GJ5oqrwepftV0DcSjb2CDPCGAMAzKQk1%40thread.tacv2/General?groupId=b83380d2-acf0-4aac-b198-a388eec95853&tenantId=4a5378f9-29f4-4d3e-be89-669d03ada9d8)
+- Linear: scrum tool to allocate tasks and track progress [here](https://linear.app/seg-group2/)
+- Notion: conjunction of everyone's logbook [here](https://www.notion.so/5494dfe4fcb744d19aa2a44b6dbecc60?v=4f4d059f67fc47fd9d15104386ff1273&pvs=4)
+- Google Docs: collaborate on formal handins [here](https://docs.google.com/document/d/1uAqJbapgVpiovLDz9CpUQHM0sqGyAmSrl0KdhfhJMBc/edit#)
 
 ## :date: Deadlines
 
@@ -29,18 +33,9 @@ This is not the documentation for the project (yet) but a place where we have al
 
 ### Meetings
 
-We will likely have daily meetings or a few times a week. Date and time for the next meeting will be decided soon and will show up here and on discord.
+Weekly Supervisor Meeting: Mondays 13:00 - 14:00
 
-## :clipboard: Tasks
-
-We can try to use the "issues" tab in gitlab for tasks but for now this works
-
-- [x] Look through both project specs
-- [x] Look through the mark scheme
-- [ ] Learn git (commits, branches, pull requests, issues etc.)
-- [ ] Revise JavaFX, Maven etc.
-- [x] Choose a project and submit [this](https://forms.gle/bKm9AQZipRkzfJBa6) form
-- [ ] Get in touch with supervisor
+Weekly Team Meeting: Thursdays: 10:00 - 12:00
 
 ## :chart: Burndown Chart
 
