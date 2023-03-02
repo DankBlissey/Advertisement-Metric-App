@@ -1,23 +1,27 @@
 package uk.ac.soton.adDashboard.records;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.ResolverStyle;
+import uk.ac.soton.adDashboard.enums.LogRow;
 
-public class Click {
 
-  private final Date date;
+public class Click extends LogRow {
+
+  private final LocalDateTime date;
   private final int cost;
   private final long id;
 
-  public Click(String date,long id,int cost) throws Exception {
-    SimpleDateFormat format = new SimpleDateFormat("dd/mm/yyyy HH:mm");
-    this.date= format.parse(date);
-    this.id=id;
-    if (cost<0) {
+  public Click(String date, long id, int cost) throws Exception {
+    super(id);
+
+    this.date = parseDateTime(date);
+
+    this.id = id;
+    if (cost < 0) {
       throw new Exception("negative cost");
     }
-    this.cost=cost;
+    this.cost = cost;
   }
 
   public String getDate() {

@@ -1,28 +1,37 @@
 package uk.ac.soton.adDashboard.records;
 
-import uk.ac.soton.adDashboard.enums.Age;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.ResolverStyle;
+
 import uk.ac.soton.adDashboard.enums.Context;
 import uk.ac.soton.adDashboard.enums.Gender;
 import uk.ac.soton.adDashboard.enums.Income;
+import uk.ac.soton.adDashboard.enums.LogRow;
 
-public class Impression {
+public class Impression extends LogRow {
 
   private final long id; //also the key of the hashmap :)
   private final String age;
   private final int cost;
   private final Context context;
+  private final LocalDateTime date;
+  private final Income income;
   private Gender gender;
 
-  public Impression(String date,long id,String gender,String age,String income, String context,int cost)
+  public Impression(String date, long id, String gender, String age, String income, String context,
+      int cost)
       throws Exception {
+    super(id);
+    this.date = parseDateTime(date);
     this.id = id;
     this.cost = cost;
     this.context = contextSetup(context);
     this.age = ageSetup(age);
     this.gender = genderSetup(gender);
-
+    this.income = incomeSetup(income);
   }
-
 
 
   public long getId() {
@@ -45,6 +54,18 @@ public class Impression {
     return gender;
   }
 
+  private Income incomeSetup(String income) throws Exception {
+    if (income.equals("Low")) {
+      return Income.LOW;
+    } else if (income.equals("Medium")) {
+      return Income.MEDIUM;
+    } else if (income.equals("High")) {
+      return Income.HIGH;
+    } else {
+      throw new Exception("invalid income");
+    }
+  }
+
   private Context contextSetup(String context) throws Exception {
     if (context.equals("News")) {
       return Context.News;
@@ -61,7 +82,6 @@ public class Impression {
     } else {
       throw new Exception("context invalid");
     }
-
 
 
   }
@@ -81,6 +101,7 @@ public class Impression {
       throw new Exception("gender setup failed");
     }
   }
+
   private String ageSetup(String age) throws Exception {
     if (age.equals("<25")) {
       return age;
