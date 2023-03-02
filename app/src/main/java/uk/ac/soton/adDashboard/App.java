@@ -1,22 +1,8 @@
 package uk.ac.soton.adDashboard;
 
 import javafx.application.Application;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import uk.ac.soton.adDashboard.ui.AppWindow;
-import uk.ac.soton.adDashboard.views.UploadCSVs;
-
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
