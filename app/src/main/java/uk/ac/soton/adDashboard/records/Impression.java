@@ -16,6 +16,8 @@ public class Impression extends LogRow {
   private final String age;
   private final int cost;
   private final Context context;
+
+
   private final LocalDateTime date;
   private final Income income;
   private Gender gender;
@@ -52,6 +54,14 @@ public class Impression extends LogRow {
 
   public Gender getGender() {
     return gender;
+  }
+
+  public LocalDateTime getDate() {
+    return date;
+  }
+
+  public Income getIncome() {
+    return income;
   }
 
   private Income incomeSetup(String income) throws Exception {

@@ -19,6 +19,9 @@ public class LogRow {
   }
 
   public LocalDateTime parseDateTime(String dateTime) {
+    if (dateTime.equals("n/a")) {
+      return null;
+    }
     return LocalDateTime.parse(dateTime, format);
   }
 
