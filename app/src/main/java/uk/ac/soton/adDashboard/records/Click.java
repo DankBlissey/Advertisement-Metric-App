@@ -1,9 +1,6 @@
 package uk.ac.soton.adDashboard.records;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.ResolverStyle;
-import uk.ac.soton.adDashboard.enums.LogRow;
 
 
 public class Click extends LogRow {
@@ -24,8 +21,8 @@ public class Click extends LogRow {
     this.cost = cost;
   }
 
-  public String getDate() {
-    return date.toString();
+  public LocalDateTime getDate() {
+    return date;
   }
 
   public int getCost() {

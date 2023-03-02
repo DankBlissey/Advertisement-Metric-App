@@ -1,4 +1,4 @@
-package uk.ac.soton.adDashboard.enums;
+package uk.ac.soton.adDashboard.records;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
