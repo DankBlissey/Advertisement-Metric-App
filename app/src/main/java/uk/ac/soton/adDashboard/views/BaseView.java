@@ -5,54 +5,54 @@ import javafx.scene.paint.Color;
 import uk.ac.soton.adDashboard.ui.AppPane;
 import uk.ac.soton.adDashboard.ui.AppWindow;
 
+/**
+ * A Base Scene/view used in the app. Handles common functionality between all scenes.
+ */
 public abstract class BaseView {
     /**
      * App Window
      */
     protected final AppWindow appWindow;
 
-    /**
-     * App Pane
-     */
     protected AppPane root;
 
+    protected Scene view;
+
     /**
-     * App Scene
+     * Create a new scene/view, passing in the AppWindow the scene will be displayed in
+     * @param appWindow the game window
      */
-    protected Scene scene;
-
-
     public BaseView(AppWindow appWindow) {
         this.appWindow = appWindow;
     }
 
     /**
-     * Initialise this scene. Called after creation
+     * Initialise this scene/view. Called after creation
      */
     public abstract void initialise();
 
     /**
-     * Build the layout of the scene
+     * Build the layout of the scene/view
      */
     public abstract void build();
 
     /**
-     * Create a new JavaFX scene using the root contained within this scene
+     * Create a new JavaFX scene (aka view for us) using the root contained within this scene
      * @return JavaFX scene
      */
     public Scene setScene() {
-        var previous = appWindow.getScene();
-        Scene scene = new Scene(root, previous.getWidth(), previous.getHeight(), Color.BLUEVIOLET);
-        scene.getStylesheets().add(getClass().getResource("/style/app.css").toExternalForm());
-        this.scene = scene;
-        return scene;
+        var previous = appWindow.getView();
+        Scene view = new Scene(root, previous.getWidth(), previous.getHeight(), Color.BLUEVIOLET);
+        view.getStylesheets().add(getClass().getResource("/style/app.css").toExternalForm());
+        this.view = view;
+        return view;
     }
 
     /**
-     * Get the JavaFX scene contained inside
+     * Get the JavaFX scene (aka view for us) contained inside
      * @return JavaFX scene
      */
-    public Scene getScene() {
-        return this.scene;
+    public Scene getView() {
+        return this.view;
     }
 }
