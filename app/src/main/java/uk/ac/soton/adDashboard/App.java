@@ -57,7 +57,7 @@ public class App extends Application {
         logger.info("Opening app window");
 
         //Change the width and height in this class to change the base rendering resolution for all app parts
-        var appWindow = new AppWindow(this.stage, width, height);
+        var appWindow = new AppWindow(stage, width, height);
 
         //Display the appWindow
         stage.show();
