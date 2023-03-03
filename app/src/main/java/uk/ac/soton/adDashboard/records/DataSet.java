@@ -27,6 +27,7 @@ public class DataSet {
     this.serverAccess = serverAccesses;
     this.users = users;
 
+
   }
 
   public ArrayList<Click> getClicks() {
@@ -61,21 +62,26 @@ public class DataSet {
     return true;
   }
 
-  public int calcTotalCost(LocalDateTime granularStart, LocalDateTime granularEnd) {
-    int totalCost = 0;
+  public double calcImpressionCost(LocalDateTime start, LocalDateTime end) {
+    double totalCost = 0;
     for (Impression impression : impressions) {
       if (matchesFilters(users.get(impression.getId()))) { //if user legal
-        if (impression.getDate().compareTo(granularStart) >= 0
-            && impression.getDate().compareTo(granularEnd) <= 0) {
+        if (impression.getDate().compareTo(start) >= 0
+            && impression.getDate().compareTo(end) <= 0) {
           totalCost += impression.getCost();
         }
       }
     }
+    return totalCost;
+  }
+
+  public double calcClickCost(LocalDateTime start, LocalDateTime end) {
+    double totalCost = 0;
     for (Click click : clicks) {
       //if user legal
       if (matchesFilters(users.get(click.getId()))) {
-        if (click.getDate().compareTo(granularStart) >= 0
-            && click.getDate().compareTo(granularEnd) <= 0) {
+        if (click.getDate().compareTo(start) >= 0
+            && click.getDate().compareTo(end) <= 0) {
           totalCost += click.getCost();
         }
       }
@@ -83,8 +89,15 @@ public class DataSet {
     return totalCost;
   }
 
+  public double calcTotalCost(LocalDateTime granularStart, LocalDateTime granularEnd) {
+    double totalCost = calcImpressionCost(granularStart, granularEnd);
+    totalCost += calcClickCost(granularStart, granularEnd);
 
-  public int totalClicks(LocalDateTime granularStart, LocalDateTime granularEnd) {
+    return totalCost;
+  }
+
+
+  public double totalClicks(LocalDateTime granularStart, LocalDateTime granularEnd) {
     int count = 0;
     for (Click click : clicks) {
       if (matchesFilters(users.get(click.getId()))) { //if user legal
@@ -97,7 +110,7 @@ public class DataSet {
     return count;
   }
 
-  public int totalImpressions(LocalDateTime granularStart, LocalDateTime granularEnd) {
+  public double totalImpressions(LocalDateTime granularStart, LocalDateTime granularEnd) {
     int count = 0;
     for (Impression impression : impressions) {
       if (matchesFilters(users.get(impression.getId()))) { //if user legal
@@ -110,13 +123,13 @@ public class DataSet {
     return count;
   }
 
-  public int calcClickThrough(LocalDateTime granularStart, LocalDateTime granularEnd) {
-    int imp = totalImpressions(granularStart, granularEnd);
-    int clicks = totalClicks(granularStart, granularEnd);
+  public double calcClickThrough(LocalDateTime granularStart, LocalDateTime granularEnd) {
+    double imp = totalImpressions(granularStart, granularEnd);
+    double clicks = totalClicks(granularStart, granularEnd);
     return clicks / imp;
   }
 
-  public int calcNumConversions(LocalDateTime granularStart, LocalDateTime granularEnd) {
+  public double calcNumConversions(LocalDateTime granularStart, LocalDateTime granularEnd) {
     int conversions = 0;
     for (ServerAccess access : serverAccess) {
       if (access.isConversion() && matchesFilters(users.get(access.getId()))) {
@@ -145,7 +158,7 @@ public class DataSet {
     return true;
   }
 
-  public int calcBounces(LocalDateTime granularStart, LocalDateTime granularEnd) {
+  public double calcBounces(LocalDateTime granularStart, LocalDateTime granularEnd) {
     int bounces = 0;
     for (ServerAccess access : serverAccess) {
       if (isBounce(access) && matchesFilters(users.get(access.getId()))) {
@@ -158,25 +171,25 @@ public class DataSet {
     return bounces;
   }
 
-  public int calcBounceRate(LocalDateTime granularStart, LocalDateTime granularEnd) {
-    int bounces = calcBounces(granularStart, granularEnd);
-    int clicks = totalClicks(granularStart, granularEnd);
+  public double calcBounceRate(LocalDateTime granularStart, LocalDateTime granularEnd) {
+    double bounces = calcBounces(granularStart, granularEnd);
+    double clicks = totalClicks(granularStart, granularEnd);
     return bounces / clicks;
   }
 
-  public int calcCostAcquisition(LocalDateTime granularStart, LocalDateTime granularEnd) {
-    int cost = calcTotalCost(granularStart, granularEnd);
-    int conversions = calcNumConversions(granularStart, granularEnd);
+  public double calcCostAcquisition(LocalDateTime granularStart, LocalDateTime granularEnd) {
+    double cost = calcTotalCost(granularStart, granularEnd);
+    double conversions = calcNumConversions(granularStart, granularEnd);
     return cost / conversions;
   }
 
-  public int calcCostPerClick(LocalDateTime granularStart, LocalDateTime granularEnd) {
-    int cost = calcTotalCost(granularStart, granularEnd);
-    int clicks = totalClicks(granularStart, granularEnd);
+  public double calcCostPerClick(LocalDateTime granularStart, LocalDateTime granularEnd) {
+    double cost = calcTotalCost(granularStart, granularEnd);
+    double clicks = totalClicks(granularStart, granularEnd);
     return cost / clicks;
   }
 
-  public int calcUniqueUsersClick(LocalDateTime granularStart, LocalDateTime granularEnd) {
+  public double calcUniqueUsersClick(LocalDateTime granularStart, LocalDateTime granularEnd) {
     HashSet<Long> visited = new HashSet<>();
     int uniques = 0;
     for (Click click : clicks) {
@@ -193,16 +206,25 @@ public class DataSet {
     return uniques;
   }
 
-  public int costPerThousandImpre(LocalDateTime granularStart, LocalDateTime granularEnd) {
-    int cost = calcTotalCost(granularStart, granularEnd);
-    int impr = totalImpressions(granularStart, granularEnd);
+  public double costPerThousandImpre(LocalDateTime granularStart, LocalDateTime granularEnd) {
+    double cost = calcTotalCost(granularStart, granularEnd);
+    double impr = calcImpressionCost(granularStart, granularEnd);
     return cost / impr;
   }
 
-//  public ArrayList<Pair<Integer, Integer>> makePlotPoints(LocalDateTime startTime,
-//      LocalDateTime end) {
-//    for (int day = 0; day <; day++) {
-//
-//    }
-//  }
+  public ArrayList<Pair<Integer, Double>> generateY(LocalDateTime startTime,
+      LocalDateTime end, ChronoUnit unit) {
+    ArrayList<Pair<Integer, Double>> points = new ArrayList<>();
+    LocalDateTime next = startTime.plus(unit.getDuration());
+    int x = 0;
+    for (LocalDateTime day = startTime; day.compareTo(end) <= 0;
+        day = day.plus(unit.getDuration())) {
+      System.out.println(x + " " + day + " " + next);
+      points.add(new Pair<>(x, totalImpressions(day, next)));
+      next = day.plus(unit.getDuration());
+      x++;
+      System.out.println(points);
+    }
+    return points;
+  }
 }

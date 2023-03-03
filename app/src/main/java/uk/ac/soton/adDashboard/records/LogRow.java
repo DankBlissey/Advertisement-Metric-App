@@ -7,7 +7,7 @@ import java.time.format.ResolverStyle;
 public class LogRow {
 
   private final long id;
-  private DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+  private DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy  HH:mm:ss");
 
   public LogRow(long id) throws Exception {
     if (id < 0) {

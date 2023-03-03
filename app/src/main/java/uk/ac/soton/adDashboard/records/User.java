@@ -19,6 +19,22 @@ public class User extends LogRow {
     this.income = incomeSetup(income);
   }
 
+  public Context getContext() {
+    return context;
+  }
+
+  public String getAge() {
+    return age;
+  }
+
+  public Gender getGender() {
+    return gender;
+  }
+
+  public Income getIncome() {
+    return income;
+  }
+
   private Income incomeSetup(String income) throws Exception {
     if (income.equals("Low")) {
       return Income.LOW;

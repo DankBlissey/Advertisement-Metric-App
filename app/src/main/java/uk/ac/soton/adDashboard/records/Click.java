@@ -6,10 +6,10 @@ import java.time.LocalDateTime;
 public class Click extends LogRow {
 
   private final LocalDateTime date;
-  private final int cost;
+  private final double cost;
   private final long id;
 
-  public Click(String date, long id, int cost) throws Exception {
+  public Click(String date, long id, double cost) throws Exception {
     super(id);
 
     this.date = parseDateTime(date);
@@ -25,7 +25,7 @@ public class Click extends LogRow {
     return date;
   }
 
-  public int getCost() {
+  public double getCost() {
     return cost;
   }
 
