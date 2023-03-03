@@ -14,3 +14,9 @@
     -fx-font-size: 22px;
     -fx-width: 50px;
 }
+
+.text {
+    -fx-font-family: 'Google Sans Bold';
+    -fx-fill: #4B51FF;
+    -fx-font-size: 35px;
+}

@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import uk.ac.soton.adDashboard.App;
 import uk.ac.soton.adDashboard.views.BaseView;
 import uk.ac.soton.adDashboard.views.LandingView;
+import uk.ac.soton.adDashboard.views.ListView;
 
 public class AppWindow {
     private static final Logger logger = LogManager.getLogger(AppWindow.class);
@@ -40,6 +41,9 @@ public class AppWindow {
 
         //Go to menu
         uploadCSVWindow();
+
+        //Test for opening list view
+        //listViewWindow();
     }
 
     /**
@@ -104,6 +108,13 @@ public class AppWindow {
      */
     public void uploadCSVWindow() {
         loadScene(new LandingView(this));
+    }
+
+    /**
+     * Display the list view of the data
+     */
+    public void listViewWindow() {
+        loadScene(new ListView(this));
     }
 
     /**
