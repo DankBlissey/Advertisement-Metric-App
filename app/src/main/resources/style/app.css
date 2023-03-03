@@ -1,0 +1,16 @@
+.apppane {
+    -fx-background-color: #F6F6F6;
+}
+
+.title {
+    -fx-font-family: 'Google Sans Bold';
+    -fx-fill: #4B51FF;
+    -fx-font-size: 60px;
+}
+
+.subtitle {
+    -fx-font-family: 'Google Sans Bold';
+    -fx-fill: #4B51FF;
+    -fx-font-size: 22px;
+    -fx-width: 50px;
+}

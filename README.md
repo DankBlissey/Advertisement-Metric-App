@@ -23,6 +23,12 @@ This is not the documentation for the project (yet) but a place where we have al
 - Notion: conjunction of everyone's logbook [here](https://www.notion.so/5494dfe4fcb744d19aa2a44b6dbecc60?v=4f4d059f67fc47fd9d15104386ff1273&pvs=4)
 - Google Docs: collaborate on formal handins [here](https://docs.google.com/document/d/1uAqJbapgVpiovLDz9CpUQHM0sqGyAmSrl0KdhfhJMBc/edit#)
 
+## Help with Programming
+
+- Official Java 17 [Documentation](https://docs.oracle.com/en/java/javase/17/docs/api/index.html)
+- Official JavaFX 17 [Documentation](https://openjfx.io/javadoc/17/)
+- Last year's Programming 2 [Slides](https://secure.ecs.soton.ac.uk/module/2122/COMP1206/29521/)
+
 ## :date: Deadlines
 
 1. [Envisioning](http://edshare.soton.ac.uk/21184/) - Thursday, 23th February, 4PM
