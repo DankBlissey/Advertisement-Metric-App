@@ -27,6 +27,19 @@ public class App extends Application {
     private static final Logger logger = LogManager.getLogger(App.class);
     private Stage stage;
 
+    /**
+     * Start the app
+     * @param args commandline arguments
+     */
+    public static void main(String[] args) {
+        logger.info("Starting client");
+        launch();
+    }
+
+    /**
+     * Called by JavaFX with the primary stage as a parameter. Begins the app by opening the App Window
+     * @param stage the default stage, main window
+     */
     @Override
     public void start(Stage stage) {
         var javaVersion = SystemInfo.javaVersion();
@@ -37,21 +50,21 @@ public class App extends Application {
         openApp();
     }
 
+    /**
+     * Create the AppWindow with the specified width and height
+     */
     public void openApp() {
         logger.info("Opening app window");
 
+        //Change the width and height in this class to change the base rendering resolution for all app parts
         var appWindow = new AppWindow(this.stage, width, height);
 
         //Display the appWindow
         stage.show();
     }
 
-    public static void main(String[] args) {
-        launch();
-    }
-
     /**
-     * Shutdown the game
+     * Shutdown the app
      */
     public void shutdown() {
         logger.info("Shutting down");
