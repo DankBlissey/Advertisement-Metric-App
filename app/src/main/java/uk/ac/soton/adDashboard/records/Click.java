@@ -9,14 +9,20 @@ public class Click extends LogRow {
 
   private final LocalDateTime date;
   private final double cost;
-  private final long id;
 
+  /**
+   * Creates a click object.
+   *
+   * @param date The datetime of the click.
+   * @param id   The id of the user who performed the click.
+   * @param cost The cost of the click.
+   * @throws Exception Thrown if the cost or id is negative or if the date is invalid.
+   */
   public Click(String date, long id, double cost) throws Exception {
     super(id);
 
     this.date = parseDateTime(date);
 
-    this.id = id;
     if (cost < 0) {
       throw new Exception("negative cost");
     }
@@ -31,7 +37,5 @@ public class Click extends LogRow {
     return cost;
   }
 
-  public long getId() {
-    return id;
-  }
+
 }

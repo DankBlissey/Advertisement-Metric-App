@@ -28,6 +28,10 @@ public class LogRow {
 
   }
 
+  public long getId() {
+    return id;
+  }
+
   /**
    * This parses a string date of the format "dd/MM/yyyy  HH:mm:ss" into a LocalDateTime object.
    *
