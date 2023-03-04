@@ -2,7 +2,9 @@ package uk.ac.soton.adDashboard.records;
 
 import java.time.LocalDateTime;
 
-
+/**
+ * Stores one record of the clicks csv.
+ */
 public class Click extends LogRow {
 
   private final LocalDateTime date;

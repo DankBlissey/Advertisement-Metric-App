@@ -34,12 +34,12 @@ public class Main {
     ArrayList<Impression> impressions = new ArrayList<>();
     ArrayList<ServerAccess> accesses = new ArrayList<>();
     HashMap<Long, User> users = new HashMap<>();
-    impressions.add(new Impression("01/01/2015  12:03:01", 6122207195878290000L, 10));
-    impressions.add(new Impression("01/01/2015  12:05:01", 6122207195878290001L, 12));
+    impressions.add(new Impression("01/01/2015  12:03:01", 6122207195878290000L, 10, "Shopping"));
+    impressions.add(new Impression("01/01/2015  12:05:01", 6122207195878290001L, 12, "Shopping"));
     users.put(6122207195878290000L,
-        new User(6122207195878290000L, "Shopping", "<25", "Female", "High"));
+        new User(6122207195878290000L, "<25", "Female", "High"));
     users.put(6122207195878290001L,
-        new User(6122207195878290001L, "Shopping", "<25", "Female", "High"));
+        new User(6122207195878290001L, "<25", "Female", "High"));
 
     DataSet dataSet = new DataSet(clicks, impressions, accesses, users);
     System.out.println(

@@ -6,22 +6,18 @@ import uk.ac.soton.adDashboard.enums.Income;
 
 public class User extends LogRow {
 
-  private final Context context;
+
   private final String age;
   private final Gender gender;
   private final Income income;
 
-  public User(long id, String context, String age, String gender, String income) throws Exception {
+  public User(long id, String age, String gender, String income) throws Exception {
     super(id);
-    this.context = contextSetup(context);
     this.age = ageSetup(age);
     this.gender = genderSetup(gender);
     this.income = incomeSetup(income);
   }
 
-  public Context getContext() {
-    return context;
-  }
 
   public String getAge() {
     return age;
@@ -47,25 +43,6 @@ public class User extends LogRow {
     }
   }
 
-  private Context contextSetup(String context) throws Exception {
-    if (context.equals("News")) {
-      return Context.News;
-    } else if (context.equals("Shopping")) {
-      return Context.Shopping;
-    } else if (context.equals("Social Media")) {
-      return Context.Social;
-    } else if (context.equals("Blog")) {
-      return Context.Blog;
-    } else if (context.equals("Hobbies")) {
-      return Context.Hobbies;
-    } else if (context.equals("Travel")) {
-      return Context.Travel;
-    } else {
-      throw new Exception("context invalid");
-    }
-
-
-  }
 
   private Gender genderSetup(String gender) throws Exception {
     if (gender.equals("Female")) {
