@@ -1,7 +1,7 @@
 package uk.ac.soton.adDashboard.ui;
 
 import javafx.geometry.Pos;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 import org.apache.logging.log4j.LogManager;
@@ -16,10 +16,9 @@ import org.apache.logging.log4j.Logger;
  *
  * It uses the width and height given which should match the main window size. This will be the base drawing resolution,
  * but will be scaled up or down as the window is resized.
- *
- * You should not need to modify this class
  */
 public class AppPane extends StackPane {
+
     private static final Logger logger = LogManager.getLogger(AppPane.class);
 
     private final int width;
