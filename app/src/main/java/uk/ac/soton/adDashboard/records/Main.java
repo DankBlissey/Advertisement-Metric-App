@@ -41,7 +41,7 @@ public class Main {
     users.put(6122207195878290001L,
         new User(6122207195878290001L, "<25", "Female", "High"));
 
-    DataSet dataSet = new DataSet(clicks, impressions, accesses, users);
+    DataSet dataSet = new DataSet(clicks, impressions, accesses, users, true);
     System.out.println(
         dataSet.generateY(impressions.get(0).getDate(),
             impressions.get(0).getDate().plus(Duration.ofDays(5)),
