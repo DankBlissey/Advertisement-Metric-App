@@ -3,4 +3,5 @@ module uk.ac.soton.adDashboard {
     requires org.apache.logging.log4j;
     exports uk.ac.soton.adDashboard;
     exports uk.ac.soton.adDashboard.views;
+
 }
