@@ -152,7 +152,4 @@ public class AppWindow {
     public int getHeight() {
         return this.height;
     }
-
-    public void getScene() {
-    }
 }
