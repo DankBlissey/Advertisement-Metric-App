@@ -42,8 +42,8 @@ public class AppWindow {
         //Go to menu
         uploadCSVWindow();
 
-        //Test for opening list view
-        //listViewWindow();
+        //Go to list view
+        listViewWindow();
     }
 
     /**

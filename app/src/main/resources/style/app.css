@@ -20,3 +20,9 @@
     -fx-fill: #4B51FF;
     -fx-font-size: 35px;
 }
+
+.smallText {
+    -fx-font-family: 'Google Sans Bold';
+    -fx-fill: #4B51FF;
+    -fx-font-size: 5px;
+}
