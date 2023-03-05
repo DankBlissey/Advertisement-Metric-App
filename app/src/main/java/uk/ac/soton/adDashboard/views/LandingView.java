@@ -61,7 +61,9 @@ public class LandingView extends BaseView {
      */
     @Override
     public void build() {
-        logger.info("Building ivan" + this.getClass().getName());
+
+        logger.info("Building ivan..." + this.getClass().getName());
+
 
         root = new AppPane(appWindow.getWidth(), appWindow.getHeight());
 
