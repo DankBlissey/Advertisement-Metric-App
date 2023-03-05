@@ -11,7 +11,7 @@ import java.time.format.ResolverStyle;
 public class LogRow {
 
   private final long id;
-  private DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy  HH:mm:ss");
+  private DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
   /**
    * Generates a row object.
