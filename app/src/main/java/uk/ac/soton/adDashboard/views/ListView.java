@@ -59,9 +59,9 @@ public class ListView extends BaseView {
         Color switchToggle = Color.web("4b0076");
         Color backgroundPane = Color.web("#F6F6F6");
         DropShadow dropShadow = new DropShadow();
-        dropShadow.setRadius(4);
-        dropShadow.setSpread(0.05);
-        dropShadow.setColor(Color.GREY);
+        dropShadow.setRadius(3);
+        //dropShadow.setSpread(0.05);
+        dropShadow.setColor(Color.LIGHTGRAY);
 
         BorderPane borderPane = new BorderPane();
 
