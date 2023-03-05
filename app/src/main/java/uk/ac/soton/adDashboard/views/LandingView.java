@@ -17,10 +17,7 @@ import javafx.stage.FileChooser;
 import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import uk.ac.soton.adDashboard.records.Click;
-import uk.ac.soton.adDashboard.records.Impression;
-import uk.ac.soton.adDashboard.records.ServerAccess;
-import uk.ac.soton.adDashboard.records.User;
+import uk.ac.soton.adDashboard.records.*;
 import uk.ac.soton.adDashboard.ui.AppPane;
 import uk.ac.soton.adDashboard.ui.AppWindow;
 import java.io.BufferedReader;
@@ -189,6 +186,10 @@ public class LandingView extends BaseView {
         logger.info("Reading the server file");
         ArrayList<ServerAccess> serverAccesses = getServerAccessFromCSV(serverFilePath);
         logger.info("Successfully created object serverAccess("+ serverAccesses.size() + " entries)");
+
+        DataSet dataSet = new DataSet(clicks, impressions, serverAccesses, users, true); //Shouldn't have needed to pass the pageViewedAsMetric here but I put it as true for now
+
+        appWindow.bounceRateWindow(dataSet);
     }
 
     /**
