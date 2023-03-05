@@ -23,7 +23,7 @@ public class User extends LogRow {
    * @param income The income bracket of the user as a String.
    * @throws Exception Thrown if the parameters are invalid.
    */
-  public User(long id, String age, String gender, String income) throws Exception {
+  public User(String id, String age, String gender, String income) throws Exception {
     super(id);
     this.age = ageSetup(age);
     this.gender = genderSetup(gender);

@@ -12,10 +12,10 @@ import javafx.util.Pair;
  */
 public class DataSet {
 
-  private final ArrayList<Click> clicks;
-  private final ArrayList<Impression> impressions;
-  private final ArrayList<ServerAccess> serverAccess;
-  private final HashMap<Long, User> users;
+  private ArrayList<Click> clicks;
+  private ArrayList<Impression> impressions;
+  private ArrayList<ServerAccess> serverAccess;
+  private HashMap<Long, User> users;
 
 
   /**
@@ -37,22 +37,8 @@ public class DataSet {
 
   /**
    * Creates a model manager object.
-   *
-   * @param clicks             This is an ArrayList of Click objects.
-   * @param impressions        This is an ArrayList of Impression objects.
-   * @param serverAccesses     This is an ArrayList of ServerAccess objects.
-   * @param users              A hashmap of users, because the id is unique.
-   * @param pageViewedAsMetric Whether to use pagesViewed as the bounce metric.
    */
-  public DataSet(ArrayList<Click> clicks,
-      ArrayList<Impression> impressions,
-      ArrayList<ServerAccess> serverAccesses, HashMap<Long, User> users,
-      boolean pageViewedAsMetric) {
-    this.clicks = clicks;
-    this.impressions = impressions;
-    this.serverAccess = serverAccesses;
-    this.users = users;
-    this.pagesViewedBounceMetric = pageViewedAsMetric;
+  public DataSet() {
 
   }
 
@@ -74,6 +60,27 @@ public class DataSet {
    */
   public void setPagesForBounce(int pagesForBounce) {
     this.pagesForBounce = pagesForBounce;
+  }
+
+  public void setClicks(ArrayList<Click> clicks) {
+    this.clicks = clicks;
+  }
+
+  public void setImpressions(ArrayList<Impression> impressions) {
+    this.impressions = impressions;
+  }
+
+  public void setServerAccess(
+      ArrayList<ServerAccess> serverAccess) {
+    this.serverAccess = serverAccess;
+  }
+
+  public void setUsers(HashMap<Long, User> users) {
+    this.users = users;
+  }
+
+  public void setPagesViewedBounceMetric(boolean pagesViewedBounceMetric) {
+    this.pagesViewedBounceMetric = pagesViewedBounceMetric;
   }
 
   public ArrayList<Click> getClicks() {

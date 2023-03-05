@@ -23,17 +23,23 @@ public class ServerAccess extends LogRow {
    * @param conversion  Whether the user acted on the page and was a conversion.
    * @throws Exception If the input data is out of bounds an Exception is thrown.
    */
-  public ServerAccess(String entryDate, long id, String exitDate, int pagesViewed,
-      boolean conversion) throws Exception {
+  public ServerAccess(String entryDate, String id, String exitDate, String pagesViewed,
+      String conversion) throws Exception {
     super(id);
     this.startDate = parseDateTime(entryDate);
     this.endDate = parseDateTime(exitDate);
-
-    if (pagesViewed < 0) {
+    Integer parsedPagesViewed = Integer.parseInt(pagesViewed);
+    if (parsedPagesViewed < 0) {
       throw new Exception("invalid number of pages viewed");
     }
-    this.pagesViewed = pagesViewed;
-    this.conversion = conversion;
+    this.pagesViewed = parsedPagesViewed;
+
+    if (conversion.equals("Yes")) {
+      this.conversion = true;
+    } else {
+      this.conversion = false;
+    }
+
   }
 
   public LocalDateTime getStartDate() {

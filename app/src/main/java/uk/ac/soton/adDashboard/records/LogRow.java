@@ -16,10 +16,11 @@ public class LogRow {
   /**
    * Generates a row object.
    *
-   * @param id The id of the row.
+   * @param strId The id of the row.
    * @throws Exception If the ID is negative.
    */
-  public LogRow(long id) throws Exception {
+  public LogRow(String strId) throws Exception {
+    var id = Long.parseLong(strId);
     if (id < 0) {
       throw new Exception("id shouldn't be negative");
     }
