@@ -1,9 +1,10 @@
 package uk.ac.soton.adDashboard.views;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.control.Button;
 import org.apache.logging.log4j.LogManager;
@@ -49,6 +50,31 @@ public class ListView extends BaseView {
         borderPane.setTop(vbox);
 
         root.getChildren().add(borderPane);
+
+        GridPane gridPane = new GridPane();
+
+        // set some padding for the gridPane
+        gridPane.setPadding(new Insets(10));
+
+        // set the grid lines visible for debugging purposes
+        gridPane.setGridLinesVisible(true);
+
+        borderPane.setCenter(gridPane);
+        Text title2 = new Text("title");
+        VBox vbox2 = new VBox(title2);
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setPrefWidth(8000);
+        gridPane.setPrefHeight(8000);
+        // add some colored rectangles to the GridPane for demonstration purposes
+        for (int row = 0; row < 4; row++) {
+            for (int col = 0; col < 4; col++) {
+                Rectangle rectangle = new Rectangle(50, 50, Color.GRAY);
+                StackPane stackPane = new StackPane(rectangle);
+                gridPane.add(stackPane, col, row);
+            }
+        }
     }
 
     /**
