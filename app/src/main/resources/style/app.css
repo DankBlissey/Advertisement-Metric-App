@@ -32,8 +32,14 @@
     -fx-fill: #4B51FF;
     -fx-font-size: 5px;
 }
+
 .listTitle {
     -fx-font-family: 'Google Sans Bold';
     -fx-fill: grey;
     -fx-font-size: 15px;
+}
+.buttonTitle {
+    -fx-font-family: 'Google Sans Bold';
+    -fx-fill: white;
+    -fx-font-size: 12px;
 }
