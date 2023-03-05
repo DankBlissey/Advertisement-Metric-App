@@ -12,7 +12,6 @@ import javafx.scene.text.Text;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.soton.adDashboard.controller.Controller;
-import uk.ac.soton.adDashboard.records.DataSet;
 import uk.ac.soton.adDashboard.ui.AppPane;
 import uk.ac.soton.adDashboard.ui.AppWindow;
 
@@ -24,11 +23,8 @@ public class BounceRateScene extends BaseView {
      */
     protected Controller controller;
 
-    protected DataSet dataSet;
-
-    public BounceRateScene(AppWindow appWindow, DataSet dataSet) {
+    public BounceRateScene(AppWindow appWindow) {
         super(appWindow);
-        this.dataSet = dataSet;
         logger.info("Creating the Landing View");
     }
 
