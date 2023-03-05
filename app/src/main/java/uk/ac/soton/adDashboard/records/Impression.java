@@ -12,9 +12,9 @@ import uk.ac.soton.adDashboard.enums.Gender;
 public class Impression extends LogRow {
 
 
-  private final double cost;
-  private final LocalDateTime date;
-  private final Context context;
+  private  float cost;
+  private  LocalDateTime date;
+  private  Context context;
 
 
   /**
@@ -30,8 +30,7 @@ public class Impression extends LogRow {
       throws Exception {
     super(id);
     this.date = parseDateTime(date);
-
-    this.cost = Double.parseDouble(cost);
+    this.cost = Float.parseFloat(cost);
     this.context = contextSetup(context);
 
   }

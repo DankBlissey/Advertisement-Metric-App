@@ -1,6 +1,5 @@
 package uk.ac.soton.adDashboard.records;
 
-import uk.ac.soton.adDashboard.enums.Context;
 import uk.ac.soton.adDashboard.enums.Gender;
 import uk.ac.soton.adDashboard.enums.Income;
 
@@ -26,6 +25,7 @@ public class User extends LogRow {
   public User(String id, String age, String gender, String income) throws Exception {
     super(id);
     this.age = ageSetup(age);
+
     this.gender = genderSetup(gender);
     this.income = incomeSetup(income);
   }

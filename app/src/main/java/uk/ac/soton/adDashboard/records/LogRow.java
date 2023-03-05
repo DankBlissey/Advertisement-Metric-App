@@ -11,8 +11,7 @@ import java.time.format.ResolverStyle;
 public class LogRow {
 
   private final long id;
-  private DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
+  private static DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
   /**
    * Generates a row object.
    *
@@ -25,6 +24,10 @@ public class LogRow {
       throw new Exception("id shouldn't be negative");
     }
     this.id = id;
+
+
+  }
+  public static void setResolver() {
     format.withResolverStyle(ResolverStyle.SMART);
 
   }

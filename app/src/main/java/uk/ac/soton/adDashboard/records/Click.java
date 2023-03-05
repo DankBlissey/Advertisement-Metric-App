@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 public class Click extends LogRow {
 
   private final LocalDateTime date;
-  private final double cost;
+  private final float cost;
 
   /**
    * Creates a click object.
@@ -22,7 +22,7 @@ public class Click extends LogRow {
     super(id);
 
     this.date = parseDateTime(date);
-    double parsedCost = Double.parseDouble(cost);
+    float parsedCost = Float.parseFloat(cost);
     if (parsedCost < 0) {
       throw new Exception("negative cost");
     }

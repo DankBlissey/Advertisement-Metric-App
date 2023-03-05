@@ -176,11 +176,12 @@ public class LandingView extends BaseView {
   public void submitCSVFiles() {
     logger.info("Submitting all 3 uploaded csv files...");
 
-//        logger.info("Reading the impressions file");
+    logger.info("Reading the impressions file");
+    LogRow.setResolver();
     var temp = getImpressionsFromCSV(impressionsFilePath);
-//        ArrayList<Impression> impressions = temp.getKey();
-//        HashMap<Long, User> users = temp.getValue();
-//        logger.info("Successfully created objects: impressions("+ impressions.size() + " entries) and users(" + users.size() + ")");
+    HashSet<Impression> impressions = temp.getKey();
+    HashMap<Long, User> users = temp.getValue();
+    logger.info("Successfully created objects: impressions("+ impressions.size() + " entries) and users(" + users.size() + ")");
 
     logger.info("Reading the clicks file");
     ArrayList<Click> clicks = getClicksFromCSV(clickFilePath);
@@ -193,10 +194,10 @@ public class LandingView extends BaseView {
     dataSet.setClicks(clicks);
 
     dataSet.setServerAccess(serverAccesses);
-//    dataSet.setImpressions(impresssions);
-//    dataSet.setUsers(users);
+    dataSet.setImpressions(impressions);
+    dataSet.setUsers(users);
 //
-//  appWindow.bounceRateWindow(dataSet);
+  appWindow.bounceRateWindow(dataSet);
   }
 
   /**
@@ -205,32 +206,39 @@ public class LandingView extends BaseView {
    *
    * @param filePath absolute path
    */
-  public Pair<ArrayList<Impression>, HashMap<Long, User>> getImpressionsFromCSV(String filePath) {
+  public Pair<HashSet<Impression>, HashMap<Long, User>> getImpressionsFromCSV(String filePath) {
 
     String line = "";
-    var impressions = new HashSet<Impression>();
-    var users = new HashMap<Long, User>();
+    var impressions = new HashSet<Impression>(20000);
+    var users = new HashMap<Long, User>(20000);
 
     try {
       BufferedReader br = new BufferedReader(new FileReader(filePath));
 
       // Skips the first line which includes the headers
       br.readLine();
-
+      String date;
+      String id ;
+      String gender;
+      String age ;
+      String income ;
+      String context ;
+      String cost;
+      String[] columns;
       while ((line = br.readLine()) != null) {
-        String[] columns = line.split(",");
+        columns= line.split(",");
         //logger.info("Reading the line with ID = " + columns[1] + " and date = " + columns[0]);
-        var date = columns[0];
-        var id = columns[1];
-        var gender = columns[2];
-        var age = columns[3];
-        var income = columns[4];
-        var context = columns[5];
-        var cost = columns[6];
+        date = columns[0];
+        id = columns[1];
+        gender = columns[2];
+        age = columns[3];
+        income = columns[4];
+        context = columns[5];
+        cost = columns[6];
 
         try {
-//          impressions.add(new Impression(date, id, cost, context));
-          users.put(Long.parseLong(id), new User(id, age, gender, income));
+          impressions.add(new Impression(date, id, cost, context));
+          users.put(Long.parseLong(id), new User(id, age, gender, income)); //28
         } catch (Exception e) {
           throw new RuntimeException(e);
         }
@@ -239,7 +247,7 @@ public class LandingView extends BaseView {
       e.printStackTrace();
     }
 
-    return new Pair<>(new ArrayList<>(), users);
+    return new Pair<>(impressions, users);
   }
 
   /**
