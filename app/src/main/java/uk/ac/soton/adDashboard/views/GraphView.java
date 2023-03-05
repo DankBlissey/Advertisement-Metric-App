@@ -3,6 +3,7 @@ package uk.ac.soton.adDashboard.views;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -45,51 +46,65 @@ public class GraphView extends BaseView {
         VBox vbox = new VBox(title, subTitle);
 
         vbox.setAlignment(Pos.CENTER);
+///
+
+        Color switchBack = Color.web("#4B51FF"); // create a Color object with the hex value for purple
+        Color switchToggle = Color.web("4b0076");
+        Color backgroundPane = Color.web("#F6F6F6");
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setRadius(4);
+        dropShadow.setSpread(0.05);
+        dropShadow.setColor(Color.GREY);
 
         BorderPane borderPane = new BorderPane();
 
         borderPane.setTop(vbox);
         borderPane.setBackground(new Background(new BackgroundFill(
-                Color.rgb(230, 230, 230, 0.9), CornerRadii.EMPTY, Insets.EMPTY)));
+                backgroundPane, CornerRadii.EMPTY, Insets.EMPTY)));
         root.getChildren().add(borderPane);
 
         GridPane gridPane = new GridPane();
         borderPane.setCenter(gridPane);
-        gridPane.setAlignment(Pos.CENTER );
+        //  gridPane.setGridLinesVisible(true);
+        gridPane.setAlignment(Pos.CENTER  );
         gridPane.setHgap(20);
         gridPane.setVgap(20);
 
         // Create a button and add it to a pane
-     //   Button button = new Button("Switch to Scene 2");
-     //   gridPane.add(button,0,0);
-     //   button.setOnAction(e -> appWindow.loadScene(new ListView(appWindow)));
+        //  Button button = new Button("Switch to Scene 2");
+        //gridPane.add(button,0,0);
+        //button.setOnAction(e -> appWindow.loadScene(new GraphView(appWindow)));
+
+        //  SwitchButton switchButton = new SwitchButton();
+        //switchButton.setOnDragDone(e -> appWindow.loadScene(new GraphView(appWindow)));
+
+
+
         StackPane stack = new StackPane();
-        Rectangle background = new Rectangle(100, 30, Color.PURPLE);
-        background.setStroke(Color.LIGHTGRAY);
-        background.setStrokeWidth(1);
+        Rectangle background = new Rectangle(100, 30);
+        background.setFill(switchBack);
+        background.setEffect(dropShadow);
         background.setArcWidth(30);
         background.setArcHeight(30);
-        Text text = new Text("List      Graph");
+        Text text = new Text("    List         Graph");
         text.getStyleClass().add("buttonTitle");
-        Rectangle toggle = new Rectangle(40, 27, Color.MEDIUMPURPLE);
-        toggle.setOpacity(0.4);
+        Rectangle toggle = new Rectangle(50, 27, switchToggle);
+        toggle.setOpacity(0.13);
         toggle.setStroke(Color.LIGHTGRAY);
         toggle.setStrokeWidth(0.5);
         toggle.setArcWidth(29);
         toggle.setArcHeight(30);
-        toggle.setTranslateX(switchedOn ? -30 : 30);
-
+        toggle.setTranslateX(switchedOn ? -50 : 50);
         stack.getChildren().addAll(background, toggle, text);
-        stack.setAlignment(Pos.CENTER);
-
-
-        gridPane.add(stack,0,0);
+        stack.setAlignment(Pos.CENTER_LEFT);
 
         stack.setOnMouseClicked(event -> {
-            switchedOn = !switchedOn;
-            toggle.setTranslateX(switchedOn ? 30 : -30);
-             appWindow.loadScene(new ListView(appWindow));
+              switchedOn = !switchedOn;
+              toggle.setTranslateX(switchedOn ? -30 : 30);
+            appWindow.loadScene(new ListView(appWindow));
         });
+        gridPane.add(stack,0,0);
+
 
     }
 
