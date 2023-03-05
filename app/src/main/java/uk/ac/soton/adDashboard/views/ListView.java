@@ -116,11 +116,11 @@ public class ListView extends BaseView {
 
         Text totalClicks = new Text("  Total clicks");
         totalClicks.getStyleClass().add("listTitle");
-        Text number = new Text(" 100,000");
-        number.getStyleClass().add("listNumbers");
-        Text number2 = new Text(" 100,020");
-        number2.getStyleClass().add("listNumbers");
-        VBox clicksBox = new VBox(totalClicks,number,number2);
+        Text clicks1 = new Text(" 224,332");
+        clicks1.getStyleClass().add("listNumbers");
+        Text clicks2 = new Text(" 434,351");
+        clicks2.getStyleClass().add("listNumbers");
+        VBox clicksBox = new VBox(totalClicks,clicks1,clicks2);
         clicksBox.setAlignment(Pos.CENTER_LEFT);
         Rectangle clickBG = new Rectangle(140,100,Color.WHITE);
         clickBG.setOpacity(0.98);
@@ -135,7 +135,11 @@ public class ListView extends BaseView {
 
         Text totalUniques = new Text("  Total uniques");
         totalUniques.getStyleClass().add("listTitle");
-        VBox uniquesBox = new VBox(totalUniques);
+        Text uniques1 = new Text(" 194,754");
+        uniques1.getStyleClass().add("listNumbers");
+        Text uniques2 = new Text(" 398,112");
+        uniques2.getStyleClass().add("listNumbers");
+        VBox uniquesBox = new VBox(totalUniques,uniques1,uniques2);
         Rectangle totalBG = new Rectangle(140,100,Color.WHITE);
         totalBG.setOpacity(0.98);
         totalBG.setArcWidth(30);
@@ -147,7 +151,11 @@ public class ListView extends BaseView {
 
         Text totalImpressions = new Text("  Total impressions");
         totalImpressions.getStyleClass().add("listTitle");
-        VBox impressionsBox = new VBox(totalImpressions);
+        Text impressions1 = new Text(" 4,560,452");
+        impressions1.getStyleClass().add("listNumbers");
+        Text impressions2 = new Text(" 12,424,583");
+        impressions2.getStyleClass().add("listNumbers");
+        VBox impressionsBox = new VBox(totalImpressions,impressions1,impressions2);
         impressionsBox.setAlignment(Pos.CENTER_LEFT);
         Rectangle impressionBG = new Rectangle(140,100,Color.WHITE);
         impressionBG.setOpacity(0.98);
@@ -159,7 +167,11 @@ public class ListView extends BaseView {
 
         Text totalBounces = new Text("  Total bounces");
         totalBounces.getStyleClass().add("listTitle");
-        VBox bounceBox = new VBox(totalBounces);
+        Text bounces1 = new Text(" 4,560,452");
+        bounces1.getStyleClass().add("listNumbers");
+        Text bounces2 = new Text(" 12,424,583");
+        bounces2.getStyleClass().add("listNumbers");
+        VBox bounceBox = new VBox(totalBounces,bounces1,bounces2);
         bounceBox.setAlignment(Pos.CENTER_LEFT);
         Rectangle bounceBG = new Rectangle(140,100,Color.WHITE);
         bounceBG.setOpacity(0.98);
@@ -171,9 +183,9 @@ public class ListView extends BaseView {
 
         Text totalConversions = new Text("  Total conversions");
         totalConversions.getStyleClass().add("listTitle");
-        Text converions1 = new Text(" 100,000");
+        Text converions1 = new Text(" 56,134");
         converions1.getStyleClass().add("listNumbers");
-        Text converions2 = new Text(" 100,020");
+        Text converions2 = new Text(" 77,396");
         converions2.getStyleClass().add("listNumbers");
         VBox convesionsBox = new VBox(totalConversions,converions1,converions2);
         convesionsBox.setAlignment(Pos.CENTER_LEFT);
@@ -187,9 +199,9 @@ public class ListView extends BaseView {
 
         Text totalCost = new Text("  Total cost");
         totalCost.getStyleClass().add("listTitle");
-        Text cost1 = new Text(" 100,000");
+        Text cost1 = new Text(" 405,532");
         cost1.getStyleClass().add("listNumbers");
-        Text cost2 = new Text(" 100,020");
+        Text cost2 = new Text(" 77,396");
         cost2.getStyleClass().add("listNumbers");
         VBox costBox = new VBox(totalCost,cost1,cost2);
         costBox.setAlignment(Pos.CENTER_LEFT);
@@ -203,9 +215,9 @@ public class ListView extends BaseView {
 
         Text totalCTR = new Text("  CTR");
         totalCTR.getStyleClass().add("listTitle");
-        Text ctr1 = new Text(" 100,000");
+        Text ctr1 = new Text(" 12.4%");
         ctr1.getStyleClass().add("listNumbers");
-        Text ctr2 = new Text(" 100,020");
+        Text ctr2 = new Text(" 7.3%");
         ctr2.getStyleClass().add("listNumbers");
         VBox ctrBox = new VBox(totalCTR,ctr1,ctr2);
         ctrBox.setAlignment(Pos.CENTER_LEFT);
@@ -219,9 +231,9 @@ public class ListView extends BaseView {
 
         Text totalCPA = new Text("  CPA");
         totalCPA.getStyleClass().add("listTitle");
-        Text cpa1 = new Text(" 100,000");
+        Text cpa1 = new Text(" 11.42");
         cpa1.getStyleClass().add("listNumbers");
-        Text cpa2 = new Text(" 100,020");
+        Text cpa2 = new Text(" 12.32");
         cpa2.getStyleClass().add("listNumbers");
         VBox cpaBox = new VBox(totalCPA,cpa1,cpa2);
         cpaBox.setAlignment(Pos.CENTER_LEFT);
@@ -235,9 +247,9 @@ public class ListView extends BaseView {
 
         Text totalCPC = new Text("  CPC");
         totalCPC.getStyleClass().add("listTitle");
-        Text cpc1 = new Text(" 100,000");
+        Text cpc1 = new Text(" 5.43");
         cpc1.getStyleClass().add("listNumbers");
-        Text cpc2 = new Text(" 100,020");
+        Text cpc2 = new Text(" 3.24");
         cpc2.getStyleClass().add("listNumbers");
         VBox cpcBox = new VBox(totalCPC,cpc1,cpc2);
         cpcBox.setAlignment(Pos.CENTER_LEFT);
@@ -251,9 +263,9 @@ public class ListView extends BaseView {
 
         Text totalCPM = new Text("  CPM");
         totalCPM.getStyleClass().add("listTitle");
-        Text cpm1 = new Text(" 100,000");
+        Text cpm1 = new Text(" 12,043");
         cpm1.getStyleClass().add("listNumbers");
-        Text cpm2 = new Text(" 100,020");
+        Text cpm2 = new Text(" 16,425");
         cpm2.getStyleClass().add("listNumbers");
         VBox cpmBox = new VBox(totalCPM,cpm1,cpm2);
         cpmBox.setAlignment(Pos.CENTER_LEFT);
@@ -267,9 +279,9 @@ public class ListView extends BaseView {
 
         Text totalBounceRate = new Text("  Bounce rate");
         totalBounceRate.getStyleClass().add("listTitle");
-        Text bounceRate1 = new Text(" 100,000");
+        Text bounceRate1 = new Text(" 8.54");
         bounceRate1.getStyleClass().add("listNumbers");
-        Text bounceRate2 = new Text(" 100,020");
+        Text bounceRate2 = new Text(" 13.56");
         bounceRate2.getStyleClass().add("listNumbers");
         VBox bounceRateBox = new VBox(totalBounceRate,bounceRate1,bounceRate2);
         bounceRateBox.setAlignment(Pos.CENTER_LEFT);
