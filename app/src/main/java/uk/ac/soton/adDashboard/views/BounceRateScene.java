@@ -1,14 +1,11 @@
 package uk.ac.soton.adDashboard.views;
 
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.IntegerBinding;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableSet;
+
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -21,11 +18,6 @@ import uk.ac.soton.adDashboard.ui.AppWindow;
 
 public class BounceRateScene extends BaseView {
     private static final Logger logger = LogManager.getLogger(BounceRateScene.class);
-
-    private ObservableSet<CheckBox> selectedCheckBoxes = FXCollections.observableSet();
-    private ObservableSet<CheckBox> unselectedCheckBoxes = FXCollections.observableSet();
-
-    private IntegerBinding numCheckBoxesSelected = Bindings.size(selectedCheckBoxes);
 
     /**
      * App class (logic)
@@ -62,16 +54,16 @@ public class BounceRateScene extends BaseView {
         TextField custom = new TextField();
         custom.setPromptText("Enter value");
         custom.setMaxWidth(100);
-        custom.setTranslateX(215);
-        custom.setTranslateY(-24);
+        custom.setTranslateX(155);
+        custom.setTranslateY(-34);
         custom.visibleProperty().setValue(false);
 
         //Text input for the maximum amount of pages visited.
         TextField pages = new TextField();
         pages.setPromptText("Enter value");
         pages.setMaxWidth(100);
-        pages.setTranslateX(215);
-        pages.setTranslateY(-24);
+        pages.setTranslateX(155);
+        pages.setTranslateY(-22);
         pages.visibleProperty().setValue(false);
 
         // text
@@ -79,8 +71,8 @@ public class BounceRateScene extends BaseView {
         text1.getStyleClass().add("bounceRateText");
 
         ComboBox<Object> itemBox = new ComboBox<>();
-        itemBox.setTranslateX(325);
-        itemBox.setTranslateY(-49);
+        itemBox.setTranslateX(270);
+        itemBox.setTranslateY(-75);
         itemBox.visibleProperty().setValue(false);
 
         itemBox.getItems().addAll("Seconds", "Minutes");
@@ -91,35 +83,37 @@ public class BounceRateScene extends BaseView {
         text2.getStyleClass().add("bounceRateText");
 
         CheckBox customCheckBox = new CheckBox();
-        customCheckBox.setTranslateX(-20);
-        customCheckBox.setTranslateY(-73);
+        customCheckBox.setTranslateX(-90);
+        customCheckBox.setTranslateY(-69);
 
         CheckBox pageCheckBox = new CheckBox();
-        pageCheckBox.setTranslateX(-20);
-        pageCheckBox.setTranslateY(-73);
+        pageCheckBox.setTranslateX(-90);
+        pageCheckBox.setTranslateY(-69);
 
         Button finished = new Button();
         finished.setText("Finish");
         finished.setVisible(false);
+        finished.setTranslateY(40);
 
         Button back = new Button();
         back.setText("Back");
-        back.setTranslateX(-185);
-        back.setTranslateY(-297);
+        back.setTranslateX(-615);
+        back.setTranslateY(-400);
 
         VBox vbox1 = new VBox(title, subtext1, subtext2, back);
-        vbox1.setTranslateX(185);
-        vbox1.setTranslateY(165);
 
-        VBox vbox2 = new VBox(text1, custom, itemBox, customCheckBox);
-        vbox2.setTranslateX(185);
-        vbox2.setTranslateY(315);
+        VBox vbox3 = new VBox(text2, pages, finished, pageCheckBox, text1, custom, itemBox, customCheckBox);
 
-        VBox vbox3 = new VBox(text2, pages, finished, pageCheckBox);
-        vbox3.setTranslateX(185);
-        vbox3.setTranslateY(385);
+        vbox1.setAlignment(Pos.CENTER);
+        vbox3.setAlignment(Pos.CENTER);
 
-        StackPane stackPane = new StackPane(vbox1, vbox2, vbox3);
+        text1.setTranslateY(-40);
+        custom.setTranslateY(-60);
+        itemBox.setTranslateY(-85);
+        customCheckBox.setTranslateY(-110);
+        vbox3.setTranslateY(180);
+
+        StackPane stackPane = new StackPane(vbox1, vbox3);
 
         customCheckBox.setOnAction((event) -> {
 
