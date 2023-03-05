@@ -10,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.soton.adDashboard.App;
 import uk.ac.soton.adDashboard.views.BaseView;
+import uk.ac.soton.adDashboard.views.BounceRateScene;
 import uk.ac.soton.adDashboard.views.LandingView;
 
 /**
@@ -93,6 +94,13 @@ public class AppWindow {
      */
     public void uploadCSVWindow() {
         loadView(new LandingView(this));
+    }
+
+    /**
+     * Display the second menu(scene/view) where you select the bounce rate
+     */
+    public void bounceRateWindow() {
+        loadView(new BounceRateScene(this));
     }
 
     /**
