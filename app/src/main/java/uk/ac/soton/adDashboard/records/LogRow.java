@@ -11,23 +11,28 @@ import java.time.format.ResolverStyle;
 public class LogRow {
 
   private final long id;
-  private DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+  private static DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
   /**
    * Generates a row object.
    *
-   * @param id The id of the row.
+   * @param strID The id of the row.
    * @throws Exception If the ID is negative.
    */
-  public LogRow(long id) throws Exception {
+  public LogRow(String strID) throws Exception {
+    var id = Long.parseLong(strID);
     if (id < 0) {
       throw new Exception("id shouldn't be negative");
     }
     this.id = id;
-    format.withResolverStyle(ResolverStyle.SMART);
+
 
   }
 
+  public static void setResolver() {
+    format.withResolverStyle(ResolverStyle.STRICT);
+
+  }
   public long getId() {
     return id;
   }

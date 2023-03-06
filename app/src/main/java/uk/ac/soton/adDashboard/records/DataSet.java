@@ -13,7 +13,7 @@ import javafx.util.Pair;
 public class DataSet {
 
   private final ArrayList<Click> clicks;
-  private final ArrayList<Impression> impressions;
+  private final HashSet<Impression> impressions;
   private final ArrayList<ServerAccess> serverAccess;
   private final HashMap<Long, User> users;
 
@@ -45,7 +45,7 @@ public class DataSet {
    * @param pageViewedAsMetric Whether to use pagesViewed as the bounce metric.
    */
   public DataSet(ArrayList<Click> clicks,
-      ArrayList<Impression> impressions,
+      HashSet<Impression> impressions,
       ArrayList<ServerAccess> serverAccesses, HashMap<Long, User> users,
       boolean pageViewedAsMetric) {
     this.clicks = clicks;
@@ -80,7 +80,7 @@ public class DataSet {
     return clicks;
   }
 
-  public ArrayList<Impression> getImpressions() {
+  public HashSet<Impression> getImpressions() {
     return impressions;
   }
 
