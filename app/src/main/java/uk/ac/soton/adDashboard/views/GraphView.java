@@ -16,6 +16,9 @@ import uk.ac.soton.adDashboard.records.DataSet;
 import uk.ac.soton.adDashboard.ui.AppPane;
 import uk.ac.soton.adDashboard.ui.AppWindow;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class GraphView extends BaseView {
     private static final Logger logger = LogManager.getLogger(GraphView.class);
     private boolean switchedOn = false;
@@ -25,9 +28,11 @@ public class GraphView extends BaseView {
     protected Controller controller;
 
     protected DataSet dataSet;
+    protected ArrayList<String> filenames;
 
-    public GraphView(AppWindow appWindow) {
+    public GraphView(AppWindow appWindow, ArrayList<String> filenames) {
         super(appWindow);
+        this.filenames = filenames;
         logger.info("Creating the graph view View");
     }
 
@@ -104,7 +109,7 @@ public class GraphView extends BaseView {
         stack.setOnMouseClicked(event -> {
               switchedOn = !switchedOn;
               toggle.setTranslateX(switchedOn ? -30 : 30);
-            appWindow.loadView(new ListView(appWindow,dataSet));
+            appWindow.loadView(new ListView(appWindow,dataSet,filenames));
         });
         gridPane.add(stack,0,0);
 

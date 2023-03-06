@@ -5,11 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f49bb74c-74be-480f-b985-3e95502da9f6" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/module-info.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/uk/ac/soton/adDashboard/ui/AppWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/uk/ac/soton/adDashboard/ui/AppWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/uk/ac/soton/adDashboard/views/BounceRateView.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/uk/ac/soton/adDashboard/views/BounceRateView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/uk/ac/soton/adDashboard/views/GraphView.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/uk/ac/soton/adDashboard/views/GraphView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/uk/ac/soton/adDashboard/views/LandingView.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/uk/ac/soton/adDashboard/views/LandingView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/uk/ac/soton/adDashboard/views/ListView.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/uk/ac/soton/adDashboard/views/ListView.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

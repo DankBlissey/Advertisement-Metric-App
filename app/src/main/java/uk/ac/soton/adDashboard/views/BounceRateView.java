@@ -16,6 +16,9 @@ import uk.ac.soton.adDashboard.records.DataSet;
 import uk.ac.soton.adDashboard.ui.AppPane;
 import uk.ac.soton.adDashboard.ui.AppWindow;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class BounceRateView extends BaseView {
     private static final Logger logger = LogManager.getLogger(BounceRateView.class);
 
@@ -25,10 +28,12 @@ public class BounceRateView extends BaseView {
     protected Controller controller;
 
     protected DataSet dataSet;
+    protected ArrayList<String> filenames;
 
-    public BounceRateView(AppWindow appWindow, DataSet dataSet) {
+    public BounceRateView(AppWindow appWindow, DataSet dataSet, ArrayList<String> filenames) {
         super(appWindow);
         this.dataSet = dataSet;
+        this.filenames = filenames;
         logger.info("Creating the BounceRate View");
     }
 
@@ -171,7 +176,7 @@ public class BounceRateView extends BaseView {
                     logger.info("Maximum page number read");
                     dataSet.setPagesForBounce(Integer.parseInt(pages.getText()));
                     dataSet.setPagesViewedBounceMetric(true);
-                    appWindow.listViewWindow(dataSet);
+                    appWindow.listViewWindow(dataSet, filenames);
                 } catch (NumberFormatException e) {
                     error.setVisible(true);
                 }
@@ -189,7 +194,7 @@ public class BounceRateView extends BaseView {
                         dataSet.setInterval(Integer.parseInt(custom.getText())*60);
                     }
                     dataSet.setPagesViewedBounceMetric(false);
-                    appWindow.listViewWindow(dataSet);
+                    appWindow.listViewWindow(dataSet, filenames);
 
                 } catch (NumberFormatException e) {
                     error.setVisible(true);
