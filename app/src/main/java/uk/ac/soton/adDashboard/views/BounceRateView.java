@@ -28,6 +28,7 @@ public class BounceRateView extends BaseView {
 
     public BounceRateView(AppWindow appWindow, DataSet dataSet) {
         super(appWindow);
+        this.dataSet = dataSet;
         logger.info("Creating the Landing View");
     }
 
