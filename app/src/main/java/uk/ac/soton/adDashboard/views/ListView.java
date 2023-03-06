@@ -1,9 +1,13 @@
 package uk.ac.soton.adDashboard.views;
 
 import javafx.geometry.Pos;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.control.Button;
 import org.apache.logging.log4j.LogManager;
@@ -34,15 +38,55 @@ public class ListView extends BaseView {
 
         root = new AppPane(appWindow.getWidth(), appWindow.getHeight());
 
-        Text title = new Text("Your data breakdown");
-        title.getStyleClass().add("text");
+        Text title = new Text("Dashboard");
+        title.getStyleClass().add("mediumText");
 
-        Text subTitle = new Text("List view");
-        subTitle.getStyleClass().add("subtitle");
+        Region region = new Region();
 
-        VBox vbox = new VBox(title, subTitle);
+        Button startAgain = new Button("Start Again");
+        startAgain.getStyleClass().add("blueButton");
 
-        vbox.setAlignment(Pos.CENTER);
+        MenuButton theme = new MenuButton("Theme");
+        theme.getStyleClass().add("blueButton");
+        theme.getItems().addAll(new MenuItem("Red"), new MenuItem("Blue"));
+
+        Button smaller = new Button("A-");
+        smaller.getStyleClass().add("blueButton");
+        Button bigger = new Button("A+");
+        bigger.getStyleClass().add("blueButton");
+
+        HBox sizeButtons = new HBox(smaller,bigger);
+
+        HBox topButtons = new HBox(startAgain, theme, sizeButtons);
+
+        //topButtons.getStyleClass().add("smallText");
+        topButtons.setSpacing(10);
+
+        HBox hbox = new HBox(title, region, topButtons);
+
+        HBox.setHgrow(region, Priority.ALWAYS);
+
+        hbox.setAlignment(Pos.CENTER);
+
+        Rectangle backBar = new Rectangle(800,150, Color.WHITE);
+        backBar.setEffect(new DropShadow());
+
+        Rectangle loadedRectangle = new Rectangle(200,130, Color.valueOf("#4B51FF"));
+        loadedRectangle.setArcWidth(30);
+        loadedRectangle.setArcHeight(30);
+
+        Text loadedText = new Text("Impressions_log.csv");
+        loadedText.getStyleClass().add("smallWhiteText");
+
+        StackPane loadedFiles = new StackPane(loadedRectangle,loadedText);
+
+        HBox longBarContent = new HBox(loadedFiles);
+
+        longBarContent.setAlignment(Pos.CENTER);
+
+        StackPane longBar = new StackPane(backBar,longBarContent);
+
+        VBox vbox = new VBox(hbox, longBar);
 
         BorderPane borderPane = new BorderPane();
 

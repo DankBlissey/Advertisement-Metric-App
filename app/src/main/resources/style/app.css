@@ -15,7 +15,7 @@
     -fx-width: 50px;
 }
 
-.text {
+.mediumText {
     -fx-font-family: 'Google Sans Bold';
     -fx-fill: #4B51FF;
     -fx-font-size: 35px;
@@ -24,5 +24,19 @@
 .smallText {
     -fx-font-family: 'Google Sans Bold';
     -fx-fill: #4B51FF;
-    -fx-font-size: 5px;
+    -fx-font-size: 15px;
+}
+
+.blueButton {
+    -fx-background-color: #4B51FF;
+    -fx-background-radius: 13px;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: 'Google Sans Bold';
+    -fx-font-size: 15px;
+}
+
+.smallWhiteText {
+    -fx-font-family: 'Google Sans Bold';
+    -fx-fill: #FFFFFF;
+    -fx-font-size: 15px;
 }
