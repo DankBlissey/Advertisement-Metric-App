@@ -4,18 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f49bb74c-74be-480f-b985-3e95502da9f6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/resources/style/DarkApp.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_base_mac_aarch64_17_0_2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_controls_mac_aarch64_17_0_2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_graphics_mac_aarch64_17_0_2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="f49bb74c-74be-480f-b985-3e95502da9f6" name="Changes" comment="added dark mode functionality">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/uk/ac/soton/adDashboard/ui/AppWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/uk/ac/soton/adDashboard/ui/AppWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/uk/ac/soton/adDashboard/views/BaseView.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/uk/ac/soton/adDashboard/views/BaseView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/uk/ac/soton/adDashboard/views/ListView.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/uk/ac/soton/adDashboard/views/ListView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/resources/style/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/resources/style/app.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,8 +93,16 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1677857759900</updated>
-      <workItem from="1678114307970" duration="8183000" />
+      <workItem from="1678114307970" duration="8272000" />
     </task>
+    <task id="LOCAL-00001" summary="added dark mode functionality">
+      <created>1678123079733</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1678123079733</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -120,5 +118,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="added dark mode functionality" />
+    <option name="LAST_COMMIT_MESSAGE" value="added dark mode functionality" />
   </component>
 </project>
