@@ -3,6 +3,7 @@ package uk.ac.soton.adDashboard.records;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import javafx.util.Pair;
@@ -254,11 +255,13 @@ public class DataSet {
    * @return Returns true if the access is a bounce and false otherwise.
    */
   public boolean isBounce(ServerAccess access) {
+    if (access.getEndDate()==null) return false;
     if (isPagesViewedBounceMetric()) {
       if (access.getPagesViewed() < getPagesForBounce()) {
         return false;
 
       } else {
+
         return ChronoUnit.SECONDS.between(access.getStartDate(), access.getEndDate())
             >= getInterval();
       }
@@ -278,8 +281,8 @@ public class DataSet {
     int bounces = 0;
     for (ServerAccess access : serverAccess) {
       if (isBounce(access) && matchesFilters(users.get(access.getId()))) {
-        if (access.getStartDate().compareTo(start) >= 0
-            && access.getStartDate().compareTo(end) <= 0) {
+        if (!access.getStartDate().isBefore(start)
+            && !access.getStartDate().isAfter(end)) {
           bounces += 1;
         }
       }
@@ -387,5 +390,27 @@ public class DataSet {
       System.out.println(points);
     }
     return points;
+  }
+
+
+
+
+  public double[] allStats(LocalDateTime start, LocalDateTime end) {
+    double impressionCost= calcImpressionCost(start,end);
+
+    double impressions = totalImpressions(start, end);
+    double clicks = totalClicks(start, end);
+    double uniques = calcUniqueUsersClick(start, end);
+    double bounces = calcBounces(start, end);
+    double conversions = calcNumConversions(start, end);
+    double cost = calcTotalCost(start, end);
+    System.out.println("half way");
+    double through = calcClickThrough(start, end);
+    double acquisitionCosts = calcCostAcquisition(start, end);
+    double clickCosts = calcCostPerClick(start, end);
+    double thousand = costPerThousandImpre(start, end);
+    double bounceRate = calcBounceRate(start, end);
+    return new double[]{impressions,clicks,uniques,bounces,conversions,cost,through,acquisitionCosts,clickCosts,thousand,bounceRate};
+
   }
 }

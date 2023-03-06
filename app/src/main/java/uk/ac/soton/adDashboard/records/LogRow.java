@@ -44,7 +44,7 @@ public class LogRow {
    * @return Returns a LocalDateTime object.
    * @throws DateTimeException Exception is thrown if the date is an invalid format.
    */
-  public LocalDateTime parseDateTime(String dateTime) throws DateTimeException {
+  public static LocalDateTime parseDateTime(String dateTime) throws DateTimeException {
     if (dateTime.equals("n/a")) {
       return null;
     }

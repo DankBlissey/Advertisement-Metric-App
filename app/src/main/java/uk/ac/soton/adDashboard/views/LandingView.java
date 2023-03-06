@@ -189,7 +189,7 @@ public class LandingView extends BaseView {
         logger.info("Successfully created object serverAccess("+ serverAccesses.size() + " entries)");
 
         DataSet dataSet = new DataSet(clicks, impressions, serverAccesses, users, true); //Shouldn't have needed to pass the pageViewedAsMetric here but I put it as true for now
-
+        System.out.println(dataSet.allStats(LogRow.parseDateTime("2015-06-01 12:00:00"),LogRow.parseDateTime("2015-07-01 12:00:00")));
         appWindow.bounceRateWindow(dataSet);
     }
 
@@ -204,20 +204,22 @@ public class LandingView extends BaseView {
             br.readLine();
 
             while ((line = br.readLine()) != null) {
+
                 try {
-                    String[] columns = line.split(",");
-                    //logger.info("Reading the line with ID = " + columns[1] + " and date = " + columns[0]);
-                    var date = columns[0];
-                    var id = columns[1];
-                    var context = columns[5];
-                    var cost = columns[6];
-                    Impression impression = new Impression(date, id, cost, context);
-                    impressions.add(impression);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
+                        String[] columns = line.split(",");
+                        //logger.info("Reading the line with ID = " + columns[1] + " and date = " + columns[0]);
+                        var date = columns[0];
+                        var id = columns[1];
+                        var context = columns[5];
+                        var cost = columns[6];
+                        Impression impression = new Impression(date, id, cost, context);
+                        impressions.add(impression);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+
                 }
 
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }
