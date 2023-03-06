@@ -72,7 +72,7 @@
 
 .card {
     -fx-background-color: #181A1B;
-    -fx-background-radius: 13px;
+    -fx-background-radius: 7px;
     -fx-text-fill: white;
     -fx-font-family: 'Google Sans Bold'
 }

@@ -7,10 +7,12 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -68,6 +70,8 @@ public class LandingView extends BaseView {
 
         root = new AppPane(appWindow.getWidth(), appWindow.getHeight());
 
+        submitButton.getStyleClass().add("card");
+
         StackPane mainPane = new StackPane();
         root.getChildren().add(mainPane);
 
@@ -83,6 +87,8 @@ public class LandingView extends BaseView {
         var impressionLogButton = new Button("Choose file");
         impressionsFileName.set("Choose file");
         impressionLogButton.textProperty().bind(impressionsFileName);
+        impressionLogButton.getStyleClass().add("card");
+        impressionLogButton.setEffect(new DropShadow(5,Color.valueOf("555BFF")));
 
         var uploadBlock1 = new VBox(impressionLogLabel, impressionLogButton);
         uploadBlock1.setSpacing(10);
@@ -92,6 +98,8 @@ public class LandingView extends BaseView {
         var clickLogButton = new Button("Choose file");
         clicksFileName.set("Choose file");
         clickLogButton.textProperty().bind(clicksFileName);
+        clickLogButton.getStyleClass().add("card");
+        clickLogButton.setEffect(new DropShadow(5,Color.valueOf("555BFF")));
 
         var uploadBlock2 = new VBox(clickLogLabel, clickLogButton);
         uploadBlock2.setSpacing(10);
@@ -101,6 +109,8 @@ public class LandingView extends BaseView {
         var serverLogButton = new Button("Choose file");
         serverFileName.set("Choose file");
         serverLogButton.textProperty().bind(serverFileName);
+        serverLogButton.getStyleClass().add("card");
+        serverLogButton.setEffect(new DropShadow(5,Color.valueOf("555BFF")));
 
         var uploadBlock3 = new VBox(serverLogLabel, serverLogButton);
         uploadBlock3.setSpacing(10);

@@ -68,3 +68,10 @@
     -fx-fill: white;
     -fx-font-size: 12px;
 }
+
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 7px;
+    -fx-text-fill: black;
+    -fx-font-family: 'Google Sans Bold'
+}
