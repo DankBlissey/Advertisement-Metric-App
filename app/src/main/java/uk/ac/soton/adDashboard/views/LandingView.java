@@ -189,7 +189,7 @@ public class LandingView extends BaseView {
         logger.info("Successfully created object serverAccess("+ serverAccesses.size() + " entries)");
 
         DataSet dataSet = new DataSet(clicks, impressions, serverAccesses, users, true); //Shouldn't have needed to pass the pageViewedAsMetric here but I put it as true for now
-        System.out.println(dataSet.allStats(LogRow.parseDateTime("2015-06-01 12:00:00"),LogRow.parseDateTime("2015-07-01 12:00:00")));
+        
         appWindow.bounceRateWindow(dataSet);
     }
 
