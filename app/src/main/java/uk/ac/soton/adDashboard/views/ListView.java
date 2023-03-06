@@ -35,6 +35,7 @@ public class ListView extends BaseView {
 
     public ListView(AppWindow appWindow, DataSet dataset) {
         super(appWindow);
+        this.dataSet = dataset;
         logger.info("Creating the list view View");
     }
 
