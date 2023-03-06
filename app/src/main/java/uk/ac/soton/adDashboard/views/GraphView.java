@@ -12,6 +12,7 @@ import javafx.scene.text.Text;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.soton.adDashboard.controller.Controller;
+import uk.ac.soton.adDashboard.records.DataSet;
 import uk.ac.soton.adDashboard.ui.AppPane;
 import uk.ac.soton.adDashboard.ui.AppWindow;
 
@@ -22,6 +23,8 @@ public class GraphView extends BaseView {
      * App class (logic)
      */
     protected Controller controller;
+
+    protected DataSet dataSet;
 
     public GraphView(AppWindow appWindow) {
         super(appWindow);
@@ -101,7 +104,7 @@ public class GraphView extends BaseView {
         stack.setOnMouseClicked(event -> {
               switchedOn = !switchedOn;
               toggle.setTranslateX(switchedOn ? -30 : 30);
-            appWindow.loadView(new ListView(appWindow));
+            appWindow.loadView(new ListView(appWindow,dataSet));
         });
         gridPane.add(stack,0,0);
 
