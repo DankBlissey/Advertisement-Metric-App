@@ -47,7 +47,7 @@ public class Main {
 //            impressions.get(0).getDate().plus(Duration.ofDays(5)),
 //            ChronoUnit.DAYS));
 
-    System.out.println((new LogRow(1)).parseDateTime("2015-01-01 12:00:02"));
+//    System.out.println((new LogRow(1)).parseDateTime("2015-01-01 12:00:02"));
   }
 
 }
