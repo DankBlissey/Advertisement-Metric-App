@@ -11,7 +11,7 @@
 .subtitle {
     -fx-font-family: 'Google Sans Bold';
     -fx-fill: #4B51FF;
-    -fx-font-size: 20px;
+    fx-font-size: 20px;
     -fx-text-alignment: center;
 }
 
@@ -19,4 +19,48 @@
     -fx-font-family: 'Google Sans';
     -fx-font-size: 15px;
     -fx-text-alignment: center;
+}
+
+.mediumText {
+    -fx-font-family: 'Google Sans Bold';
+    -fx-fill: #4B51FF;
+    -fx-font-size: 35px;
+}
+.listNumbers {
+    -fx-font-family: 'Google Sans Bold';
+    -fx-fill: black;
+    -fx-font-size: 25px;
+}
+
+
+.smallText {
+    -fx-font-family: 'Google Sans Bold';
+    -fx-fill: #4B51FF;
+    -fx-font-size: 15px;
+}
+
+.blueButton {
+    -fx-background-color: #4B51FF;
+    -fx-background-radius: 13px;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: 'Google Sans Bold';
+    -fx-font-size: 15px;
+}
+
+.smallWhiteText {
+    -fx-font-family: 'Google Sans Bold';
+    -fx-fill: #FFFFFF;
+    -fx-font-size: 15px;
+}
+
+.listTitle {
+    -fx-font-family: 'Google Sans Bold';
+    -fx-fill: grey;
+    -fx-font-size: 15px;
+}
+
+.buttonTitle {
+    -fx-font-family: 'Google Sans Bold';
+    -fx-fill: white;
+    -fx-font-size: 12px;
 }

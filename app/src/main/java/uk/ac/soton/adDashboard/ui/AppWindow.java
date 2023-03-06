@@ -13,6 +13,7 @@ import uk.ac.soton.adDashboard.records.DataSet;
 import uk.ac.soton.adDashboard.views.BaseView;
 import uk.ac.soton.adDashboard.views.BounceRateView;
 import uk.ac.soton.adDashboard.views.LandingView;
+import uk.ac.soton.adDashboard.views.ListView;
 
 /**
  * The AppWindow is the single window for the app where everything takes place. To move between screens in the app,
@@ -55,6 +56,9 @@ public class AppWindow {
 
         //Go to first menu (upload 3 CSV files)
         uploadCSVWindow();
+
+        //Go to list view
+        listViewWindow();
     }
 
     /**
@@ -95,6 +99,13 @@ public class AppWindow {
      */
     public void uploadCSVWindow() {
         loadView(new LandingView(this));
+    }
+
+    /**
+     * Display the list view of the data
+     */
+    public void listViewWindow() {
+        loadScene(new ListView(this));
     }
 
     /**
