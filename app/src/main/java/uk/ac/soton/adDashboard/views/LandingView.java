@@ -188,11 +188,16 @@ public class LandingView extends BaseView {
         ArrayList<ServerAccess> serverAccesses = getServerAccessFromCSV(serverFilePath);
         logger.info("Successfully created object serverAccess("+ serverAccesses.size() + " entries)");
 
+
         DataSet dataSet = new DataSet();
         dataSet.setClicks(clicks);
         dataSet.setImpressions(impressions);
         dataSet.setUsers(users);
         dataSet.setServerAccess(serverAccesses);
+
+
+        
+
         appWindow.bounceRateWindow(dataSet);
     }
 
