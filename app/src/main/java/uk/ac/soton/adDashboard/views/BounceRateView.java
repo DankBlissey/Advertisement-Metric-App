@@ -16,10 +16,6 @@ import uk.ac.soton.adDashboard.records.DataSet;
 import uk.ac.soton.adDashboard.ui.AppPane;
 import uk.ac.soton.adDashboard.ui.AppWindow;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
 public class BounceRateView extends BaseView {
     private static final Logger logger = LogManager.getLogger(BounceRateView.class);
 
