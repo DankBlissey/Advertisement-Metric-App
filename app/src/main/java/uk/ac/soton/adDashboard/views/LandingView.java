@@ -188,8 +188,11 @@ public class LandingView extends BaseView {
         ArrayList<ServerAccess> serverAccesses = getServerAccessFromCSV(serverFilePath);
         logger.info("Successfully created object serverAccess("+ serverAccesses.size() + " entries)");
 
-        DataSet dataSet = new DataSet(clicks, impressions, serverAccesses, users, true); //Shouldn't have needed to pass the pageViewedAsMetric here but I put it as true for now
-        System.out.println(dataSet.allStats(LogRow.parseDateTime("2015-06-01 12:00:00"),LogRow.parseDateTime("2015-07-01 12:00:00")));
+        DataSet dataSet = new DataSet();
+        dataSet.setClicks(clicks);
+        dataSet.setImpressions(impressions);
+        dataSet.setUsers(users);
+        dataSet.setServerAccess(serverAccesses);
         appWindow.bounceRateWindow(dataSet);
     }
 
@@ -207,7 +210,6 @@ public class LandingView extends BaseView {
 
                 try {
                         String[] columns = line.split(",");
-                        //logger.info("Reading the line with ID = " + columns[1] + " and date = " + columns[0]);
                         var date = columns[0];
                         var id = columns[1];
                         var context = columns[5];
