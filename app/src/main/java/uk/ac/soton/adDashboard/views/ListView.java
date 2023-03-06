@@ -48,14 +48,18 @@ public class ListView extends BaseView {
 
         root = new AppPane(appWindow.getWidth(), appWindow.getHeight());
 
+        //builds the text for the dashboard writing and sets its style class
         Text title = new Text("Dashboard");
         title.getStyleClass().add("mediumText");
 
+        //empty space so that dashboard is on top left and top buttons are on the top right
         Region region = new Region();
 
+        //button for going back to the input screen
         Button startAgain = new Button("Start Again");
         startAgain.getStyleClass().add("blueButton");
 
+        //drop down button for dark and light theme
         MenuButton theme = new MenuButton("Theme");
         theme.getStyleClass().add("blueButton");
         MenuItem light = new MenuItem("Light");
@@ -63,11 +67,11 @@ public class ListView extends BaseView {
         theme.getItems().addAll(light, dark);
         light.setOnAction(e -> {
             appWindow.setDarkMode(false);
-            appWindow.listViewWindow();
+            appWindow.listViewWindow(dataSet);
         });
         dark.setOnAction(e -> {
             appWindow.setDarkMode(true);
-            appWindow.listViewWindow();
+            appWindow.listViewWindow(dataSet);
         });
 
 
@@ -91,7 +95,7 @@ public class ListView extends BaseView {
 
         Rectangle backBar = new Rectangle(1280,150);
         backBar.getStyleClass().add("backBar");
-        backBar.setEffect(new DropShadow());
+        backBar.setEffect(new DropShadow(5,Color.GREY));
 
         Rectangle loadedRectangle = new Rectangle(200,130, Color.valueOf("#4B51FF"));
         loadedRectangle.setArcWidth(30);
@@ -121,10 +125,12 @@ public class ListView extends BaseView {
 
         BorderPane borderPane = new BorderPane();
 
+        borderPane.getStyleClass().add("apppane");
+
         borderPane.setTop(vbox);
         borderPane.setBackground(new Background(new BackgroundFill(
                 backgroundPane, CornerRadii.EMPTY, Insets.EMPTY)));
-        root.getChildren().add(borderPane);
+
 
         GridPane gridPane = new GridPane();
         borderPane.setCenter(gridPane);
@@ -348,6 +354,8 @@ public class ListView extends BaseView {
         bounceRateBG.setEffect(dropShadow);
         gridPane.add(bounceRateBG,3,3);
         gridPane.add(bounceRateBox, 3, 3);
+
+        root.getChildren().addAll(borderPane);
     }
 
     /**
