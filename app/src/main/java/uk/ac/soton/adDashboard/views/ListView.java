@@ -35,7 +35,7 @@ public class ListView extends BaseView {
 
     public ListView(AppWindow appWindow) {
         super(appWindow);
-        logger.info("Creating the list view View");
+        logger.info("Creating the list View");
     }
 
     /**
@@ -57,7 +57,18 @@ public class ListView extends BaseView {
 
         MenuButton theme = new MenuButton("Theme");
         theme.getStyleClass().add("blueButton");
-        theme.getItems().addAll(new MenuItem("Red"), new MenuItem("Blue"));
+        MenuItem light = new MenuItem("Light");
+        MenuItem dark = new MenuItem("Dark");
+        theme.getItems().addAll(light, dark);
+        light.setOnAction(e -> {
+            appWindow.setDarkMode(false);
+            appWindow.listViewWindow();
+        });
+        dark.setOnAction(e -> {
+            appWindow.setDarkMode(true);
+            appWindow.listViewWindow();
+        });
+
 
         Button smaller = new Button("A-");
         smaller.getStyleClass().add("blueButton");
@@ -77,7 +88,8 @@ public class ListView extends BaseView {
 
         hbox.setAlignment(Pos.CENTER);
 
-        Rectangle backBar = new Rectangle(800,150, Color.WHITE);
+        Rectangle backBar = new Rectangle(1280,150);
+        backBar.getStyleClass().add("backBar");
         backBar.setEffect(new DropShadow());
 
         Rectangle loadedRectangle = new Rectangle(200,130, Color.valueOf("#4B51FF"));

@@ -33,6 +33,7 @@ public class AppWindow {
     private BaseView currentView;
     private Scene view;
 
+    private Boolean darkMode = true;
     /**
      * Create a new appWindow attached to the given stage with the specified width and height
      * @param stage stage
@@ -89,6 +90,14 @@ public class AppWindow {
     public void setupDefaultView() {
         this.view = new Scene(new Pane(), width, height, Color.BLACK);
         stage.setScene(this.view);
+    }
+
+    public void setDarkMode(Boolean set) {
+        darkMode = set;
+    }
+
+    public Boolean getDarkMode() {
+        return darkMode;
     }
 
     /**

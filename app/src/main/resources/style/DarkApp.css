@@ -1,5 +1,5 @@
 .apppane {
-    -fx-background-color: #F6F6F6;
+    -fx-background-color: #414141;
 }
 
 .title {
@@ -48,7 +48,7 @@
 }
 
 .backBar {
-    -fx-fill: #FFFFFF;
+    -fx-fill: #414141;
 }
 
 .smallWhiteText {
