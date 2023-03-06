@@ -47,6 +47,8 @@ public class LandingView extends BaseView {
     private String clickFilePath;
     private String serverFilePath;
 
+
+
     /**
      * Create a landing view
      * @param appWindow the App Window this will be displayed in

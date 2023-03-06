@@ -19,21 +19,21 @@ import javafx.scene.control.Button;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.soton.adDashboard.controller.Controller;
+import uk.ac.soton.adDashboard.records.DataSet;
 import uk.ac.soton.adDashboard.ui.AppPane;
 import uk.ac.soton.adDashboard.ui.AppWindow;
 
 public class ListView extends BaseView {
     private static final Logger logger = LogManager.getLogger(ListView.class);
 
-
-
+    protected DataSet dataSet;
 
     /**
      * App class (logic)
      */
     protected Controller controller;
 
-    public ListView(AppWindow appWindow) {
+    public ListView(AppWindow appWindow, DataSet dataset) {
         super(appWindow);
         logger.info("Creating the list view View");
     }
