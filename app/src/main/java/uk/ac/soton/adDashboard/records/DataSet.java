@@ -388,4 +388,8 @@ public class DataSet {
     }
     return points;
   }
+
+  public void setPagesViewedBounceMetric(Boolean BounceMetric){
+    this.pagesViewedBounceMetric = BounceMetric;
+  }
 }
