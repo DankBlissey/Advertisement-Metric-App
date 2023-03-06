@@ -17,6 +17,13 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
@@ -64,7 +71,7 @@
       <recent name="$PROJECT_DIR$/app/src/main/resources" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.App">
+  <component name="RunManager" selected="JUnit.JUnit5ExampleTest">
     <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="uk.ac.soton.adDashboard.App" />
       <module name="app" />
@@ -91,11 +98,20 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="JUnit5ExampleTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="app" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="JUnit5ExampleTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.JUnit5ExampleTest" />
         <item itemvalue="Application.App" />
         <item itemvalue="Application.Main" />
-        <item itemvalue="Application.App" />
         <item itemvalue="Application.App" />
         <item itemvalue="Application.App" />
       </list>
@@ -110,7 +126,9 @@
       <option name="presentableId" value="Default" />
       <updated>1677857759900</updated>
       <workItem from="1678116850946" duration="43000" />
-      <workItem from="1678116952698" duration="1718000" />
+      <workItem from="1678116952698" duration="3612000" />
+      <workItem from="1678121575932" duration="1636000" />
+      <workItem from="1678139060844" duration="2427000" />
     </task>
     <servers />
   </component>
