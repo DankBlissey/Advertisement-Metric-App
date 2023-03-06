@@ -15,6 +15,9 @@ import uk.ac.soton.adDashboard.views.BounceRateView;
 import uk.ac.soton.adDashboard.views.LandingView;
 import uk.ac.soton.adDashboard.views.ListView;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 /**
  * The AppWindow is the single window for the app where everything takes place. To move between screens in the app,
  * we simply change the scene aka view in our app.
@@ -101,15 +104,15 @@ public class AppWindow {
     /**
      * Display the list view of the data
      */
-    public void listViewWindow(DataSet dataset) {
-        loadView(new ListView(this, dataset));
+    public void listViewWindow(DataSet dataset, ArrayList<String> filenames) {
+        loadView(new ListView(this, dataset, filenames));
     }
 
     /**
      * Display the second menu(scene/view) where you select the bounce rate
      */
-    public void bounceRateWindow(DataSet dataSet) {
-        loadView(new BounceRateView(this, dataSet));
+    public void bounceRateWindow(DataSet dataSet, ArrayList<String> filenames) {
+        loadView(new BounceRateView(this, dataSet, filenames));
     }
 
     /**

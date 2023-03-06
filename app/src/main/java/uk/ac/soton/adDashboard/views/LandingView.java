@@ -1,5 +1,6 @@
 package uk.ac.soton.adDashboard.views;
 
+import java.lang.reflect.Array;
 import java.util.HashSet;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Pos;
@@ -192,7 +193,12 @@ public class LandingView extends BaseView {
 
         DataSet dataSet = new DataSet(clicks, impressions, serverAccesses, users, true); //Shouldn't have needed to pass the pageViewedAsMetric here but I put it as true for now
 
-        appWindow.bounceRateWindow(dataSet);
+        ArrayList<String> filenames = new ArrayList<>();
+        filenames.add(impressionsFileName.getValue());
+        filenames.add(clicksFileName.getValue());
+        filenames.add(serverFileName.getValue());
+
+        appWindow.bounceRateWindow(dataSet, filenames);
     }
 
     public HashSet<Impression> getImpressionsFromCSV(String filePath) {
