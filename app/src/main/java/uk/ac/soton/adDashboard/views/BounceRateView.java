@@ -153,11 +153,21 @@ public class BounceRateView extends BaseView {
         });
 
         back.setOnAction((event) -> {
-            // add previous scene to here
+            appWindow.uploadCSVWindow();
         });
 
         finished.setOnAction((event) -> {
-            // add next scene to here
+            if(pageCheckBox.selectedProperty().getValue()){
+                dataSet.setPagesForBounce(Integer.parseInt(pages.getText()));
+                dataSet.setPagesViewedBounceMetric(true);
+                appWindow.listViewWindow(dataSet);
+            }
+
+            else{
+                dataSet.setInterval(Integer.parseInt(custom.getText()));
+                dataSet.setPagesViewedBounceMetric(false);
+                appWindow.listViewWindow(dataSet);
+            }
         });
 
         root.getChildren().addAll(stackPane);

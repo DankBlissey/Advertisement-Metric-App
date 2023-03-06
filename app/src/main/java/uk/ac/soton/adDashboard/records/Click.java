@@ -18,15 +18,14 @@ public class Click extends LogRow {
    * @param cost The cost of the click.
    * @throws Exception Thrown if the cost or id is negative or if the date is invalid.
    */
-  public Click(String date, long id, double cost) throws Exception {
+  public Click(String date, String id, String cost) throws Exception {
     super(id);
-
     this.date = parseDateTime(date);
-
-    if (cost < 0) {
+    float parsedCost = Float.parseFloat(cost);
+    if (parsedCost < 0) {
       throw new Exception("negative cost");
     }
-    this.cost = cost;
+    this.cost = parsedCost;
   }
 
   public LocalDateTime getDate() {

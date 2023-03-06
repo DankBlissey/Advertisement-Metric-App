@@ -110,8 +110,8 @@ public class AppWindow {
     /**
      * Display the list view of the data
      */
-    public void listViewWindow() {
-        loadView(new ListView(this));
+    public void listViewWindow(DataSet dataset) {
+        loadView(new ListView(this, dataset));
     }
 
     /**

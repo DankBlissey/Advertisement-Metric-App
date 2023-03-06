@@ -12,7 +12,7 @@ import uk.ac.soton.adDashboard.enums.Gender;
 public class Impression extends LogRow {
 
 
-  private final double cost;
+  private final float cost;
   private final LocalDateTime date;
   private final Context context;
 
@@ -26,12 +26,12 @@ public class Impression extends LogRow {
    * @param context The context of the impression.
    * @throws Exception Thrown if the record parameters are out of bounds.
    */
-  public Impression(String date, long id, double cost, String context)
+  public Impression(String date, String id, String cost, String context)
       throws Exception {
     super(id);
     this.date = parseDateTime(date);
-
-    this.cost = cost;
+//    this.initialDate = date;
+    this.cost = Float.parseFloat(cost);
     this.context = contextSetup(context);
 
   }

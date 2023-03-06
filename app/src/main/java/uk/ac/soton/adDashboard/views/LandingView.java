@@ -1,5 +1,6 @@
 package uk.ac.soton.adDashboard.views;
 
+import java.util.HashSet;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -46,6 +47,8 @@ public class LandingView extends BaseView {
     private String impressionsFilePath;
     private String clickFilePath;
     private String serverFilePath;
+
+
 
     /**
      * Create a landing view
@@ -174,9 +177,9 @@ public class LandingView extends BaseView {
         logger.info("Submitting all 3 uploaded csv files...");
 
         logger.info("Reading the impressions file");
-        var temp = getImpressionsFromCSV(impressionsFilePath);
-        ArrayList<Impression> impressions = temp.getKey();
-        HashMap<Long, User> users = temp.getValue();
+        LogRow.setResolver();
+        HashMap<Long, User> users = getUsersFromCSV(impressionsFilePath);
+        HashSet<Impression> impressions = getImpressionsFromCSV(impressionsFilePath);
         logger.info("Successfully created objects: impressions("+ impressions.size() + " entries) and users(" + users.size() + ")");
 
         logger.info("Reading the clicks file");
@@ -192,16 +195,9 @@ public class LandingView extends BaseView {
         appWindow.bounceRateWindow(dataSet);
     }
 
-    /**
-     * Reads each line in a csv file that is at the absolute path
-     * and returns an ArrayList of each impression and a HashMap of all users
-     * @param filePath absolute path
-     */
-    public Pair<ArrayList<Impression>, HashMap<Long, User>> getImpressionsFromCSV(String filePath) {
-
+    public HashSet<Impression> getImpressionsFromCSV(String filePath) {
+        HashSet<Impression> impressions = new HashSet<>();
         String line = "";
-        var impressions = new ArrayList<Impression>();
-        var users = new HashMap<Long, User>();
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(filePath));
@@ -209,31 +205,80 @@ public class LandingView extends BaseView {
             // Skips the first line which includes the headers
             br.readLine();
 
-            while ((line = br.readLine()) != null)
-            {
-                String[] columns = line.split(",");
-                //logger.info("Reading the line with ID = " + columns[1] + " and date = " + columns[0]);
-                var date = columns[0];
-                var id = Long.parseLong(columns[1]);
-                var gender = columns[2];
-                var age = columns[3];
-                var income = columns[4];
-                var context = columns[5];
-                var cost = Double.parseDouble(columns[6]);
-
+            while ((line = br.readLine()) != null) {
                 try {
-                    impressions.add(new Impression(date, id, cost, context));
-                    users.put(id, new User(id, age, gender, income));
+                    String[] columns = line.split(",");
+                    //logger.info("Reading the line with ID = " + columns[1] + " and date = " + columns[0]);
+                    var date = columns[0];
+                    var id = columns[1];
+                    var context = columns[5];
+                    var cost = columns[6];
+                    Impression impression = new Impression(date, id, cost, context);
+                    impressions.add(impression);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
+
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        catch (IOException e) {
+        logger.info("parsed impressions");
+
+        return impressions;
+    }
+
+    /**
+     * Reads each line in a csv file that is at the absolute path and returns an ArrayList of each
+     * impression and a HashMap of all users
+     *
+     * @param filePath absolute path
+     */
+    public HashMap<Long, User> getUsersFromCSV(String filePath) {
+
+        String line = "";
+
+        HashMap<Long, User> u2 = new HashMap<>();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(filePath));
+
+            // Skips the first line which includes the headers
+            br.readLine();
+            logger.info("getting users");
+            ArrayList<String> rows = new ArrayList<>();
+            while ((line = br.readLine()) != null) {
+                rows.add(line);
+            }
+            logger.info("file read");
+            ArrayList<User> users = new ArrayList<>();
+
+            rows.parallelStream().forEach(string -> {
+                try {
+                    String[] columns = string.split(",");
+                    //logger.info("Reading the line with ID = " + columns[1] + " and date = " + columns[0]);
+                    var id = columns[1];
+                    var gender = columns[2];
+                    var age = columns[3];
+                    var income = columns[4];
+                    User user = new User(id, age, gender, income);
+                    synchronized (users) {
+                        users.add(user);
+                    }
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            logger.info("users parsed");
+
+            for (User user : users) {
+                u2.put(user.getId(), user);
+            }
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return new Pair<>(impressions, users);
+        return u2;
     }
 
     /**
@@ -257,8 +302,8 @@ public class LandingView extends BaseView {
                 String[] columns = line.split(",");
                 //logger.info("Reading the line with ID = " + columns[1] + " and date = " + columns[0]);
                 var date = columns[0];
-                var id = Long.parseLong(columns[1]);
-                var cost = Double.parseDouble(columns[2]);
+                var id = columns[1];
+                var cost = columns[2];
 
                 try {
                     clicks.add(new Click(date, id, cost));
@@ -295,16 +340,10 @@ public class LandingView extends BaseView {
                 String[] columns = line.split(",");
                 //logger.info("Reading the line with ID = " + columns[1] + " and pagesViewed = " + columns[3]);
                 var entryDate = columns[0];
-                var id = Long.parseLong(columns[1]);
+                var id =columns[1];
                 var exitDate = columns[2];
-                var pagesViewed = Integer.parseInt(columns[3]);
-                Boolean conversion;
-
-                if(columns[4].equals("Yes")) {
-                    conversion = true;
-                } else {
-                    conversion = false;
-                }
+                var pagesViewed = columns[3];
+                var conversion = columns[4];
 
                 try {
                     serverAccess.add(new ServerAccess(entryDate, id, exitDate, pagesViewed, conversion));
