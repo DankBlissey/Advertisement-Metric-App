@@ -25,7 +25,7 @@ public class GraphView extends BaseView {
 
     public GraphView(AppWindow appWindow) {
         super(appWindow);
-        logger.info("Creating the list view View");
+        logger.info("Creating the graph view View");
     }
 
     /**
@@ -40,7 +40,7 @@ public class GraphView extends BaseView {
         Text title = new Text("Your data breakdown");
         title.getStyleClass().add("text");
 
-        Text subTitle = new Text("List view");
+        Text subTitle = new Text("Graph view");
         subTitle.getStyleClass().add("subtitle");
 
         VBox vbox = new VBox(title, subTitle);
