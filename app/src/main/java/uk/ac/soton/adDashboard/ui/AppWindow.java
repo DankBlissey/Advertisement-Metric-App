@@ -56,9 +56,6 @@ public class AppWindow {
 
         //Go to first menu (upload 3 CSV files)
         uploadCSVWindow();
-
-        //Go to list view
-        listViewWindow();
     }
 
     /**
@@ -105,7 +102,7 @@ public class AppWindow {
      * Display the list view of the data
      */
     public void listViewWindow() {
-        loadScene(new ListView(this));
+        loadView(new ListView(this));
     }
 
     /**

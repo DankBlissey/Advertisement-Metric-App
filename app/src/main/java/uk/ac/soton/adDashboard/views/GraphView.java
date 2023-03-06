@@ -101,7 +101,7 @@ public class GraphView extends BaseView {
         stack.setOnMouseClicked(event -> {
               switchedOn = !switchedOn;
               toggle.setTranslateX(switchedOn ? -30 : 30);
-            appWindow.loadScene(new ListView(appWindow));
+            appWindow.loadView(new ListView(appWindow));
         });
         gridPane.add(stack,0,0);
 

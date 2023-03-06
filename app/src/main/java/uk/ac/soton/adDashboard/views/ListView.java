@@ -151,7 +151,7 @@ public class ListView extends BaseView {
         stack.setOnMouseClicked(event -> {
           //  switchedOn = !switchedOn;
           //  toggle.setTranslateX(switchedOn ? 30 : -30);
-            appWindow.loadScene(new GraphView(appWindow));
+            appWindow.loadView(new GraphView(appWindow));
         });
         gridPane.add(stack,0,0);
 
