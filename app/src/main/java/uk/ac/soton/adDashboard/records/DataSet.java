@@ -13,10 +13,10 @@ import javafx.util.Pair;
  */
 public class DataSet {
 
-  private  ArrayList<Click> clicks;
-  private  HashSet<Impression> impressions;
-  private  ArrayList<ServerAccess> serverAccess;
-  private  HashMap<Long, User> users;
+  private ArrayList<Click> clicks;
+  private ArrayList<Impression> impressions;
+  private ArrayList<ServerAccess> serverAccess;
+  private HashMap<Long, User> users;
 
 
   /**
@@ -47,7 +47,7 @@ public class DataSet {
     this.clicks = clicks;
   }
 
-  public void setImpressions(HashSet<Impression> impressions) {
+  public void setImpressions(ArrayList<Impression> impressions) {
     this.impressions = impressions;
   }
 
@@ -84,7 +84,7 @@ public class DataSet {
     return clicks;
   }
 
-  public HashSet<Impression> getImpressions() {
+  public ArrayList<Impression> getImpressions() {
     return impressions;
   }
 
@@ -258,7 +258,9 @@ public class DataSet {
    * @return Returns true if the access is a bounce and false otherwise.
    */
   public boolean isBounce(ServerAccess access) {
-    if (access.getEndDate()==null) return false;
+    if (access.getEndDate() == null) {
+      return false;
+    }
     if (isPagesViewedBounceMetric()) {
       if (access.getPagesViewed() < getPagesForBounce()) {
         return false;
@@ -396,13 +398,13 @@ public class DataSet {
   }
 
 
-  public void setPagesViewedBounceMetric(Boolean BounceMetric){
+  public void setPagesViewedBounceMetric(Boolean BounceMetric) {
     this.pagesViewedBounceMetric = BounceMetric;
   }
 
 
   public double[] allStats(LocalDateTime start, LocalDateTime end) {
-    double impressionCost= calcImpressionCost(start,end);
+    double impressionCost = calcImpressionCost(start, end);
 
     double impressions = totalImpressions(start, end);
     double clicks = totalClicks(start, end);
@@ -416,7 +418,8 @@ public class DataSet {
     double clickCosts = calcCostPerClick(start, end);
     double thousand = costPerThousandImpre(start, end);
     double bounceRate = calcBounceRate(start, end);
-    return new double[]{impressions,clicks,uniques,bounces,conversions,cost,through,acquisitionCosts,clickCosts,thousand,bounceRate};
+    return new double[]{impressions, clicks, uniques, bounces, conversions, cost, through,
+        acquisitionCosts, clickCosts, thousand, bounceRate};
 
   }
 }

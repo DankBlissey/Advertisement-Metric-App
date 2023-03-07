@@ -194,7 +194,7 @@ public class LandingView extends BaseView {
 
     DataSet dataSet = new DataSet();
     dataSet.setClicks(clicks);
-//        dataSet.setImpressions(impressions);
+    dataSet.setImpressions(impressions);
     dataSet.setUsers(users);
     dataSet.setServerAccess(serverAccesses);
 
@@ -281,9 +281,6 @@ public class LandingView extends BaseView {
       });
       logger.info("users parsed");
 
-//            for (User user : users) {
-//                u2.put(user.getId(), user);
-//            }
 
     } catch (IOException e) {
       e.printStackTrace();
