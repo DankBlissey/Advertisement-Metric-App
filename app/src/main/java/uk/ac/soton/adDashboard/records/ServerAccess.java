@@ -36,8 +36,10 @@ public class ServerAccess extends LogRow {
 
     if (conversion.equals("Yes")) {
       this.conversion = true;
-    } else {
+    } else if (conversion.equals("No")) {
       this.conversion = false;
+    } else {
+      throw new Exception("Conversion");
     }
   }
 
