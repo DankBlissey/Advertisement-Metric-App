@@ -116,6 +116,7 @@ public class ListView extends BaseView {
         StackPane longBar = new StackPane(backBar,longBarContent);
 
         VBox vbox = new VBox(hbox, longBar);
+
 ///
 
         Color switchBack = Color.web("#4B51FF"); // create a Color object with the hex value for purple
