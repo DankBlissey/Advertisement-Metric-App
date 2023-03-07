@@ -400,6 +400,14 @@ public class DataSet {
     this.pagesViewedBounceMetric = BounceMetric;
   }
 
+  public LocalDateTime earliestDate() {
+    return  impressions.get(0).getDate();
+
+  }
+
+  public LocalDateTime latestDate() {
+    return impressions.get(impressions.size()-1).getDate();
+  }
 
   public double[] allStats(LocalDateTime start, LocalDateTime end) {
     double impressionCost= calcImpressionCost(start,end);
