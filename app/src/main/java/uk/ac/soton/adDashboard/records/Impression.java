@@ -13,7 +13,8 @@ public class Impression extends LogRow {
 
 
   private final float cost;
-  private final LocalDateTime date;
+  private  final LocalDateTime date;
+
   private final Context context;
 
 
@@ -30,7 +31,6 @@ public class Impression extends LogRow {
       throws Exception {
     super(id);
     this.date = parseDateTime(date);
-//    this.initialDate = date;
     this.cost = Float.parseFloat(cost);
     this.context = contextSetup(context);
 
@@ -78,5 +78,6 @@ public class Impression extends LogRow {
 
 
   }
+
 
 }

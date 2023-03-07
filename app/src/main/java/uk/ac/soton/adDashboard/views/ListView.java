@@ -23,19 +23,24 @@ import uk.ac.soton.adDashboard.records.DataSet;
 import uk.ac.soton.adDashboard.ui.AppPane;
 import uk.ac.soton.adDashboard.ui.AppWindow;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class ListView extends BaseView {
     private static final Logger logger = LogManager.getLogger(ListView.class);
 
     protected DataSet dataSet;
+    protected ArrayList<String> filenames;
 
     /**
      * App class (logic)
      */
     protected Controller controller;
 
-    public ListView(AppWindow appWindow, DataSet dataset) {
+    public ListView(AppWindow appWindow, DataSet dataset, ArrayList<String> filenames) {
         super(appWindow);
         this.dataSet = dataset;
+        this.filenames = filenames;
         logger.info("Creating the list view View");
     }
 
@@ -173,7 +178,7 @@ public class ListView extends BaseView {
         stack.setOnMouseClicked(event -> {
           //  switchedOn = !switchedOn;
           //  toggle.setTranslateX(switchedOn ? 30 : -30);
-            appWindow.loadView(new GraphView(appWindow));
+            appWindow.loadView(new GraphView(appWindow, filenames));
         });
         gridPane.add(stack,0,0);
 

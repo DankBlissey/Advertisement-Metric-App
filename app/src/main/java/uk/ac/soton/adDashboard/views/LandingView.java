@@ -1,5 +1,6 @@
 package uk.ac.soton.adDashboard.views;
 
+import java.lang.reflect.Array;
 import java.util.HashSet;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Pos;
@@ -200,9 +201,22 @@ public class LandingView extends BaseView {
         ArrayList<ServerAccess> serverAccesses = getServerAccessFromCSV(serverFilePath);
         logger.info("Successfully created object serverAccess("+ serverAccesses.size() + " entries)");
 
-        DataSet dataSet = new DataSet(clicks, impressions, serverAccesses, users, true); //Shouldn't have needed to pass the pageViewedAsMetric here but I put it as true for now
 
-        appWindow.bounceRateWindow(dataSet);
+        DataSet dataSet = new DataSet();
+        dataSet.setClicks(clicks);
+        dataSet.setImpressions(impressions);
+        dataSet.setUsers(users);
+        dataSet.setServerAccess(serverAccesses);
+
+
+        
+
+        ArrayList<String> filenames = new ArrayList<>();
+        filenames.add(impressionsFileName.getValue());
+        filenames.add(clicksFileName.getValue());
+        filenames.add(serverFileName.getValue());
+
+        appWindow.bounceRateWindow(dataSet, filenames);
     }
 
     public HashSet<Impression> getImpressionsFromCSV(String filePath) {
@@ -216,20 +230,21 @@ public class LandingView extends BaseView {
             br.readLine();
 
             while ((line = br.readLine()) != null) {
+
                 try {
-                    String[] columns = line.split(",");
-                    //logger.info("Reading the line with ID = " + columns[1] + " and date = " + columns[0]);
-                    var date = columns[0];
-                    var id = columns[1];
-                    var context = columns[5];
-                    var cost = columns[6];
-                    Impression impression = new Impression(date, id, cost, context);
-                    impressions.add(impression);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
+                        String[] columns = line.split(",");
+                        var date = columns[0];
+                        var id = columns[1];
+                        var context = columns[5];
+                        var cost = columns[6];
+                        Impression impression = new Impression(date, id, cost, context);
+                        impressions.add(impression);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+
                 }
 
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }

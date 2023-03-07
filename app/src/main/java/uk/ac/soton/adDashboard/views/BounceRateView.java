@@ -18,6 +18,9 @@ import uk.ac.soton.adDashboard.records.DataSet;
 import uk.ac.soton.adDashboard.ui.AppPane;
 import uk.ac.soton.adDashboard.ui.AppWindow;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class BounceRateView extends BaseView {
     private static final Logger logger = LogManager.getLogger(BounceRateView.class);
 
@@ -27,11 +30,13 @@ public class BounceRateView extends BaseView {
     protected Controller controller;
 
     protected DataSet dataSet;
+    protected ArrayList<String> filenames;
 
-    public BounceRateView(AppWindow appWindow, DataSet dataSet) {
+    public BounceRateView(AppWindow appWindow, DataSet dataSet, ArrayList<String> filenames) {
         super(appWindow);
         this.dataSet = dataSet;
-        logger.info("Creating the Landing View");
+        this.filenames = filenames;
+        logger.info("Creating the BounceRate View");
     }
 
     /**
@@ -84,6 +89,10 @@ public class BounceRateView extends BaseView {
         Text text2 = new Text("Number of pages visited");
         text2.getStyleClass().add("bounceRateText");
 
+        Text error = new Text("Invalid input!!");
+        error.setVisible(false);
+        error.setTranslateY(-400);
+
         CheckBox customCheckBox = new CheckBox();
         customCheckBox.setTranslateX(-90);
         customCheckBox.setTranslateY(-69);
@@ -108,7 +117,7 @@ public class BounceRateView extends BaseView {
 
         VBox vbox1 = new VBox(title, subtext1, subtext2, back);
 
-        VBox vbox3 = new VBox(text2, pages, finished, pageCheckBox, text1, custom, itemBox, customCheckBox);
+        VBox vbox3 = new VBox(text2, pages, finished, pageCheckBox, text1, custom, itemBox, customCheckBox,error);
 
         vbox1.setAlignment(Pos.CENTER);
         vbox3.setAlignment(Pos.CENTER);
@@ -122,6 +131,7 @@ public class BounceRateView extends BaseView {
         StackPane stackPane = new StackPane(vbox1, vbox3);
 
         customCheckBox.setOnAction((event) -> {
+            logger.info("customCheckBox selected");
 
             //selecting the custom check box
             if(customCheckBox.selectedProperty().getValue()){
@@ -141,6 +151,7 @@ public class BounceRateView extends BaseView {
         });
 
         pageCheckBox.setOnAction((event) -> {
+            logger.info("pageCheckBox selected");
 
             //selecting the page check box
             if(pageCheckBox.selectedProperty().getValue()){
@@ -159,20 +170,41 @@ public class BounceRateView extends BaseView {
         });
 
         back.setOnAction((event) -> {
+            logger.info("back button clicked");
             appWindow.uploadCSVWindow();
         });
 
         finished.setOnAction((event) -> {
+            logger.info("finished button clicked");
+
             if(pageCheckBox.selectedProperty().getValue()){
-                dataSet.setPagesForBounce(Integer.parseInt(pages.getText()));
-                dataSet.setPagesViewedBounceMetric(true);
-                appWindow.listViewWindow(dataSet);
+                try{
+                    logger.info("Maximum page number read");
+                    dataSet.setPagesForBounce(Integer.parseInt(pages.getText()));
+                    dataSet.setPagesViewedBounceMetric(true);
+                    appWindow.listViewWindow(dataSet, filenames);
+                } catch (NumberFormatException e) {
+                    error.setVisible(true);
+                }
             }
 
             else{
-                dataSet.setInterval(Integer.parseInt(custom.getText()));
-                dataSet.setPagesViewedBounceMetric(false);
-                appWindow.listViewWindow(dataSet);
+                try {
+                    logger.info("Maximum time read");
+                    if(itemBox.getValue() == "Seconds"){
+                        logger.info("Seconds selected");
+                        dataSet.setInterval(Integer.parseInt(custom.getText()));
+                    }
+                    else{
+                        logger.info("Minutes selected");
+                        dataSet.setInterval(Integer.parseInt(custom.getText())*60);
+                    }
+                    dataSet.setPagesViewedBounceMetric(false);
+                    appWindow.listViewWindow(dataSet, filenames);
+
+                } catch (NumberFormatException e) {
+                    error.setVisible(true);
+                }
             }
         });
 
@@ -187,4 +219,5 @@ public class BounceRateView extends BaseView {
         logger.info("Initialising");
         //Initial stuff such as keyboard listeners
     }
+
 }
