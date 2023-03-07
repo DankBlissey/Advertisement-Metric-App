@@ -1,18 +1,13 @@
 package uk.ac.soton.adDashboard.views;
 
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
-import javafx.scene.text.Font;
-import javafx.geometry.VPos;
-import javafx.scene.Node;
-import javafx.scene.effect.BlurType;
+import javafx.scene.control.TextArea;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.control.Button;
@@ -23,8 +18,8 @@ import uk.ac.soton.adDashboard.records.DataSet;
 import uk.ac.soton.adDashboard.ui.AppPane;
 import uk.ac.soton.adDashboard.ui.AppWindow;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 public class ListView extends BaseView {
     private static final Logger logger = LogManager.getLogger(ListView.class);
@@ -109,7 +104,7 @@ public class ListView extends BaseView {
         loadedRectangle.setArcWidth(30);
         loadedRectangle.setArcHeight(30);
 
-        Text loadedText = new Text("Impressions_log.csv");
+        Text loadedText = new Text(getFileNames(filenames));
         loadedText.getStyleClass().add("smallWhiteText");
 
         StackPane loadedFiles = new StackPane(loadedRectangle,loadedText);
@@ -375,6 +370,19 @@ public class ListView extends BaseView {
         gridPane.add(bounceRateBox, 3, 3);
 
         root.getChildren().addAll(borderPane);
+    }
+
+    /**
+     * Takes the arraylist of filenames and outputs it as a string with line breaks
+     * @param fileNames arraylist of filenames
+     * @return string of the filenames with \n as linebreaks
+     */
+    private String getFileNames(ArrayList<String> fileNames) {
+        StringBuilder output = new StringBuilder();
+        for (String filename : filenames) {
+            output.append(filename).append("\n");
+        }
+        return output.toString();
     }
 
     /**

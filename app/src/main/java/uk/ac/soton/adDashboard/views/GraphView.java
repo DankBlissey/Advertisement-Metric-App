@@ -98,7 +98,7 @@ public class GraphView extends BaseView {
         loadedRectangle.setArcWidth(30);
         loadedRectangle.setArcHeight(30);
 
-        Text loadedText = new Text("Impressions_log.csv");
+        Text loadedText = new Text(getFileNames(filenames));
         loadedText.getStyleClass().add("smallWhiteText");
 
         StackPane loadedFiles = new StackPane(loadedRectangle,loadedText);
@@ -172,6 +172,19 @@ public class GraphView extends BaseView {
         gridPane.add(stack,0,0);
 
 
+    }
+
+    /**
+     * Takes the arraylist of filenames and outputs it as a string with line breaks
+     * @param fileNames arraylist of filenames
+     * @return string of the filenames with \n as linebreaks
+     */
+    private String getFileNames(ArrayList<String> fileNames) {
+        StringBuilder output = new StringBuilder();
+        for (String filename : filenames) {
+            output.append(filename).append("\n");
+        }
+        return output.toString();
     }
 
     /**
