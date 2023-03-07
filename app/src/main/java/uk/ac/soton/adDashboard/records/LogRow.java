@@ -48,7 +48,15 @@ public class LogRow {
     if (dateTime.equals("n/a")) {
       return null;
     }
-    return LocalDateTime.parse(dateTime, format);
+    int year = (dateTime.charAt(0)-48)*1000+(dateTime.charAt(1)-48)*100+(dateTime.charAt(2)-48)*10+(dateTime.charAt(3)-48);
+    int month = (dateTime.charAt(5)-48)*10 + (dateTime.charAt(6)-48);
+
+    int day = ((dateTime.charAt(8)-48)*10)+(dateTime.charAt(9)-48);
+    int hour = (dateTime.charAt(11)-48)*10+(dateTime.charAt(12)-48);
+    int minute = (dateTime.charAt(14)-48)*10+(dateTime.charAt(15)-48);
+    int second = (dateTime.charAt(17)-48)*10+(dateTime.charAt(18)-48);
+    return LocalDateTime.of(year,month,day,hour,minute,second);
+//    return LocalDateTime.parse(dateTime, format);
   }
 
 }
