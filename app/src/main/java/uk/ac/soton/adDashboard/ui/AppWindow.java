@@ -36,6 +36,7 @@ public class AppWindow {
     private BaseView currentView;
     private Scene view;
 
+    private Boolean darkMode = false;
     /**
      * Create a new appWindow attached to the given stage with the specified width and height
      * @param stage stage
@@ -59,6 +60,7 @@ public class AppWindow {
 
         //Go to first menu (upload 3 CSV files)
         uploadCSVWindow();
+
     }
 
     /**
@@ -95,6 +97,22 @@ public class AppWindow {
     }
 
     /**
+     * Setter for dark mode boolean
+     * @param set boolean value to set to
+     */
+    public void setDarkMode(Boolean set) {
+        darkMode = set;
+    }
+
+    /**
+     * Getter for dark mode boolean
+     * @return boolean value to return
+     */
+    public Boolean getDarkMode() {
+        return darkMode;
+    }
+
+    /**
      * Display the first menu(scene/view) where you upload three CSV files
      */
     public void uploadCSVWindow() {
@@ -105,6 +123,13 @@ public class AppWindow {
      * Display the list view of the data
      */
     public void listViewWindow(DataSet dataset, ArrayList<String> filenames) {
+        loadView(new ListView(this, dataset, filenames));
+    }
+
+    /**
+     * Display the graph view of the data
+     */
+    public void graphViewWindow(DataSet dataset, ArrayList<String> filenames) {
         loadView(new ListView(this, dataset, filenames));
     }
 

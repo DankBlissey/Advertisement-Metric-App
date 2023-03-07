@@ -3,6 +3,8 @@ package uk.ac.soton.adDashboard.views;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -30,7 +32,7 @@ public class GraphView extends BaseView {
     protected DataSet dataSet;
     protected ArrayList<String> filenames;
 
-    public GraphView(AppWindow appWindow, ArrayList<String> filenames) {
+    public GraphView(AppWindow appWindow, DataSet dataSet, ArrayList<String> filenames) {
         super(appWindow);
         this.filenames = filenames;
         logger.info("Creating the graph view View");
@@ -45,15 +47,69 @@ public class GraphView extends BaseView {
 
         root = new AppPane(appWindow.getWidth(), appWindow.getHeight());
 
-        Text title = new Text("Your data breakdown");
-        title.getStyleClass().add("text");
+        //builds the text for the dashboard writing and sets its style class
+        Text title = new Text("Dashboard");
+        title.getStyleClass().add("mediumText");
 
-        Text subTitle = new Text("Graph view");
-        subTitle.getStyleClass().add("subtitle");
+        //empty space so that dashboard is on top left and
+        Region region = new Region();
 
-        VBox vbox = new VBox(title, subTitle);
+        Button startAgain = new Button("Start Again");
+        startAgain.getStyleClass().add("blueButton");
 
-        vbox.setAlignment(Pos.CENTER);
+        MenuButton theme = new MenuButton("Theme");
+        theme.getStyleClass().add("blueButton");
+        MenuItem light = new MenuItem("Light");
+        MenuItem dark = new MenuItem("Dark");
+        theme.getItems().addAll(light, dark);
+        light.setOnAction(e -> {
+            appWindow.setDarkMode(false);
+            appWindow.listViewWindow(dataSet,filenames);
+        });
+        dark.setOnAction(e -> {
+            appWindow.setDarkMode(true);
+            appWindow.listViewWindow(dataSet,filenames);
+        });
+
+
+        Button smaller = new Button("A-");
+        smaller.getStyleClass().add("blueButton");
+        Button bigger = new Button("A+");
+        bigger.getStyleClass().add("blueButton");
+
+        HBox sizeButtons = new HBox(smaller,bigger);
+
+        HBox topButtons = new HBox(startAgain, theme, sizeButtons);
+
+        //topButtons.getStyleClass().add("smallText");
+        topButtons.setSpacing(10);
+
+        HBox hbox = new HBox(title, region, topButtons);
+
+        HBox.setHgrow(region, Priority.ALWAYS);
+
+        hbox.setAlignment(Pos.CENTER);
+
+        Rectangle backBar = new Rectangle(1280,150);
+        backBar.getStyleClass().add("backBar");
+        backBar.setEffect(new DropShadow(5,Color.GREY));
+
+        Rectangle loadedRectangle = new Rectangle(200,130, Color.valueOf("#4B51FF"));
+        loadedRectangle.setArcWidth(30);
+        loadedRectangle.setArcHeight(30);
+
+        Text loadedText = new Text(getFileNames(filenames));
+        loadedText.getStyleClass().add("smallWhiteText");
+
+        StackPane loadedFiles = new StackPane(loadedRectangle,loadedText);
+
+        HBox longBarContent = new HBox(loadedFiles);
+
+        longBarContent.setAlignment(Pos.CENTER);
+
+        StackPane longBar = new StackPane(backBar,longBarContent);
+
+        VBox vbox = new VBox(hbox, longBar);
 ///
 
         Color switchBack = Color.web("#4B51FF"); // create a Color object with the hex value for purple
@@ -65,6 +121,8 @@ public class GraphView extends BaseView {
         dropShadow.setColor(Color.GREY);
 
         BorderPane borderPane = new BorderPane();
+
+        borderPane.getStyleClass().add("apppane");
 
         borderPane.setTop(vbox);
         borderPane.setBackground(new Background(new BackgroundFill(
@@ -114,6 +172,19 @@ public class GraphView extends BaseView {
         gridPane.add(stack,0,0);
 
 
+    }
+
+    /**
+     * Takes the arraylist of filenames and outputs it as a string with line breaks
+     * @param fileNames arraylist of filenames
+     * @return string of the filenames with \n as linebreaks
+     */
+    private String getFileNames(ArrayList<String> fileNames) {
+        StringBuilder output = new StringBuilder();
+        for (String filename : filenames) {
+            output.append(filename).append("\n");
+        }
+        return output.toString();
     }
 
     /**

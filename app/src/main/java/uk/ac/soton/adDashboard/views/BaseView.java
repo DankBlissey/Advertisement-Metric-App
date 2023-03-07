@@ -43,7 +43,11 @@ public abstract class BaseView {
     public Scene setScene() {
         var previous = appWindow.getView();
         Scene view = new Scene(root, previous.getWidth(), previous.getHeight(), Color.BLUEVIOLET);
-        view.getStylesheets().add(getClass().getResource("/style/app.css").toExternalForm());
+        if(appWindow.getDarkMode()) {
+            view.getStylesheets().add(getClass().getResource("/style/DarkApp.css").toExternalForm());
+        } else {
+            view.getStylesheets().add(getClass().getResource("/style/app.css").toExternalForm());
+        }
         this.view = view;
         return view;
     }

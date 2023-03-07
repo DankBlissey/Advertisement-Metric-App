@@ -1,60 +1,60 @@
 .apppane {
-    -fx-background-color: #F6F6F6;
+    -fx-background-color: #232627;
 }
 
 .title {
     -fx-font-family: 'Google Sans Bold';
-    -fx-fill: #555BFF;
+    -fx-fill: white;
     -fx-font-size: 50px;
 }
 
 .subtitle {
     -fx-font-family: 'Google Sans Bold';
-    -fx-fill: #555BFF;
+    -fx-fill: white;
     fx-font-size: 20px;
     -fx-text-alignment: center;
 }
 
 .body-text {
     -fx-font-family: 'Google Sans';
+    -fx-fill: white;
     -fx-font-size: 15px;
     -fx-text-alignment: center;
 }
 
 .mediumText {
     -fx-font-family: 'Google Sans Bold';
-    -fx-fill: #555BFF;
+    -fx-fill: white;
     -fx-font-size: 35px;
 }
-
 .listNumbers {
     -fx-font-family: 'Google Sans Bold';
-    -fx-fill: black;
+    -fx-fill: white;
     -fx-font-size: 25px;
 }
 
 
 .smallText {
     -fx-font-family: 'Google Sans Bold';
-    -fx-fill: #555BFF;
+    -fx-fill: white;
     -fx-font-size: 15px;
 }
 
 .blueButton {
     -fx-background-color: #555BFF;
     -fx-background-radius: 13px;
-    -fx-text-fill: #FFFFFF;
+    -fx-text-fill: white;
     -fx-font-family: 'Google Sans Bold';
     -fx-font-size: 15px;
 }
 
 .backBar {
-    -fx-fill: #FFFFFF;
+    -fx-fill: #333333;
 }
 
 .smallWhiteText {
     -fx-font-family: 'Google Sans Bold';
-    -fx-fill: #FFFFFF;
+    -fx-fill: white;
     -fx-font-size: 15px;
 }
 
@@ -71,15 +71,15 @@
 }
 
 .card {
-    -fx-fill: white;
-    -fx-background-color: white;
+    -fx-fill: #181A1B;
+    -fx-background-color: #181A1B;
     -fx-background-radius: 7px;
-    -fx-text-fill: black;
+    -fx-text-fill: white;
     -fx-font-family: 'Google Sans Bold'
 }
 
 .bounceRateText {
     -fx-font-family: 'Google Sans Bold';
-    -fx-fill: Black;
+    -fx-fill: White;
     -fx-font-size: 10px;
 }

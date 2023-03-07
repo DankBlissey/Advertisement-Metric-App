@@ -11,6 +11,7 @@
       <change beforePath="$PROJECT_DIR$/app/src/main/java/uk/ac/soton/adDashboard/views/GraphView.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/uk/ac/soton/adDashboard/views/GraphView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/uk/ac/soton/adDashboard/views/LandingView.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/uk/ac/soton/adDashboard/views/LandingView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/uk/ac/soton/adDashboard/views/ListView.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/uk/ac/soton/adDashboard/views/ListView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/resources/style/DarkApp.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/resources/style/DarkApp.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,7 +28,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="create-csv-objects" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -114,6 +115,7 @@
         <item itemvalue="Application.Main" />
         <item itemvalue="Application.App" />
         <item itemvalue="Application.App" />
+        <item itemvalue="Application.App" />
       </list>
     </recent_temporary>
   </component>
@@ -130,6 +132,14 @@
       <workItem from="1678121575932" duration="1636000" />
       <workItem from="1678139060844" duration="2427000" />
     </task>
+    <task id="LOCAL-00001" summary="added dark mode functionality">
+      <created>1678123079733</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1678123079733</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -145,5 +155,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="added dark mode functionality" />
+    <MESSAGE value="workspace xml changed" />
+    <option name="LAST_COMMIT_MESSAGE" value="workspace xml changed" />
   </component>
 </project>
