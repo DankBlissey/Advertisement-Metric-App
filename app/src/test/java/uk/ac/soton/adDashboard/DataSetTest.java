@@ -1,8 +1,13 @@
-package uk.ac.soton.adDashboard.records;
+package uk.ac.soton.adDashboard;
 
 import java.util.ArrayList;
 import javax.xml.crypto.Data;
 import org.junit.jupiter.api.Test;
+import uk.ac.soton.adDashboard.records.Click;
+import uk.ac.soton.adDashboard.records.DataSet;
+import uk.ac.soton.adDashboard.records.Impression;
+import uk.ac.soton.adDashboard.records.ServerAccess;
+import uk.ac.soton.adDashboard.records.User;
 
 public class DataSetTest {
 
@@ -18,7 +23,7 @@ public class DataSetTest {
     var impressions = new ArrayList<Impression>();
     impressions.add(new Impression("2015-01-01 23:00:02", "25", "12.5", "Shopping"));
     impressions.add(new Impression("2015-02-01 23:00:02", "26", "10", "Shopping"));
-    impressions.add(new Impression("2015-02-01 24:00:02", "27", "15", "Blog"));
+    impressions.add(new Impression("2015-02-03 23:00:02", "27", "15", "Blog"));
     return impressions;
   }
 

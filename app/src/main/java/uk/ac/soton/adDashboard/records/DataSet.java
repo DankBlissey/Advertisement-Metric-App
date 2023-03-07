@@ -14,7 +14,7 @@ import javafx.util.Pair;
 public class DataSet {
 
   private  ArrayList<Click> clicks;
-  private  HashSet<Impression> impressions;
+  private  ArrayList<Impression> impressions;
   private  ArrayList<ServerAccess> serverAccess;
   private  HashMap<Long, User> users;
 
@@ -47,7 +47,7 @@ public class DataSet {
     this.clicks = clicks;
   }
 
-  public void setImpressions(HashSet<Impression> impressions) {
+  public void setImpressions(ArrayList<Impression> impressions) {
     this.impressions = impressions;
   }
 
@@ -84,7 +84,7 @@ public class DataSet {
     return clicks;
   }
 
-  public HashSet<Impression> getImpressions() {
+  public ArrayList<Impression> getImpressions() {
     return impressions;
   }
 
