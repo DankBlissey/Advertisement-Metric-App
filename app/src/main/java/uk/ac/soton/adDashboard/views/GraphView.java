@@ -32,7 +32,7 @@ public class GraphView extends BaseView {
     protected DataSet dataSet;
     protected ArrayList<String> filenames;
 
-    public GraphView(AppWindow appWindow, ArrayList<String> filenames) {
+    public GraphView(AppWindow appWindow, DataSet dataSet, ArrayList<String> filenames) {
         super(appWindow);
         this.filenames = filenames;
         logger.info("Creating the graph view View");
@@ -64,11 +64,11 @@ public class GraphView extends BaseView {
         theme.getItems().addAll(light, dark);
         light.setOnAction(e -> {
             appWindow.setDarkMode(false);
-            appWindow.listViewWindow(dataSet);
+            appWindow.listViewWindow(dataSet,filenames);
         });
         dark.setOnAction(e -> {
             appWindow.setDarkMode(true);
-            appWindow.listViewWindow(dataSet);
+            appWindow.listViewWindow(dataSet,filenames);
         });
 
 

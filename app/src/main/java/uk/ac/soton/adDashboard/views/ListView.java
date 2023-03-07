@@ -64,7 +64,7 @@ public class ListView extends BaseView {
         Button startAgain = new Button("Start Again");
         startAgain.getStyleClass().add("blueButton");
         startAgain.setOnAction(e -> {
-            appWindow.bounceRateWindow(dataSet);
+            appWindow.bounceRateWindow(dataSet,filenames);
         });
 
         //drop down button for dark and light theme
@@ -75,11 +75,11 @@ public class ListView extends BaseView {
         theme.getItems().addAll(light, dark);
         light.setOnAction(e -> {
             appWindow.setDarkMode(false);
-            appWindow.listViewWindow(dataSet);
+            appWindow.listViewWindow(dataSet,filenames);
         });
         dark.setOnAction(e -> {
             appWindow.setDarkMode(true);
-            appWindow.listViewWindow(dataSet);
+            appWindow.listViewWindow(dataSet,filenames);
         });
 
 
@@ -178,7 +178,7 @@ public class ListView extends BaseView {
         stack.setOnMouseClicked(event -> {
           //  switchedOn = !switchedOn;
           //  toggle.setTranslateX(switchedOn ? 30 : -30);
-            appWindow.loadView(new GraphView(appWindow, filenames));
+            appWindow.loadView(new GraphView(appWindow, dataSet, filenames));
         });
         gridPane.add(stack,0,0);
 

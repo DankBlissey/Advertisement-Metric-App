@@ -129,8 +129,8 @@ public class AppWindow {
     /**
      * Display the graph view of the data
      */
-    public void graphViewWindow(DataSet dataset) {
-        loadView(new ListView(this, dataset));
+    public void graphViewWindow(DataSet dataset, ArrayList<String> filenames) {
+        loadView(new ListView(this, dataset, filenames));
     }
 
     /**
