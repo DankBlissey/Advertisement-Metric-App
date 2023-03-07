@@ -9,10 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -139,6 +136,27 @@ public class LandingView extends BaseView {
         clickLogButton.setOnAction(e -> openFileChooser("clicks"));
         serverLogButton.setOnAction(e -> openFileChooser("server"));
         submitButton.setOnAction(e -> submitCSVFiles());
+
+        //showAlert("This is just a test");
+
+        // New code ----------
+        var errorText = new Text("Error");
+        var errorInfo = new Text("Invalid file format");
+
+        errorText.getStyleClass().add("body-text");
+        errorInfo.getStyleClass().add("error-text");
+
+        var alertContent = new VBox(5);
+        alertContent.getChildren().addAll(errorText, errorInfo);
+        mainPane.setAlignment(alertContent, Pos.TOP_CENTER);
+
+        alertContent.getStyleClass().add("alert");
+        alertContent.setPrefSize(10,10);
+        alertContent.setMaxWidth(20);
+        alertContent.setMaxHeight(20);
+
+        mainPane.getChildren().add(alertContent);
+        // New code ----------
     }
 
     /**
@@ -148,6 +166,20 @@ public class LandingView extends BaseView {
     public void initialise() {
         logger.info("Initialising");
         //Initial stuff such as keyboard listeners
+    }
+
+    public void showAlert(String message) {
+
+        Text error = new Text("Error");
+        Text info = new Text(message);
+        VBox alertInfo = new VBox(error, info);
+
+        AnchorPane alertPane = new AnchorPane();
+        AnchorPane.setTopAnchor(error, 10.0);
+        alertPane.getStyleClass().add("alert");
+        alertPane.getChildren().add(error);
+
+        root.getChildren().add(alertPane);
     }
 
     /**
@@ -382,6 +414,33 @@ public class LandingView extends BaseView {
         }
 
         return serverAccess;
+    }
+
+    public Boolean isRightCSVColumns(String line, String fileType) {
+
+        String[] columns = line.split(",");
+
+        if(fileType.equals("impressions")) {
+            if(columns[0].equals("Date") && columns[1].equals("ID") &&
+                    columns[2].equals("Gender") && columns[3].equals("Age") &&
+                    columns[4].equals("Income") && columns[5].equals("Context") &&
+                    columns[5].equals("Impression Cost")) {
+                return true;
+            }
+        } else if (fileType.equals("clicks")) {
+            if(columns[0].equals("Date") && columns[1].equals("ID") &&
+                    columns[2].equals("Click Cost")) {
+                return true;
+            }
+        } else if (fileType.equals("server")) {
+            if(columns[0].equals("Entry Date") && columns[1].equals("ID") &&
+                    columns[2].equals("Exit Date") && columns[3].equals("Pages Viewed") &&
+                    columns[4].equals("Conversion")) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

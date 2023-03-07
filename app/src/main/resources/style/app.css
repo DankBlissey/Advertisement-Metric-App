@@ -82,3 +82,21 @@
     -fx-fill: Black;
     -fx-font-size: 10px;
 }
+
+.error-text {
+    -fx-font-family: 'Google Sans';
+    -fx-fill: #000000;
+    -fx-font-size: 25px;
+}
+
+.alert {
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 15px;
+    -fx-border-color: Red;
+    -fx-border-width: 2px;
+    -fx-border-style: solid;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-effect: dropshadow(gaussian, rgba(255,0,0,0.3), 20, 0, 0, 0);
+    -fx-margin-top: 50px;
+}
