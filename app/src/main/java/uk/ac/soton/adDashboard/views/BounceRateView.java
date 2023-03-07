@@ -6,8 +6,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -103,9 +105,13 @@ public class BounceRateView extends BaseView {
         finished.setText("Finish");
         finished.setVisible(false);
         finished.setTranslateY(40);
+        finished.getStyleClass().add("card");
+        finished.setEffect(new DropShadow(5,Color.valueOf("555BFF")));
 
         Button back = new Button();
         back.setText("Back");
+        back.getStyleClass().add("card");
+        back.setEffect(new DropShadow(5, Color.valueOf("555BFF")));
         back.setTranslateX(-615);
         back.setTranslateY(-400);
 
