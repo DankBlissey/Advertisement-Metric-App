@@ -1,10 +1,10 @@
 package uk.ac.soton.adDashboard.views;
 
-import java.lang.reflect.Array;
+
 import java.util.HashSet;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -12,11 +12,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
+
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
-import javafx.util.Pair;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.soton.adDashboard.records.*;
@@ -26,8 +25,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -279,6 +277,7 @@ public class LandingView extends BaseView {
                     synchronized (users) {
                         users.add(user);
                     }
+
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
