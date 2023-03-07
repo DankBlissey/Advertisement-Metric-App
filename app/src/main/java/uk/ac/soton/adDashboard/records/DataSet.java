@@ -130,8 +130,8 @@ public class DataSet {
     double totalCost = 0;
     for (Impression impression : impressions) {
       if (matchesFilters(users.get(impression.getId()))) { //if user legal
-        if (impression.getDate().compareTo(start) >= 0
-            && impression.getDate().compareTo(end) <= 0) {
+        if (!impression.getDate().isBefore(start)
+            && !impression.getDate().isAfter(end)) {
           totalCost += impression.getCost();
         }
       }
@@ -418,7 +418,8 @@ public class DataSet {
     double clickCosts = calcCostPerClick(start, end);
     double thousand = costPerThousandImpre(start, end);
     double bounceRate = calcBounceRate(start, end);
-    return new double[]{impressions, clicks, uniques, bounces, conversions, cost, through,
+    return new double[]{impressionCost, impressions, clicks, uniques, bounces, conversions, cost,
+        through,
         acquisitionCosts, clickCosts, thousand, bounceRate};
 
   }

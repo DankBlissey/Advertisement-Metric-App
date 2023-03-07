@@ -16,13 +16,13 @@ public class ClickTest {
   }
 
   @ParameterizedTest
-  @ValueSource(strings = {"-1", "-5"})
+  @ValueSource(strings = {"-1", "-5", "k"})
   void clicksIdThrows(String id) {
     assertThrows(Exception.class, () -> new Click("2015-01-01 24:00:02", id, "12.5"));
   }
 
   @ParameterizedTest
-  @ValueSource(strings = {"-1", "-5"})
+  @ValueSource(strings = {"-1", "-5", "k"})
   void clicksCostThrows(String cost) {
     assertThrows(Exception.class, () -> new Click("2015-01-01 24:00:02", "25", cost));
   }
