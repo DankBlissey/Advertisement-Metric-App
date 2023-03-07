@@ -2,7 +2,11 @@ package uk.ac.soton.adDashboard.views;
 
 import java.lang.reflect.Array;
 import java.util.HashSet;
+
+import javafx.beans.Observable;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -136,27 +140,6 @@ public class LandingView extends BaseView {
         clickLogButton.setOnAction(e -> openFileChooser("clicks"));
         serverLogButton.setOnAction(e -> openFileChooser("server"));
         submitButton.setOnAction(e -> submitCSVFiles());
-
-        //showAlert("This is just a test");
-
-        // New code ----------
-        var errorText = new Text("Error");
-        var errorInfo = new Text("Invalid file format");
-
-        errorText.getStyleClass().add("body-text");
-        errorInfo.getStyleClass().add("error-text");
-
-        var alertContent = new VBox(5);
-        alertContent.getChildren().addAll(errorText, errorInfo);
-        mainPane.setAlignment(alertContent, Pos.TOP_CENTER);
-
-        alertContent.getStyleClass().add("alert");
-        alertContent.setPrefSize(10,10);
-        alertContent.setMaxWidth(20);
-        alertContent.setMaxHeight(20);
-
-        mainPane.getChildren().add(alertContent);
-        // New code ----------
     }
 
     /**
@@ -170,16 +153,32 @@ public class LandingView extends BaseView {
 
     public void showAlert(String message) {
 
-        Text error = new Text("Error");
-        Text info = new Text(message);
-        VBox alertInfo = new VBox(error, info);
+        ObservableList<Node> children = root.getChildren();
+        if(!children.isEmpty()) {
+            Node topNode = children.get(children.size() - 1);
+            if(topNode instanceof VBox) {
+                children.remove(topNode);
+            }
+        }
 
-        AnchorPane alertPane = new AnchorPane();
-        AnchorPane.setTopAnchor(error, 10.0);
-        alertPane.getStyleClass().add("alert");
-        alertPane.getChildren().add(error);
+        var errorText = new Text("Error");
+        var errorInfo = new Text(message);
 
-        root.getChildren().add(alertPane);
+        errorText.getStyleClass().add("body-text");
+        errorInfo.getStyleClass().add("error-text");
+
+        var alertContent = new VBox(5);
+        alertContent.getChildren().addAll(errorText, errorInfo);
+
+        root.setAlignment(alertContent, Pos.TOP_CENTER);
+
+        alertContent.getStyleClass().add("alert");
+        alertContent.setPrefSize(10,10);
+        alertContent.setMaxWidth(20);
+        alertContent.setMaxHeight(20);
+
+        root.getChildren().add(alertContent);
+        root.setPadding(new Insets(20, 0, 0, 0));
     }
 
     /**
@@ -259,11 +258,14 @@ public class LandingView extends BaseView {
             BufferedReader br = new BufferedReader(new FileReader(filePath));
 
             // Skips the first line which includes the headers
-            br.readLine();
+            try {
+                if (!isRightCSVColumns(br.readLine(), "impressions")) {
+                    throw new Exception();
+                }
 
-            while ((line = br.readLine()) != null) {
+                while ((line = br.readLine()) != null) {
 
-                try {
+                    try {
                         String[] columns = line.split(",");
                         var date = columns[0];
                         var id = columns[1];
@@ -272,11 +274,15 @@ public class LandingView extends BaseView {
                         Impression impression = new Impression(date, id, cost, context);
                         impressions.add(impression);
                     } catch (Exception e) {
+                        showAlert(e.getMessage());
                         throw new RuntimeException(e);
                     }
 
                 }
-
+            } catch (Exception e) {
+                showAlert("Impressions file doesn't have the right format");
+                throw new RuntimeException(e);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -300,35 +306,44 @@ public class LandingView extends BaseView {
             BufferedReader br = new BufferedReader(new FileReader(filePath));
 
             // Skips the first line which includes the headers
-            br.readLine();
-            logger.info("getting users");
-            ArrayList<String> rows = new ArrayList<>();
-            while ((line = br.readLine()) != null) {
-                rows.add(line);
-            }
-            logger.info("file read");
-            ArrayList<User> users = new ArrayList<>();
-
-            rows.parallelStream().forEach(string -> {
-                try {
-                    String[] columns = string.split(",");
-                    //logger.info("Reading the line with ID = " + columns[1] + " and date = " + columns[0]);
-                    var id = columns[1];
-                    var gender = columns[2];
-                    var age = columns[3];
-                    var income = columns[4];
-                    User user = new User(id, age, gender, income);
-                    synchronized (users) {
-                        users.add(user);
-                    }
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
+            try {
+                if (!isRightCSVColumns(br.readLine(), "impressions")) {
+                    throw new Exception();
                 }
-            });
-            logger.info("users parsed");
 
-            for (User user : users) {
-                u2.put(user.getId(), user);
+                logger.info("getting users");
+                ArrayList<String> rows = new ArrayList<>();
+                while ((line = br.readLine()) != null) {
+                    rows.add(line);
+                }
+                logger.info("file read");
+                ArrayList<User> users = new ArrayList<>();
+
+                rows.parallelStream().forEach(string -> {
+                    try {
+                        String[] columns = string.split(",");
+                        //logger.info("Reading the line with ID = " + columns[1] + " and date = " + columns[0]);
+                        var id = columns[1];
+                        var gender = columns[2];
+                        var age = columns[3];
+                        var income = columns[4];
+                        User user = new User(id, age, gender, income);
+                        synchronized (users) {
+                            users.add(user);
+                        }
+                    } catch (Exception e) {
+                        showAlert(e.getMessage());
+                        throw new RuntimeException(e);
+                    }
+                });
+                logger.info("users parsed");
+
+                for (User user : users) {
+                    u2.put(user.getId(), user);
+                }
+            } catch (Exception e) {
+                showAlert("Impressions file doesn't have the right format");
+                throw new RuntimeException(e);
             }
 
         } catch (IOException e) {
@@ -351,23 +366,31 @@ public class LandingView extends BaseView {
         try {
             BufferedReader br = new BufferedReader(new FileReader(filePath));
 
-            // Skips the first line which includes the headers
-            br.readLine();
-
-            while ((line = br.readLine()) != null)
-            {
-                String[] columns = line.split(",");
-                //logger.info("Reading the line with ID = " + columns[1] + " and date = " + columns[0]);
-                var date = columns[0];
-                var id = columns[1];
-                var cost = columns[2];
-
-                try {
-                    clicks.add(new Click(date, id, cost));
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
+            try {
+                if (!isRightCSVColumns(br.readLine(), "clicks")) {
+                    throw new Exception();
                 }
+
+                while ((line = br.readLine()) != null)
+                {
+                    String[] columns = line.split(",");
+                    //logger.info("Reading the line with ID = " + columns[1] + " and date = " + columns[0]);
+                    var date = columns[0];
+                    var id = columns[1];
+                    var cost = columns[2];
+
+                    try {
+                        clicks.add(new Click(date, id, cost));
+                    } catch (Exception e) {
+                        showAlert(e.getMessage());
+                        throw new RuntimeException(e);
+                    }
+                }
+            } catch (Exception e) {
+                showAlert("Clicks file doesn't have the right format");
+                throw new RuntimeException(e);
             }
+
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -389,24 +412,32 @@ public class LandingView extends BaseView {
         try {
             BufferedReader br = new BufferedReader(new FileReader(filePath));
 
-            // Skips the first line which includes the headers
-            br.readLine();
-
-            while ((line = br.readLine()) != null)
-            {
-                String[] columns = line.split(",");
-                //logger.info("Reading the line with ID = " + columns[1] + " and pagesViewed = " + columns[3]);
-                var entryDate = columns[0];
-                var id =columns[1];
-                var exitDate = columns[2];
-                var pagesViewed = columns[3];
-                var conversion = columns[4];
-
-                try {
-                    serverAccess.add(new ServerAccess(entryDate, id, exitDate, pagesViewed, conversion));
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
+            try {
+                // Skips the first line which includes the headers
+                if (!isRightCSVColumns(br.readLine(), "server")) {
+                    throw new Exception();
                 }
+
+                while ((line = br.readLine()) != null)
+                {
+                    String[] columns = line.split(",");
+                    //logger.info("Reading the line with ID = " + columns[1] + " and pagesViewed = " + columns[3]);
+                    var entryDate = columns[0];
+                    var id =columns[1];
+                    var exitDate = columns[2];
+                    var pagesViewed = columns[3];
+                    var conversion = columns[4];
+
+                    try {
+                        serverAccess.add(new ServerAccess(entryDate, id, exitDate, pagesViewed, conversion));
+                    } catch (Exception e) {
+                        showAlert(e.getMessage());
+                        throw new RuntimeException(e);
+                    }
+                }
+            } catch (Exception e) {
+                showAlert("Server log file doesn't have the right format");
+                throw new RuntimeException(e);
             }
         }
         catch (IOException e) {
@@ -420,19 +451,21 @@ public class LandingView extends BaseView {
 
         String[] columns = line.split(",");
 
-        if(fileType.equals("impressions")) {
+        logger.info("Checking if the inputted file is of type " + fileType + "for the following line: " + line);
+
+        if(fileType.equals("impressions") && columns.length == 7) {
             if(columns[0].equals("Date") && columns[1].equals("ID") &&
                     columns[2].equals("Gender") && columns[3].equals("Age") &&
                     columns[4].equals("Income") && columns[5].equals("Context") &&
-                    columns[5].equals("Impression Cost")) {
+                    columns[6].equals("Impression Cost")) {
                 return true;
             }
-        } else if (fileType.equals("clicks")) {
+        } else if (fileType.equals("clicks") && columns.length == 3) {
             if(columns[0].equals("Date") && columns[1].equals("ID") &&
                     columns[2].equals("Click Cost")) {
                 return true;
             }
-        } else if (fileType.equals("server")) {
+        } else if (fileType.equals("server") && columns.length == 5) {
             if(columns[0].equals("Entry Date") && columns[1].equals("ID") &&
                     columns[2].equals("Exit Date") && columns[3].equals("Pages Viewed") &&
                     columns[4].equals("Conversion")) {
