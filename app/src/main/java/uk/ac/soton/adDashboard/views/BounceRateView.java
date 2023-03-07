@@ -18,6 +18,8 @@ import uk.ac.soton.adDashboard.ui.AppWindow;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class BounceRateView extends BaseView {
     private static final Logger logger = LogManager.getLogger(BounceRateView.class);
@@ -73,7 +75,7 @@ public class BounceRateView extends BaseView {
 
         // text
         Text text1 = new Text("Time spent on website");
-        text1.getStyleClass().add("bounceRateText");
+        text1.getStyleClass().add("smallText");
 
         ComboBox<Object> itemBox = new ComboBox<>();
         itemBox.setTranslateX(270);
@@ -85,29 +87,32 @@ public class BounceRateView extends BaseView {
 
         // text
         Text text2 = new Text("Number of pages visited");
-        text2.getStyleClass().add("bounceRateText");
+        text2.getStyleClass().add("smallText");
 
         Text error = new Text("Invalid input!!");
         error.setVisible(false);
         error.setTranslateY(-400);
+        error.getStyleClass().add("smallText");
 
         CheckBox customCheckBox = new CheckBox();
-        customCheckBox.setTranslateX(-90);
-        customCheckBox.setTranslateY(-69);
+        customCheckBox.setTranslateX(-98);
+        customCheckBox.setTranslateY(-80);
 
         CheckBox pageCheckBox = new CheckBox();
-        pageCheckBox.setTranslateX(-90);
-        pageCheckBox.setTranslateY(-69);
+        pageCheckBox.setTranslateX(-98);
+        pageCheckBox.setTranslateY(-75);
 
         Button finished = new Button();
         finished.setText("Finish");
         finished.setVisible(false);
         finished.setTranslateY(40);
+        finished.getStyleClass().add("blueButton");
 
         Button back = new Button();
         back.setText("Back");
         back.setTranslateX(-615);
-        back.setTranslateY(-400);
+        back.setTranslateY(-390);
+        back.getStyleClass().add("blueButton");
 
         VBox vbox1 = new VBox(title, subtext1, subtext2, back);
 
@@ -177,30 +182,49 @@ public class BounceRateView extends BaseView {
                     dataSet.setPagesForBounce(Integer.parseInt(pages.getText()));
                     dataSet.setPagesViewedBounceMetric(true);
                     appWindow.listViewWindow(dataSet, filenames);
-                } catch (NumberFormatException e) {
-                    error.setVisible(true);
-                }
+                } catch (NumberFormatException ignored) {}
+                TimerTask wait = new TimerTask() {
+                    @Override
+                    public void run() {
+                        error.setVisible(false);
+                    }
+                };
+
+                Timer time = new Timer();
+                error.setVisible(true);
+                time.schedule(wait,1000);
             }
 
             else{
                 try {
-                    logger.info("Maximum time read");
-                    if(itemBox.getValue() == "Seconds"){
-                        logger.info("Seconds selected");
-                        dataSet.setInterval(Integer.parseInt(custom.getText()));
-                    }
-                    else{
-                        logger.info("Minutes selected");
-                        dataSet.setInterval(Integer.parseInt(custom.getText())*60);
-                    }
-                    dataSet.setPagesViewedBounceMetric(false);
-                    appWindow.listViewWindow(dataSet, filenames);
+                    if(itemBox.getValue() != null) {
+                        logger.info("Maximum time read");
+                        if (itemBox.getValue() == "Seconds") {
+                            logger.info("Seconds selected");
+                            dataSet.setInterval(Integer.parseInt(custom.getText()));
+                        } else {
+                            logger.info("Minutes selected");
+                            dataSet.setInterval(Integer.parseInt(custom.getText()) * 60);
+                        }
+                        dataSet.setPagesViewedBounceMetric(false);
+                        appWindow.listViewWindow(dataSet, filenames);
 
-                } catch (NumberFormatException e) {
-                    error.setVisible(true);
-                }
+                    }
+                } catch (NumberFormatException ignored) {}
+                TimerTask wait = new TimerTask() {
+                    @Override
+                    public void run() {
+                        error.setVisible(false);
+                    }
+                };
+
+                Timer time = new Timer();
+                error.setVisible(true);
+                time.schedule(wait,1000);
             }
         });
+
+
 
         root.getChildren().addAll(stackPane);
     }
