@@ -2,3 +2,5 @@ app/target/*
 app/.idea/*
 .idea/*
 .idea/workspace.xml
+*/app.iml
+.DS_STORE
