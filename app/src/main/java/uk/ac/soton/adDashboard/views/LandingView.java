@@ -263,7 +263,7 @@ public class LandingView extends BaseView {
 
         String line = "";
 
-        HashMap<Long, User> u2 = new HashMap<>();
+        HashMap<Long, User> users = new HashMap<>();
         try {
             BufferedReader br = new BufferedReader(new FileReader(filePath));
 
@@ -287,7 +287,7 @@ public class LandingView extends BaseView {
                     var income = columns[4];
                     User user = new User(id, age, gender, income);
                     synchronized (users) {
-                        users.add(user);
+                        users.put(user.getId(),user);
                     }
                 } catch (Exception e) {
                     throw new RuntimeException(e);
@@ -295,15 +295,13 @@ public class LandingView extends BaseView {
             });
             logger.info("users parsed");
 
-            for (User user : users) {
-                u2.put(user.getId(), user);
-            }
+
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return u2;
+        return users;
     }
 
     /**
