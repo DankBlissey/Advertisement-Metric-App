@@ -33,7 +33,7 @@ public class AppWindow {
     private BaseView currentView;
     private Scene view;
 
-    private Boolean darkMode = true;
+    private Boolean darkMode = false;
     /**
      * Create a new appWindow attached to the given stage with the specified width and height
      * @param stage stage

@@ -87,7 +87,7 @@ public class GraphView extends BaseView {
 
         Rectangle backBar = new Rectangle(1280,150);
         backBar.getStyleClass().add("backBar");
-        backBar.setEffect(new DropShadow());
+        backBar.setEffect(new DropShadow(5,Color.GREY));
 
         Rectangle loadedRectangle = new Rectangle(200,130, Color.valueOf("#4B51FF"));
         loadedRectangle.setArcWidth(30);

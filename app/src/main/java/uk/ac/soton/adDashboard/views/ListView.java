@@ -58,6 +58,9 @@ public class ListView extends BaseView {
         //button for going back to the input screen
         Button startAgain = new Button("Start Again");
         startAgain.getStyleClass().add("blueButton");
+        startAgain.setOnAction(e -> {
+            appWindow.bounceRateWindow(dataSet);
+        });
 
         //drop down button for dark and light theme
         MenuButton theme = new MenuButton("Theme");
@@ -184,7 +187,8 @@ public class ListView extends BaseView {
         clicks2.getStyleClass().add("listNumbers");
         VBox clicksBox = new VBox(totalClicks,clicks1,clicks2);
         clicksBox.setAlignment(Pos.CENTER_LEFT);
-        Rectangle clickBG = new Rectangle(140,100,Color.WHITE);
+        Rectangle clickBG = new Rectangle(140,100);
+        clickBG.getStyleClass().add("card");
         clickBG.setOpacity(0.98);
         clickBG.setArcWidth(30);
         clickBG.setArcHeight(30);
@@ -202,7 +206,8 @@ public class ListView extends BaseView {
         Text uniques2 = new Text(" 398,112");
         uniques2.getStyleClass().add("listNumbers");
         VBox uniquesBox = new VBox(totalUniques,uniques1,uniques2);
-        Rectangle totalBG = new Rectangle(140,100,Color.WHITE);
+        Rectangle totalBG = new Rectangle(140,100);
+        totalBG.getStyleClass().add("card");
         totalBG.setOpacity(0.98);
         totalBG.setArcWidth(30);
         totalBG.setArcHeight(30);
@@ -219,7 +224,8 @@ public class ListView extends BaseView {
         impressions2.getStyleClass().add("listNumbers");
         VBox impressionsBox = new VBox(totalImpressions,impressions1,impressions2);
         impressionsBox.setAlignment(Pos.CENTER_LEFT);
-        Rectangle impressionBG = new Rectangle(140,100,Color.WHITE);
+        Rectangle impressionBG = new Rectangle(140,100);
+        impressionBG.getStyleClass().add("card");
         impressionBG.setOpacity(0.98);
         impressionBG.setArcWidth(30);
         impressionBG.setArcHeight(30);
@@ -235,7 +241,8 @@ public class ListView extends BaseView {
         bounces2.getStyleClass().add("listNumbers");
         VBox bounceBox = new VBox(totalBounces,bounces1,bounces2);
         bounceBox.setAlignment(Pos.CENTER_LEFT);
-        Rectangle bounceBG = new Rectangle(140,100,Color.WHITE);
+        Rectangle bounceBG = new Rectangle(140,100);
+        bounceBG.getStyleClass().add("card");
         bounceBG.setOpacity(0.98);
         bounceBG.setArcWidth(30);
         bounceBG.setArcHeight(30);
@@ -251,7 +258,8 @@ public class ListView extends BaseView {
         converions2.getStyleClass().add("listNumbers");
         VBox convesionsBox = new VBox(totalConversions,converions1,converions2);
         convesionsBox.setAlignment(Pos.CENTER_LEFT);
-        Rectangle conversionBG = new Rectangle(140,100,Color.WHITE);
+        Rectangle conversionBG = new Rectangle(140,100);
+        conversionBG.getStyleClass().add("card");
         conversionBG.setOpacity(0.98);
         conversionBG.setArcWidth(30);
         conversionBG.setArcHeight(30);
@@ -267,7 +275,8 @@ public class ListView extends BaseView {
         cost2.getStyleClass().add("listNumbers");
         VBox costBox = new VBox(totalCost,cost1,cost2);
         costBox.setAlignment(Pos.CENTER_LEFT);
-        Rectangle costBG = new Rectangle(140,100,Color.WHITE);
+        Rectangle costBG = new Rectangle(140,100);
+        costBG.getStyleClass().add("card");
         costBG.setOpacity(0.98);
         costBG.setArcWidth(30);
         costBG.setArcHeight(30);
@@ -283,7 +292,8 @@ public class ListView extends BaseView {
         ctr2.getStyleClass().add("listNumbers");
         VBox ctrBox = new VBox(totalCTR,ctr1,ctr2);
         ctrBox.setAlignment(Pos.CENTER_LEFT);
-        Rectangle ctrBG = new Rectangle(140,100,Color.WHITE);
+        Rectangle ctrBG = new Rectangle(140,100);
+        ctrBG.getStyleClass().add("card");
         ctrBG.setOpacity(0.98);
         ctrBG.setArcWidth(30);
         ctrBG.setArcHeight(30);
@@ -299,7 +309,8 @@ public class ListView extends BaseView {
         cpa2.getStyleClass().add("listNumbers");
         VBox cpaBox = new VBox(totalCPA,cpa1,cpa2);
         cpaBox.setAlignment(Pos.CENTER_LEFT);
-        Rectangle cpaBG = new Rectangle(140,100,Color.WHITE);
+        Rectangle cpaBG = new Rectangle(140,100);
+        cpaBG.getStyleClass().add("card");
         cpaBG.setOpacity(0.98);
         cpaBG.setArcWidth(30);
         cpaBG.setArcHeight(30);
@@ -315,7 +326,8 @@ public class ListView extends BaseView {
         cpc2.getStyleClass().add("listNumbers");
         VBox cpcBox = new VBox(totalCPC,cpc1,cpc2);
         cpcBox.setAlignment(Pos.CENTER_LEFT);
-        Rectangle cpcBG = new Rectangle(140,100,Color.WHITE);
+        Rectangle cpcBG = new Rectangle(140,100);
+        cpcBG.getStyleClass().add("card");
         cpcBG.setOpacity(0.98);
         cpcBG.setArcWidth(30);
         cpcBG.setArcHeight(30);
@@ -331,7 +343,8 @@ public class ListView extends BaseView {
         cpm2.getStyleClass().add("listNumbers");
         VBox cpmBox = new VBox(totalCPM,cpm1,cpm2);
         cpmBox.setAlignment(Pos.CENTER_LEFT);
-        Rectangle cpmBG = new Rectangle(140,100,Color.WHITE);
+        Rectangle cpmBG = new Rectangle(140,100);
+        cpmBG.getStyleClass().add("card");
         cpmBG.setOpacity(0.98);
         cpmBG.setArcWidth(30);
         cpmBG.setArcHeight(30);
@@ -347,7 +360,8 @@ public class ListView extends BaseView {
         bounceRate2.getStyleClass().add("listNumbers");
         VBox bounceRateBox = new VBox(totalBounceRate,bounceRate1,bounceRate2);
         bounceRateBox.setAlignment(Pos.CENTER_LEFT);
-        Rectangle bounceRateBG = new Rectangle(140,100,Color.WHITE);
+        Rectangle bounceRateBG = new Rectangle(140,100);
+        bounceRateBG.getStyleClass().add("card");
         bounceRateBG.setOpacity(0.98);
         bounceRateBG.setArcWidth(30);
         bounceRateBG.setArcHeight(30);

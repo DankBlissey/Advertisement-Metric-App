@@ -4,13 +4,13 @@
 
 .title {
     -fx-font-family: 'Google Sans Bold';
-    -fx-fill: #4B51FF;
+    -fx-fill: #555BFF;
     -fx-font-size: 50px;
 }
 
 .subtitle {
     -fx-font-family: 'Google Sans Bold';
-    -fx-fill: #4B51FF;
+    -fx-fill: #555BFF;
     fx-font-size: 20px;
     -fx-text-alignment: center;
 }
@@ -23,7 +23,7 @@
 
 .mediumText {
     -fx-font-family: 'Google Sans Bold';
-    -fx-fill: #4B51FF;
+    -fx-fill: #555BFF;
     -fx-font-size: 35px;
 }
 .listNumbers {
@@ -35,12 +35,12 @@
 
 .smallText {
     -fx-font-family: 'Google Sans Bold';
-    -fx-fill: #4B51FF;
+    -fx-fill: #555BFF;
     -fx-font-size: 15px;
 }
 
 .blueButton {
-    -fx-background-color: #4B51FF;
+    -fx-background-color: #555BFF;
     -fx-background-radius: 13px;
     -fx-text-fill: #FFFFFF;
     -fx-font-family: 'Google Sans Bold';
@@ -70,8 +70,15 @@
 }
 
 .card {
+    -fx-fill: white;
     -fx-background-color: white;
     -fx-background-radius: 7px;
     -fx-text-fill: black;
     -fx-font-family: 'Google Sans Bold'
+}
+
+.bounceRateText {
+    -fx-font-family: 'Google Sans Bold';
+    -fx-fill: Black;
+    -fx-font-size: 10px;
 }
