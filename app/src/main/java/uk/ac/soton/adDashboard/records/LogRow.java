@@ -38,7 +38,7 @@ public class LogRow {
   }
 
   /**
-   * This parses a string date of the format "dd/MM/yyyy  HH:mm:ss" into a LocalDateTime object.
+   * This parses a string date of the format "yyyy-MM-dd HH:mm:ss" into a LocalDateTime object.
    *
    * @param dateTime The string to parse.
    * @return Returns a LocalDateTime object.

@@ -416,7 +416,7 @@ public class DataSet {
     double clickCosts = calcCostPerClick(start, end);
     double thousand = costPerThousandImpre(start, end);
     double bounceRate = calcBounceRate(start, end);
-    return new double[]{impressions,clicks,uniques,bounces,conversions,cost,through,acquisitionCosts,clickCosts,thousand,bounceRate};
+    return new double[]{impressionCost,impressions,clicks,uniques,bounces,conversions,cost,through,acquisitionCosts,clickCosts,thousand,bounceRate};
 
   }
 }
