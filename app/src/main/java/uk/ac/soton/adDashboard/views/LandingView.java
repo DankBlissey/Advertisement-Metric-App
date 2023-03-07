@@ -178,7 +178,7 @@ public class LandingView extends BaseView {
         logger.info("Reading the impressions file");
         LogRow.setResolver();
         HashMap<Long, User> users = getUsersFromCSV(impressionsFilePath);
-        HashSet<Impression> impressions = getImpressionsFromCSV(impressionsFilePath);
+        ArrayList<Impression> impressions = getImpressionsFromCSV(impressionsFilePath);
         logger.info("Successfully created objects: impressions("+ impressions.size() + " entries) and users(" + users.size() + ")");
 
         logger.info("Reading the clicks file");
@@ -192,7 +192,7 @@ public class LandingView extends BaseView {
 
         DataSet dataSet = new DataSet();
         dataSet.setClicks(clicks);
-        dataSet.setImpressions(impressions);
+//        dataSet.setImpressions(impressions);
         dataSet.setUsers(users);
         dataSet.setServerAccess(serverAccesses);
 
@@ -207,8 +207,8 @@ public class LandingView extends BaseView {
         appWindow.bounceRateWindow(dataSet, filenames);
     }
 
-    public HashSet<Impression> getImpressionsFromCSV(String filePath) {
-        HashSet<Impression> impressions = new HashSet<>();
+    public ArrayList<Impression> getImpressionsFromCSV(String filePath) {
+        ArrayList<Impression> impressions = new ArrayList<>();
         String line = "";
 
         try {
