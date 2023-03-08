@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -26,12 +27,14 @@ public class ServerAccessTest {
 
   }
 
-//  @Test
-//  void givenStartDateNull() {
-//    assertThrows(Exception.class,
-//        () -> new ServerAccess("n/a", "25", "2015-01-02 23:00:02", "2", "Yes"));
-//
-//  }
+
+//  @Disabled
+  @Test
+  void givenStartDateNull() {
+    assertThrows(Exception.class,
+        () -> new ServerAccess("n/a", "25", "2015-01-02 23:00:02", "2", "Yes"));
+
+  }
 
   @ParameterizedTest
   @ValueSource(strings = {"-1", "-5", "k"})
