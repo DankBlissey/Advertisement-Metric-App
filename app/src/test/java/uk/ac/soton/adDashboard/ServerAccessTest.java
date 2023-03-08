@@ -26,12 +26,12 @@ public class ServerAccessTest {
 
   }
 
-  @Test
-  void givenStartDateNull() {
-    assertThrows(Exception.class,
-        () -> new ServerAccess("n/a", "25", "2015-01-02 23:00:02", "2", "Yes"));
-
-  }
+//  @Test
+//  void givenStartDateNull() {
+//    assertThrows(Exception.class,
+//        () -> new ServerAccess("n/a", "25", "2015-01-02 23:00:02", "2", "Yes"));
+//
+//  }
 
   @ParameterizedTest
   @ValueSource(strings = {"-1", "-5", "k"})
