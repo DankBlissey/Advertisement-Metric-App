@@ -13,10 +13,10 @@ import javafx.util.Pair;
  */
 public class DataSet {
 
-  private  ArrayList<Click> clicks;
-  private  ArrayList<Impression> impressions;
-  private  ArrayList<ServerAccess> serverAccess;
-  private  HashMap<Long, User> users;
+  private ArrayList<Click> clicks;
+  private ArrayList<Impression> impressions;
+  private ArrayList<ServerAccess> serverAccess;
+  private HashMap<Long, User> users;
 
 
   /**
@@ -258,19 +258,18 @@ public class DataSet {
    * @return Returns true if the access is a bounce and false otherwise.
    */
   public boolean isBounce(ServerAccess access) {
-    if (access.getEndDate()==null) return false;
-    if (isPagesViewedBounceMetric()) {
-      if (access.getPagesViewed() < getPagesForBounce()) {
-        return false;
-
-      } else {
-
-        return ChronoUnit.SECONDS.between(access.getStartDate(), access.getEndDate())
-            >= getInterval();
-      }
-
+    if (access.getEndDate() == null) {
+      return false;
     }
-    return true;
+    if (isPagesViewedBounceMetric()) {
+      return access.getPagesViewed() < getPagesForBounce();
+    } else {
+
+      return ChronoUnit.SECONDS.between(access.getStartDate(), access.getEndDate())
+          < getInterval();
+    }
+
+
   }
 
   /**
@@ -327,7 +326,7 @@ public class DataSet {
    * @return Returns the cost per click.
    */
   public double calcCostPerClick(LocalDateTime start, LocalDateTime end) {
-    double cost = calcClickCost(start, end);
+    double cost = calcTotalCost(start, end);
     double clicks = totalClicks(start, end);
     return cost / clicks;
   }
@@ -396,21 +395,21 @@ public class DataSet {
   }
 
 
-  public void setPagesViewedBounceMetric(Boolean BounceMetric){
+  public void setPagesViewedBounceMetric(Boolean BounceMetric) {
     this.pagesViewedBounceMetric = BounceMetric;
   }
 
   public LocalDateTime earliestDate() {
-    return  impressions.get(0).getDate();
+    return impressions.get(0).getDate();
 
   }
 
   public LocalDateTime latestDate() {
-    return impressions.get(impressions.size()-1).getDate();
+    return impressions.get(impressions.size() - 1).getDate();
   }
 
   public double[] allStats(LocalDateTime start, LocalDateTime end) {
-    double impressionCost= calcImpressionCost(start,end);
+    double impressionCost = calcImpressionCost(start, end);
 
     double impressions = totalImpressions(start, end);
     double clicks = totalClicks(start, end);
@@ -424,7 +423,8 @@ public class DataSet {
     double clickCosts = calcCostPerClick(start, end);
     double thousand = costPerThousandImpre(start, end);
     double bounceRate = calcBounceRate(start, end);
-    return new double[]{impressionCost,impressions,clicks,uniques,bounces,conversions,cost,through,acquisitionCosts,clickCosts,thousand,bounceRate};
+    return new double[]{impressionCost, impressions, clicks, uniques, bounces, conversions, cost,
+        through, acquisitionCosts, clickCosts, thousand, bounceRate};
 
   }
 }
