@@ -34,6 +34,7 @@ public class GraphView extends BaseView {
 
     public GraphView(AppWindow appWindow, DataSet dataSet, ArrayList<String> filenames) {
         super(appWindow);
+        this.dataSet = dataSet;
         this.filenames = filenames;
         logger.info("Creating the graph view View");
     }
@@ -135,14 +136,6 @@ public class GraphView extends BaseView {
         gridPane.setAlignment(Pos.CENTER  );
         gridPane.setHgap(20);
         gridPane.setVgap(20);
-
-        // Create a button and add it to a pane
-        //  Button button = new Button("Switch to Scene 2");
-        //gridPane.add(button,0,0);
-        //button.setOnAction(e -> appWindow.loadScene(new GraphView(appWindow)));
-
-        //  SwitchButton switchButton = new SwitchButton();
-        //switchButton.setOnDragDone(e -> appWindow.loadScene(new GraphView(appWindow)));
 
 
 

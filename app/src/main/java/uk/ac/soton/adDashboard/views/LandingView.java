@@ -221,7 +221,7 @@ public class LandingView extends BaseView {
         logger.info("Reading the impressions file");
         LogRow.setResolver();
         HashMap<Long, User> users = getUsersFromCSV(impressionsFilePath);
-        HashSet<Impression> impressions = getImpressionsFromCSV(impressionsFilePath);
+        ArrayList<Impression> impressions = getImpressionsFromCSV(impressionsFilePath);
         logger.info("Successfully created objects: impressions("+ impressions.size() + " entries) and users(" + users.size() + ")");
 
         logger.info("Reading the clicks file");
@@ -250,8 +250,8 @@ public class LandingView extends BaseView {
         appWindow.bounceRateWindow(dataSet, filenames);
     }
 
-    public HashSet<Impression> getImpressionsFromCSV(String filePath) {
-        HashSet<Impression> impressions = new HashSet<>();
+    public ArrayList<Impression> getImpressionsFromCSV(String filePath) {
+        ArrayList<Impression> impressions = new ArrayList<>();
         String line = "";
 
         try {
@@ -301,7 +301,7 @@ public class LandingView extends BaseView {
 
         String line = "";
 
-        HashMap<Long, User> u2 = new HashMap<>();
+        HashMap<Long, User> users = new HashMap<>();
         try {
             BufferedReader br = new BufferedReader(new FileReader(filePath));
 
@@ -310,15 +310,14 @@ public class LandingView extends BaseView {
                 if (!isRightCSVColumns(br.readLine(), "impressions")) {
                     throw new Exception();
                 }
-
                 logger.info("getting users");
                 ArrayList<String> rows = new ArrayList<>();
                 while ((line = br.readLine()) != null) {
                     rows.add(line);
                 }
                 logger.info("file read");
-                ArrayList<User> users = new ArrayList<>();
 
+                //ArrayList<User> users = new ArrayList<>(); ???
                 rows.parallelStream().forEach(string -> {
                     try {
                         String[] columns = string.split(",");
@@ -329,7 +328,7 @@ public class LandingView extends BaseView {
                         var income = columns[4];
                         User user = new User(id, age, gender, income);
                         synchronized (users) {
-                            users.add(user);
+                            users.put(user.getId(), user);
                         }
                     } catch (Exception e) {
                         showAlert(e.getMessage());
@@ -337,20 +336,15 @@ public class LandingView extends BaseView {
                     }
                 });
                 logger.info("users parsed");
-
-                for (User user : users) {
-                    u2.put(user.getId(), user);
-                }
             } catch (Exception e) {
                 showAlert("Impressions file doesn't have the right format");
                 throw new RuntimeException(e);
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return u2;
+        return users;
     }
 
     /**
