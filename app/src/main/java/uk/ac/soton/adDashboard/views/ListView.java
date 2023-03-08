@@ -218,7 +218,7 @@ public class ListView extends BaseView {
      * @param text the title of the block
      * @param dataIndex which index to fetch from dataset
      * @param xGrid x position of grid pane
-     * @param yGrid y position of grid pane 
+     * @param yGrid y position of grid pane
      */
     private void createListBlock(GridPane gridPane, double[] data,  String text, int dataIndex, int xGrid, int yGrid){
         Text title = new Text(text);
@@ -247,6 +247,7 @@ public class ListView extends BaseView {
        // vBox.setMaxWidth(Region.USE_PREF_SIZE);
         vBox.setPadding(new Insets(10));
         vBox.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(17), null)));
+        vBox.getStyleClass().add("card");
         vBox.setEffect(dropShadow);
         vBox.setAlignment(Pos.CENTER_LEFT);
         gridPane.setAlignment(Pos.CENTER);
