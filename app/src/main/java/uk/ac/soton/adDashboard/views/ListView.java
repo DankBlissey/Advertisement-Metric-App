@@ -29,6 +29,8 @@ public class ListView extends BaseView {
     protected DataSet dataSet;
     protected ArrayList<String> filenames;
     private DropShadow dropShadow;
+    private GridPane gridPane;
+    private double[] data;
 
     /**
      * App class (logic)
@@ -139,7 +141,7 @@ public class ListView extends BaseView {
                 backgroundPane, CornerRadii.EMPTY, Insets.EMPTY)));
 
         //Using the gridpane component to organise the list view objects
-        GridPane gridPane = new GridPane();
+        gridPane = new GridPane();
         borderPane.setCenter(gridPane); // grid pane is set in the centre of the border pane as per storyboard
         //gridPane.setGridLinesVisible(true); //used for debugging
         gridPane.setAlignment(Pos.CENTER );
@@ -171,19 +173,19 @@ public class ListView extends BaseView {
 
         //adding switch button to the top left of the grid pane
         gridPane.add(stack,0,0);
-        double[] data = dataSet.allStats(dataSet.earliestDate(),dataSet.latestDate());
+        data = dataSet.allStats(dataSet.earliestDate(),dataSet.latestDate());
         //private void createListBlock(GridPane gridPane, double[] data, DropShadow dropShadow,  String text, int dataIndex, int xGrid, int yGrid){
-        createListBlock(gridPane,data, "Total clicks", 2, 0, 1 );
-        createListBlock(gridPane,data,"Total uniques", 3, 1,1 );
-        createListBlock(gridPane,data, "Total impressions", 1, 2,1 );
-        createListBlock(gridPane,data,"Total bounces", 4, 0,2 );
-        createListBlock(gridPane,data,"Total conversions", 5, 1,2 );
-        createListBlock(gridPane,data,"Total cost", 6, 2,2 );
-        createListBlock(gridPane,data,"CTR", 7, 3,2 );
-        createListBlock(gridPane,data,"CPA", 8, 0,3 );
-        createListBlock(gridPane,data,"CPC", 9, 1,3 );
-        createListBlock(gridPane,data,"CPM", 10, 2,3 );
-        createListBlock(gridPane,data,"Bounce rate", 11, 3,3 );
+        createListBlock("Total clicks", 2, 0, 1 );
+        createListBlock("Total uniques", 3, 1,1 );
+        createListBlock("Total impressions", 1, 2,1 );
+        createListBlock("Total bounces", 4, 0,2 );
+        createListBlock("Total conversions", 5, 1,2 );
+        createListBlock("Total cost", 6, 2,2 );
+        createListBlock("CTR", 7, 3,2 );
+        createListBlock("CPA", 8, 0,3 );
+        createListBlock("CPC", 9, 1,3 );
+        createListBlock("CPM", 10, 2,3 );
+        createListBlock("Bounce rate", 11, 3,3 );
 
 
         root.getChildren().addAll(borderPane);
@@ -213,14 +215,12 @@ public class ListView extends BaseView {
 
     /**
      * Method for creating each block containing listview data
-     * @param gridPane
-     * @param data
      * @param text the title of the block
      * @param dataIndex which index to fetch from dataset
      * @param xGrid x position of grid pane
      * @param yGrid y position of grid pane
      */
-    private void createListBlock(GridPane gridPane, double[] data,  String text, int dataIndex, int xGrid, int yGrid){
+    private void createListBlock(String text, int dataIndex, int xGrid, int yGrid){
         Text title = new Text(text);
         title.getStyleClass().add("listTitle");
 
