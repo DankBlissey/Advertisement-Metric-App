@@ -211,6 +211,15 @@ public class ListView extends BaseView {
         //Initial stuff such as keyboard listeners
     }
 
+    /**
+     * Method for creating each block containing listview data
+     * @param gridPane
+     * @param data
+     * @param text the title of the block
+     * @param dataIndex which index to fetch from dataset
+     * @param xGrid x position of grid pane
+     * @param yGrid y position of grid pane 
+     */
     private void createListBlock(GridPane gridPane, double[] data,  String text, int dataIndex, int xGrid, int yGrid){
         Text title = new Text(text);
         title.getStyleClass().add("listTitle");
