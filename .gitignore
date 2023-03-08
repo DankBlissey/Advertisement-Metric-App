@@ -3,3 +3,4 @@ app/.idea/*
 .idea/*
 .idea/workspace.xml
 */app.iml
+**/dependency-reduced-pom.xml
