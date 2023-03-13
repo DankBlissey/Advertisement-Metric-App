@@ -3,7 +3,6 @@ package uk.ac.soton.adDashboard.records;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import javafx.util.Pair;
@@ -18,7 +17,7 @@ public class DataSet {
   private ArrayList<Impression> impressions;
   private ArrayList<ServerAccess> serverAccess;
   private HashMap<Long, User> users;
-
+  public double[] stats = {};
 
   /**
    * If true the pagesViewed is the bounce metric.
@@ -37,6 +36,11 @@ public class DataSet {
   private int interval = 50;
 
   private Filter filter = null;
+
+  private int lastImpression = 0;
+  private int lastAccess = 0;
+  private int lastClick = 0;
+  private boolean efficiency = false;
 
 
   /**
@@ -91,8 +95,58 @@ public class DataSet {
     this.filter = filter;
   }
 
+  public boolean isEfficient() {
+    return efficiency;
+  }
+
+  public void setEfficiency(boolean efficiency) {
+    this.efficiency = efficiency;
+  }
+
+  public int getLastImpression() {
+    if (isEfficient()) {
+      return lastImpression;
+    } else {
+      return 0;
+    }
+  }
+
+  public void setLastImpression(int lastImpression) {
+    this.lastImpression = lastImpression;
+  }
+
+  public int getLastAccess() {
+    if (isEfficient()) {
+      return lastAccess;
+    } else {
+      return 0;
+    }
+  }
+
+  public void setLastAccess(int lastAccess) {
+    this.lastAccess = lastAccess;
+  }
+
+  public int getLastClick() {
+    if (isEfficient()) {
+      return lastClick;
+    } else {
+      return 0;
+    }
+  }
+
+  public void setLastClick(int lastClick) {
+    this.lastClick = lastClick;
+  }
+
   public ArrayList<Click> getClicks() {
     return clicks;
+  }
+
+  public void resetAllAccess() {
+    setLastClick(0);
+    setLastAccess(0);
+    setLastImpression(0);
   }
 
   public ArrayList<Impression> getImpressions() {
@@ -119,6 +173,10 @@ public class DataSet {
     return interval;
   }
 
+  public double[] getStats() {
+    return stats;
+  }
+
   /**
    * Checks if the user matches the filterObject.
    *
@@ -126,7 +184,20 @@ public class DataSet {
    * @return True if the user matches the filter.
    */
   public boolean matchesFilters(User user) {
-    return true;
+    if (!user.getAge().equals(filter.getAge())) {
+      return false;
+    }
+    if (!user.getGender().equals(filter.getGender())) {
+      return false;
+    }
+    return user.getIncome().equals(filter.getIncome());
+  }
+
+  public boolean matchesFilters(User user, Impression impression) {
+    if (!matchesFilters(user)) {
+      return false;
+    }
+    return impression.getContext().equals(filter.getContext());
   }
 
   /**
@@ -139,11 +210,16 @@ public class DataSet {
    */
   public double calcImpressionCost(LocalDateTime start, LocalDateTime end) {
     double totalCost = 0;
-    for (Impression impression : impressions) {
-      if (matchesFilters(users.get(impression.getId()))) { //if user legal
-        if (impression.getDate().compareTo(start) >= 0
-            && impression.getDate().compareTo(end) <= 0) {
-          totalCost += impression.getCost();
+    for (int i = getLastImpression(); i < impressions.size(); i++) {
+
+      if (matchesFilters(users.get(impressions.get(i).getId()),
+          impressions.get(i))) { //if user legal
+        if (!impressions.get(i).getDate().isBefore(start)
+            && !impressions.get(i).getDate().isAfter(end)) {
+          setLastImpression(i);
+          totalCost += impressions.get(i).getCost();
+        } else {
+          break;
         }
       }
     }
@@ -160,12 +236,16 @@ public class DataSet {
    */
   public double calcClickCost(LocalDateTime start, LocalDateTime end) {
     double totalCost = 0;
-    for (Click click : clicks) {
+    for (int i = getLastClick(); i < clicks.size(); i++) {
+
       //if user matches filter
-      if (matchesFilters(users.get(click.getId()))) {
-        if (click.getDate().compareTo(start) >= 0
-            && click.getDate().compareTo(end) <= 0) {
-          totalCost += click.getCost();
+      if (matchesFilters(users.get(clicks.get(i).getId()))) {
+        if (!clicks.get(i).getDate().isBefore(start)
+            && !clicks.get(i).getDate().isAfter(end)) {
+          totalCost += clicks.get(i).getCost();
+          setLastClick(i);
+        } else {
+          break;
         }
       }
     }
@@ -198,11 +278,15 @@ public class DataSet {
    */
   public double totalClicks(LocalDateTime start, LocalDateTime end) {
     int count = 0;
-    for (Click click : clicks) {
-      if (matchesFilters(users.get(click.getId()))) { //if user legal
-        if (click.getDate().compareTo(start) >= 0
-            && click.getDate().compareTo(end) <= 0) {
+    for (int i = getLastClick(); i < clicks.size(); i++) {
+
+      if (matchesFilters(users.get(clicks.get(i).getId()))) { //if user legal
+        if (clicks.get(i).getDate().compareTo(start) >= 0
+            && clicks.get(i).getDate().compareTo(end) <= 0) {
+          setLastClick(i);
           count += 1;
+        } else {
+          break;
         }
       }
     }
@@ -218,11 +302,16 @@ public class DataSet {
    */
   public double totalImpressions(LocalDateTime start, LocalDateTime end) {
     int count = 0;
-    for (Impression impression : impressions) {
-      if (matchesFilters(users.get(impression.getId()))) { //if user legal
-        if (impression.getDate().compareTo(start) >= 0
-            && impression.getDate().compareTo(end) <= 0) {
+    for (int i = getLastImpression(); i < impressions.size(); i++) {
+
+      if (matchesFilters(users.get(impressions.get(i).getId()),
+          impressions.get(i))) { //if user legal
+        if (!impressions.get(i).getDate().isBefore(start)
+            && !impressions.get(i).getDate().isAfter(end)) {
+          setLastImpression(i);
           count += 1;
+        } else {
+          break;
         }
       }
     }
@@ -251,11 +340,16 @@ public class DataSet {
    */
   public double calcNumConversions(LocalDateTime start, LocalDateTime end) {
     int conversions = 0;
-    for (ServerAccess access : serverAccess) {
-      if (access.isConversion() && matchesFilters(users.get(access.getId()))) {
-        if (access.getStartDate().compareTo(start) >= 0
-            && access.getStartDate().compareTo(end) <= 0) {
+    for (int i = getLastAccess(); i < serverAccess.size(); i++) {
+
+      if (serverAccess.get(i).isConversion() && matchesFilters(
+          users.get(serverAccess.get(i).getId()))) {
+        if (!serverAccess.get(i).getStartDate().isBefore(start)
+            && !serverAccess.get(i).getStartDate().isAfter(end)) {
+          setLastAccess(i);
           conversions += 1;
+        } else {
+          break;
         }
       }
     }
@@ -292,11 +386,15 @@ public class DataSet {
    */
   public double calcBounces(LocalDateTime start, LocalDateTime end) {
     int bounces = 0;
-    for (ServerAccess access : serverAccess) {
-      if (isBounce(access) && matchesFilters(users.get(access.getId()))) {
-        if (!access.getStartDate().isBefore(start)
-            && !access.getStartDate().isAfter(end)) {
+    for (int i = getLastAccess(); i < serverAccess.size(); i++) {
+
+      if (isBounce(serverAccess.get(i)) && matchesFilters(users.get(serverAccess.get(i).getId()))) {
+        if (!serverAccess.get(i).getStartDate().isBefore(start)
+            && !serverAccess.get(i).getStartDate().isAfter(end)) {
           bounces += 1;
+          setLastAccess(i);
+        } else {
+          break;
         }
       }
     }
@@ -353,16 +451,21 @@ public class DataSet {
   public double calcUniqueUsersClick(LocalDateTime start, LocalDateTime end) {
     HashSet<Long> visited = new HashSet<>();
     int uniques = 0;
-    for (Click click : clicks) {
-      if (matchesFilters(users.get(click.getId()))) { //if user legal
-        if (click.getDate().compareTo(start) >= 0
-            && click.getDate().compareTo(end) <= 0) {
-          if (!visited.contains(click.getId())) {
+    for (int i = getLastClick(); i < clicks.size(); i++) {
+
+      if (matchesFilters(users.get(clicks.get(i).getId()))) { //if user legal
+        if (clicks.get(i).getDate().compareTo(start) >= 0
+            && clicks.get(i).getDate().compareTo(end) <= 0) {
+          if (!visited.contains(clicks.get(i).getId())) {
+            setLastClick(i);
             uniques += 1;
-            visited.add(click.getId());
+            visited.add(clicks.get(i).getId());
+          } else {
+            break;
           }
         }
       }
+
     }
     return uniques;
   }
@@ -394,14 +497,19 @@ public class DataSet {
     ArrayList<Pair<Integer, Double>> points = new ArrayList<>();
     LocalDateTime next = startTime.plus(unit.getDuration());
     int x = 0;
+    setEfficiency(true);
+    resetAllAccess();
     for (LocalDateTime day = startTime; day.compareTo(endTime) <= 0;
         day = day.plus(unit.getDuration())) {
-      System.out.println(x + " " + day + " " + next);
+//      System.out.println(x + " " + day + " " + next);
       points.add(new Pair<>(x, totalImpressions(day, next)));
       next = day.plus(unit.getDuration());
       x++;
-      System.out.println(points);
     }
+    System.out.println(points);
+
+    resetAllAccess();
+    setEfficiency(false);
     return points;
   }
 
@@ -420,6 +528,10 @@ public class DataSet {
   }
 
   public double[] allStats(LocalDateTime start, LocalDateTime end) {
+    setEfficiency(false);
+    if (stats.length != 0) {
+      return stats;
+    }
     double impressionCost = calcImpressionCost(start, end);
 
     double impressions = totalImpressions(start, end);
@@ -434,12 +546,11 @@ public class DataSet {
     double clickCosts = calcCostPerClick(start, end);
     double thousand = costPerThousandImpre(start, end);
     double bounceRate = calcBounceRate(start, end);
-    return new double[]{impressionCost, impressions, clicks, uniques, bounces, conversions, cost,
+    stats = new double[]{impressionCost, impressions, clicks, uniques, bounces, conversions, cost,
         through, acquisitionCosts, clickCosts, thousand, bounceRate};
+    return stats;
 
   }
 
-  public void filteredSet() {
 
-  }
 }
