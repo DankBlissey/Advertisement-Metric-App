@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import javafx.util.Pair;
+import uk.ac.soton.adDashboard.filter.Filter;
 
 /**
  * The model that stores and manipulates the dataset.
@@ -34,6 +35,8 @@ public class DataSet {
    * Default=50 seconds
    */
   private int interval = 50;
+
+  private Filter filter = null;
 
 
   /**
@@ -78,6 +81,14 @@ public class DataSet {
    */
   public void setPagesForBounce(int pagesForBounce) {
     this.pagesForBounce = pagesForBounce;
+  }
+
+  public Filter getFilter() {
+    return filter;
+  }
+
+  public void setFilter(Filter filter) {
+    this.filter = filter;
   }
 
   public ArrayList<Click> getClicks() {
@@ -425,6 +436,10 @@ public class DataSet {
     double bounceRate = calcBounceRate(start, end);
     return new double[]{impressionCost, impressions, clicks, uniques, bounces, conversions, cost,
         through, acquisitionCosts, clickCosts, thousand, bounceRate};
+
+  }
+
+  public void filteredSet() {
 
   }
 }
