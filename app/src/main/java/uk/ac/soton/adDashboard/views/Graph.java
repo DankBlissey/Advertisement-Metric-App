@@ -15,8 +15,8 @@ public class Graph{
     protected ArrayList<XYChart.Series<Number, Number>> dataSeriesList;
 
     public Graph(){
-        this.chart = createChart();
         this.dataSeriesList = new ArrayList<>();
+        this.chart = createChart();
     }
 
     public LineChart<Number, Number> createChart(){
