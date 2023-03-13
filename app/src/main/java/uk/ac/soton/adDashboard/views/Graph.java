@@ -1,9 +1,11 @@
 package uk.ac.soton.adDashboard.views;
 
 import javafx.geometry.Side;
+import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 
@@ -108,6 +110,21 @@ public class Graph{
 
         //Adds Series to the Chart
         this.chart.getData().add(newSeries);
+    }
+
+    public void changeLineColor(Color newColor, int index) {
+        // Find the Node representing the line for the series
+        Node lineNode = getSeriesByIndex(index).getNode().lookup(".chart-series-line");
+
+        // Set the stroke color of the line
+        lineNode.setStyle("-fx-stroke: " + toRGBCode(newColor) + ";");
+    }
+
+    private String toRGBCode(Color color) {
+        return String.format("#%02X%02X%02X",
+                (int) (color.getRed() * 255),
+                (int) (color.getGreen() * 255),
+                (int) (color.getBlue() * 255));
     }
 
 }
