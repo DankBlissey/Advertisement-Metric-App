@@ -5,10 +5,10 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import org.apache.logging.log4j.LogManager;
@@ -18,7 +18,6 @@ import uk.ac.soton.adDashboard.records.DataSet;
 import uk.ac.soton.adDashboard.ui.AppPane;
 import uk.ac.soton.adDashboard.ui.AppWindow;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class GraphView extends BaseView {
@@ -31,6 +30,7 @@ public class GraphView extends BaseView {
 
     protected DataSet dataSet;
     protected ArrayList<String> filenames;
+    protected Graph graph;
 
     public GraphView(AppWindow appWindow, DataSet dataSet, ArrayList<String> filenames) {
         super(appWindow);
@@ -128,7 +128,6 @@ public class GraphView extends BaseView {
         borderPane.setTop(vbox);
         borderPane.setBackground(new Background(new BackgroundFill(
                 backgroundPane, CornerRadii.EMPTY, Insets.EMPTY)));
-        root.getChildren().add(borderPane);
 
         GridPane gridPane = new GridPane();
         borderPane.setCenter(gridPane);
@@ -162,8 +161,12 @@ public class GraphView extends BaseView {
               toggle.setTranslateX(switchedOn ? -30 : 30);
             appWindow.loadView(new ListView(appWindow,dataSet,filenames));
         });
+
         gridPane.add(stack,0,0);
 
+        graph = new Graph();
+        borderPane.setLeft(graph.getChart());
+        root.getChildren().add(borderPane);
 
     }
 
