@@ -5,44 +5,32 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 
+import java.util.ArrayList;
+
 public class Graph{
 
     protected LineChart<Number, Number> chart;
     protected NumberAxis xAxis;
     protected NumberAxis yAxis;
-    protected XYChart.Series<Number, Number> dataSeries;
+    protected ArrayList<XYChart.Series<Number, Number>> dataSeriesList;
 
     public Graph(){
-        this.dataSeries = new XYChart.Series<>();
         this.chart = createChart();
+        this.dataSeriesList = new ArrayList<>();
     }
 
     public LineChart<Number, Number> createChart(){
-
         xAxis = new NumberAxis();
         yAxis = new NumberAxis();
 
         chart = new LineChart<>(xAxis,yAxis);
 
-        // Create a new series for the graph data
-        dataSeries = new XYChart.Series<>();
-
-        // Add some data points to the series
-        dataSeries.getData().add(new XYChart.Data<>(1, 6));
-        dataSeries.getData().add(new XYChart.Data<>(2, 2));
-        dataSeries.getData().add(new XYChart.Data<>(3, 4));
-        dataSeries.getData().add(new XYChart.Data<>(4, 8));
-        dataSeries.getData().add(new XYChart.Data<>(5, 10));
-
-        // Add the series to the graph
-        chart.getData().add(dataSeries);
-
-        // Set the axis and graph titles
+        //Set the axis and graph titles.
         chart.setTitle("Graph");
         chart.setCreateSymbols(false);
         chart.setLegendVisible(false);
         chart.setAnimated(false);
-        chart.setAxisSortingPolicy(LineChart.SortingPolicy.NONE);
+        chart.setAxisSortingPolicy(LineChart.SortingPolicy.X_AXIS);
         chart.setHorizontalGridLinesVisible(true);
         chart.setVerticalGridLinesVisible(true);
         chart.setHorizontalZeroLineVisible(true);
@@ -50,7 +38,7 @@ public class Graph{
         chart.setLegendVisible(true);
         chart.setLegendSide(Side.RIGHT);
 
-        // Set the size and position of the graph within the layout container
+        //Set the size and position of the graph within the layout container.
         chart.setLayoutX(50);
         chart.setLayoutY(50);
         chart.setPrefSize(500, 500);
@@ -61,9 +49,65 @@ public class Graph{
         return this.chart;
     }
 
-    public XYChart.Series<Number, Number> getSeries(){
-        return this.dataSeries;
+    //Used to add all points to the Series
+    public void addDataPoints(ArrayList<Number> X,ArrayList<Number> Y, XYChart.Series<Number, Number> Series){
+        //Iterate through X and Y using a loop.
+        for (int i = 0; i < X.size() && i < Y.size(); i++) {
+            //Get the x and y values for the current data point.
+            Number xValue = X.get(i);
+            Number yValue = Y.get(i);
+
+            //Adds it to the dataSeries.
+            Series.getData().add(new XYChart.Data<>(xValue, yValue));
+        }
     }
 
+    //Used to change the points of a Series
+    public void resetSeries(ArrayList<Number> X,ArrayList<Number> Y, XYChart.Series<Number, Number> Series){
+        //Creates new Series for chart
+        XYChart.Series<Number, Number> newSeries = new XYChart.Series<>();
+        addDataPoints(X,Y,newSeries);
+
+        //Replaces old line on the graph
+        Series = newSeries;
+    }
+
+    //gets the Series by Index
+    public XYChart.Series<Number, Number> getSeriesByIndex(int index) {
+        if (index < 0 || index >= dataSeriesList.size()) {
+            throw new IndexOutOfBoundsException("Invalid series index: " + index);
+        }
+        return dataSeriesList.get(index);
+    }
+
+    //Used to change the points of a Series by Index in the arraylist
+    public void resetIndexSeries(ArrayList<Number> X,ArrayList<Number> Y,int index){
+        resetSeries(X,Y,getSeriesByIndex(index));
+    }
+
+    //Creates a new Series
+    public XYChart.Series<Number, Number> createNewSeries(ArrayList<Number> X,ArrayList<Number> Y){
+        //Creates a new Series
+        XYChart.Series<Number, Number> newSeries = new XYChart.Series<>();
+
+        //Gets the points for the series
+        addDataPoints(X,Y,newSeries);
+
+        //returns the new Series
+        return newSeries;
+    }
+
+    //creates a new Series and adds it to the Series Lists and the Chart
+    public void addNewSeries(ArrayList<Number> X,ArrayList<Number> Y){
+
+        //Creates a new Series
+        XYChart.Series<Number, Number> newSeries = createNewSeries(X,Y);
+
+        //Adds Series to the List
+        this.dataSeriesList.add(newSeries);
+
+        //Adds Series to the Chart
+        this.chart.getData().add(newSeries);
+    }
 
 }
