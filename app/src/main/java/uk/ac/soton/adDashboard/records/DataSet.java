@@ -576,7 +576,14 @@ public class DataSet {
   public LocalDateTime latestDate() {
     return impressions.get(impressions.size() - 1).getDate();
   }
-
+//TODO: reset stats on changes to filter.
+  /**
+   * Gets all the stats for the list view, only recalculating if there's been a change to any parameters.
+   * @param start The start of the time range.
+   * @param end The end of the time range.
+   * @return Returns an array of impressionCost, impressions, clicks, uniques, bounces, conversions, cost,
+   *         through, acquisitionCosts, clickCosts, thousand, bounceRate.
+   */
   public double[] allStats(LocalDateTime start, LocalDateTime end) {
     setEfficiency(false);
     if (stats.length != 0) {
