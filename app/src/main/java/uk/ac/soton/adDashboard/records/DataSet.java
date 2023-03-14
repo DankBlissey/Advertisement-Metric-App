@@ -243,7 +243,10 @@ public class DataSet {
             && !impressions.get(i).getDate().isAfter(end)) {
           setLastImpression(i);
           totalCost += impressions.get(i).getCost();
-        } else {
+        }  else if (!impressions.get(i).getDate().isAfter(end)) {
+          setLastImpression(i);
+
+        }else {
           break;
         }
       }
@@ -270,7 +273,10 @@ public class DataSet {
             && !clicks.get(i).getDate().isAfter(end)) {
           totalCost += clicks.get(i).getCost();
           setLastClick(i);
-        } else {
+        }  else if (!clicks.get(i).getDate().isAfter(end)) {
+          setLastClick(i);
+
+        }else {
           break;
         }
       }
@@ -312,6 +318,9 @@ public class DataSet {
             && clicks.get(i).getDate().compareTo(end) <= 0) {
           setLastClick(i);
           count += 1;
+        }  else if (!clicks.get(i).getDate().isAfter(end)) {
+          setLastClick(i);
+
         } else {
           break;
         }
@@ -329,6 +338,7 @@ public class DataSet {
    */
   public double totalImpressions(LocalDateTime start, LocalDateTime end) {
     int count = 0;
+    System.out.println(getLastImpression());
     for (int i = getLastImpression(); i < impressions.size(); i++) {
 
       if (matchesFilters(users.get(impressions.get(i).getId()),
@@ -337,6 +347,9 @@ public class DataSet {
             && !impressions.get(i).getDate().isAfter(end)) {
           setLastImpression(i);
           count += 1;
+        } else if (!impressions.get(i).getDate().isAfter(end)) {
+          setLastImpression(i);
+
         } else {
           break;
         }
@@ -364,6 +377,9 @@ public class DataSet {
             && !serverAccess.get(i).getStartDate().isAfter(end)) {
           setLastAccess(i);
           conversions += 1;
+        } else if (!serverAccess.get(i).getStartDate().isAfter(end)) {
+          setLastAccess(i);
+
         } else {
           break;
         }
@@ -410,7 +426,10 @@ public class DataSet {
             && !serverAccess.get(i).getStartDate().isAfter(end)) {
           bounces += 1;
           setLastAccess(i);
-        } else {
+        }  else if (!serverAccess.get(i).getStartDate().isAfter(end)) {
+          setLastAccess(i);
+
+        }else {
           break;
         }
       }
@@ -534,11 +553,11 @@ public class DataSet {
     int x = 0;
     setEfficiency(true);
     resetAllAccess();
-    for (LocalDateTime day = startTime; day.compareTo(endTime) <= 0;
+    for (LocalDateTime day = startTime; !day.isAfter(endTime);
         day = day.plus(unit.getDuration())) {
 //      System.out.println(x + " " + day + " " + next);
       points.add(new Pair<>(x, totalImpressions(day, next)));
-      next = day.plus(unit.getDuration());
+      next = next.plus(unit.getDuration());
       x++;
     }
     System.out.println(points);
@@ -584,25 +603,28 @@ public class DataSet {
   }
 
   public Impression nearestImpression(LocalDateTime time, long id) {
-
-    return null;
-  }
-
-  public void createHashMap() {
-    HashMap<Long, List<Impression>> map = new HashMap<>();
-    System.out.println("creating hash map");
-    for (Impression impression : impressions) {
-      if (map.containsKey(impression.getId())) {
-        map.get(impression.getId()).add(impression);
-
-      } else {
-
-        map.put(impression.getId(), new ArrayList<>());
-        map.get(impression.getId()).add(impression);
+    int low=0;
+    int high=impressions.size();
+    int index=Integer.MAX_VALUE;
+    int mid=0;
+    while (low <= high) {
+      mid = low  + ((high - low) / 2);
+      if ( impressions.get(mid).getDate().isBefore(time)) {
+        //if the truncate to day is the same then
+        low = mid + 1;
+      } else if ( impressions.get(mid).getDate().isAfter(time)) {
+        high = mid - 1;
+      } else if (impressions.get(mid).getDate().equals(time)) {
+        index = mid;
+        break;
       }
     }
-    System.out.println("hasmap complete");
+    while (impressions.get(mid).getDate().isAfter(time)&&impressions.get(mid).getId()!=id) {
+      mid-=1;
+    }
+    return impressions.get(mid);
   }
+
 
 
 }
