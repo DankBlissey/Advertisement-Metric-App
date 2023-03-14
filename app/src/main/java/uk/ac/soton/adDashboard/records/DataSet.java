@@ -22,6 +22,7 @@ public class DataSet {
   private ArrayList<ServerAccess> serverAccess;
   private HashMap<Long, User> users;
   public double[] stats = {};
+  public boolean filteringEnabled=false;
 
   /**
    * If true the pagesViewed is the bounce metric.
@@ -189,6 +190,14 @@ public class DataSet {
     return interval;
   }
 
+  public boolean isFilteringEnabled() {
+    return filteringEnabled;
+  }
+
+  public void filteringEnabled(boolean filteringEnabled) {
+    this.filteringEnabled = filteringEnabled;
+  }
+
   public double[] getStats() {
     return stats;
   }
@@ -213,6 +222,9 @@ public class DataSet {
   }
 
   public boolean matchesFilters(User user, Impression impression) {
+    if (!filteringEnabled) {
+      return true;
+    }
     if (!matchesFilters(user)) {
       return false;
     }
@@ -338,7 +350,7 @@ public class DataSet {
    */
   public double totalImpressions(LocalDateTime start, LocalDateTime end) {
     int count = 0;
-    System.out.println(getLastImpression());
+
     for (int i = getLastImpression(); i < impressions.size(); i++) {
 
       if (matchesFilters(users.get(impressions.get(i).getId()),
@@ -589,6 +601,7 @@ public class DataSet {
     if (stats.length != 0) {
       return stats;
     }
+    filteringEnabled(false);
     double impressionCost = calcImpressionCost(start, end);
 
     double impressions = totalImpressions(start, end);
@@ -605,31 +618,37 @@ public class DataSet {
     double bounceRate = calcBounceRate(start, end);
     stats = new double[]{impressionCost, impressions, clicks, uniques, bounces, conversions, cost,
         through, acquisitionCosts, clickCosts, thousand, bounceRate};
+    filteringEnabled(true);
     return stats;
 
   }
 
   public Impression nearestImpression(LocalDateTime time, long id) {
-    int low=0;
-    int high=impressions.size();
-    int index=Integer.MAX_VALUE;
-    int mid=0;
-    while (low <= high) {
-      mid = low  + ((high - low) / 2);
-      if ( impressions.get(mid).getDate().isBefore(time)) {
-        //if the truncate to day is the same then
-        low = mid + 1;
-      } else if ( impressions.get(mid).getDate().isAfter(time)) {
-        high = mid - 1;
-      } else if (impressions.get(mid).getDate().equals(time)) {
-        index = mid;
-        break;
-      }
-    }
-    while (impressions.get(mid).getDate().isAfter(time)&&impressions.get(mid).getId()!=id) {
-      mid-=1;
-    }
-    return impressions.get(mid);
+    return null;
+//    int low=0;
+//    int high=impressions.size()-1;
+//    int index=Integer.MAX_VALUE;
+//    int mid=0;
+//    while (low <= high) {
+//      mid = low  + ((high - low) / 2);
+//      if (mid<0 || mid>=impressions.size()) {
+//        break;
+//      }
+//
+//      if ( impressions.get(mid).getDate().isBefore(time)) {
+//        //if the truncate to day is the same then
+//        low = mid + 1;
+//      } else if ( impressions.get(mid).getDate().isAfter(time)) {
+//        high = mid - 1;
+//      } else if (impressions.get(mid).getDate().equals(time)) {
+//        index = mid;
+//        break;
+//      }
+//    }
+//    while (impressions.get(mid).getDate().isAfter(time) && impressions.get(mid).getId()!=id && mid>0) {
+//      mid-=1;
+//    }
+//    return impressions.get(mid);
   }
 
 
