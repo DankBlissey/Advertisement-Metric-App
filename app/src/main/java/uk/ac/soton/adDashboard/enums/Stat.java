@@ -11,6 +11,7 @@ public enum Stat {
   CPA,
   CPC,
   CPM,
-  bounceRate
+  bounceRate,
+  ANY;
 
 }

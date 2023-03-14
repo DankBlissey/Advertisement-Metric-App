@@ -10,5 +10,6 @@ public enum Context {
   Media,
   Blog,
   Hobbies,
-  Travel;
+  Travel,
+  ANY;
 }

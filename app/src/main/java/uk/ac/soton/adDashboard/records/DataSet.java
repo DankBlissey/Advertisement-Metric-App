@@ -5,7 +5,11 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import javafx.util.Pair;
+import uk.ac.soton.adDashboard.enums.Context;
+import uk.ac.soton.adDashboard.enums.Gender;
+import uk.ac.soton.adDashboard.enums.Income;
 import uk.ac.soton.adDashboard.filter.Filter;
 
 /**
@@ -35,7 +39,7 @@ public class DataSet {
    */
   private int interval = 50;
 
-  private Filter filter = null;
+  private Filter filter = new Filter();
 
   private int lastImpression = 0;
   private int lastAccess = 0;
@@ -75,6 +79,7 @@ public class DataSet {
    */
   public void setInterval(int interval) {
     this.interval = interval;
+    resetStats();
   }
 
   /**
@@ -85,6 +90,17 @@ public class DataSet {
    */
   public void setPagesForBounce(int pagesForBounce) {
     this.pagesForBounce = pagesForBounce;
+    resetStats();
+  }
+
+
+  public void setPagesViewedBounceMetric(Boolean BounceMetric) {
+    this.pagesViewedBounceMetric = BounceMetric;
+    resetStats();
+  }
+
+  public void resetStats() {
+    stats = new double[]{};
   }
 
   public Filter getFilter() {
@@ -184,11 +200,14 @@ public class DataSet {
    * @return True if the user matches the filter.
    */
   public boolean matchesFilters(User user) {
-    if (!user.getAge().equals(filter.getAge())) {
+    if (!filter.getAge().equals("") && !user.getAge().equals(filter.getAge())) {
       return false;
     }
-    if (!user.getGender().equals(filter.getGender())) {
+    if (!filter.getGender().equals(Gender.ANY) && !user.getGender().equals(filter.getGender())) {
       return false;
+    }
+    if (filter.getIncome().equals(Income.ANY)) {
+      return true;
     }
     return user.getIncome().equals(filter.getIncome());
   }
@@ -196,6 +215,12 @@ public class DataSet {
   public boolean matchesFilters(User user, Impression impression) {
     if (!matchesFilters(user)) {
       return false;
+    }
+    if (impression == null) {
+      return true;
+    }
+    if (filter.getContext().equals(Context.ANY)) {
+      return true;
     }
     return impression.getContext().equals(filter.getContext());
   }
@@ -239,7 +264,8 @@ public class DataSet {
     for (int i = getLastClick(); i < clicks.size(); i++) {
 
       //if user matches filter
-      if (matchesFilters(users.get(clicks.get(i).getId()))) {
+      if (matchesFilters(users.get(clicks.get(i).getId()),
+          nearestImpression(clicks.get(i).getDate(), clicks.get(i).getId()))) {
         if (!clicks.get(i).getDate().isBefore(start)
             && !clicks.get(i).getDate().isAfter(end)) {
           totalCost += clicks.get(i).getCost();
@@ -280,7 +306,8 @@ public class DataSet {
     int count = 0;
     for (int i = getLastClick(); i < clicks.size(); i++) {
 
-      if (matchesFilters(users.get(clicks.get(i).getId()))) { //if user legal
+      if (matchesFilters(users.get(clicks.get(i).getId()),
+          nearestImpression(clicks.get(i).getDate(), clicks.get(i).getId()))) { //if user legal
         if (clicks.get(i).getDate().compareTo(start) >= 0
             && clicks.get(i).getDate().compareTo(end) <= 0) {
           setLastClick(i);
@@ -318,18 +345,6 @@ public class DataSet {
     return count;
   }
 
-  /**
-   * Calculates the click-through rate (as the number of clicks per impression)
-   *
-   * @param start The start of the range as LocalDateTime.
-   * @param end   The end of the range as LocalDateTime.
-   * @return Returns the click-through rate for a range and set of filters.
-   */
-  public double calcClickThrough(LocalDateTime start, LocalDateTime end) {
-    double imp = totalImpressions(start, end);
-    double clicks = totalClicks(start, end);
-    return clicks / imp;
-  }
 
   /**
    * Calculates the number of conversions in a range, matching a set of filters.
@@ -343,7 +358,8 @@ public class DataSet {
     for (int i = getLastAccess(); i < serverAccess.size(); i++) {
 
       if (serverAccess.get(i).isConversion() && matchesFilters(
-          users.get(serverAccess.get(i).getId()))) {
+          users.get(serverAccess.get(i).getId()),
+          nearestImpression(serverAccess.get(i).getStartDate(), serverAccess.get(i).getId()))) {
         if (!serverAccess.get(i).getStartDate().isBefore(start)
             && !serverAccess.get(i).getStartDate().isAfter(end)) {
           setLastAccess(i);
@@ -388,7 +404,8 @@ public class DataSet {
     int bounces = 0;
     for (int i = getLastAccess(); i < serverAccess.size(); i++) {
 
-      if (isBounce(serverAccess.get(i)) && matchesFilters(users.get(serverAccess.get(i).getId()))) {
+      if (isBounce(serverAccess.get(i)) && matchesFilters(users.get(serverAccess.get(i).getId()),
+          nearestImpression(serverAccess.get(i).getStartDate(), serverAccess.get(i).getId()))) {
         if (!serverAccess.get(i).getStartDate().isBefore(start)
             && !serverAccess.get(i).getStartDate().isAfter(end)) {
           bounces += 1;
@@ -401,44 +418,6 @@ public class DataSet {
     return bounces;
   }
 
-  /**
-   * Calculates the number of bounces per click (the bounce rate)
-   *
-   * @param start The start of the time range.
-   * @param end   The end of the time range.
-   * @return Returns the bounce rate.
-   */
-  public double calcBounceRate(LocalDateTime start, LocalDateTime end) {
-    double bounces = calcBounces(start, end);
-    double clicks = totalClicks(start, end);
-    return bounces / clicks;
-  }
-
-  /**
-   * Calculates the cost per acquisition (as the average money spent per acquisition)
-   *
-   * @param start       The start of the time range.
-   * @param granularEnd The end of the time range.
-   * @return Returns the cost per acquisition.
-   */
-  public double calcCostAcquisition(LocalDateTime start, LocalDateTime granularEnd) {
-    double cost = calcTotalCost(start, granularEnd);
-    double conversions = calcNumConversions(start, granularEnd);
-    return cost / conversions;
-  }
-
-  /**
-   * Calculates the cost per click.
-   *
-   * @param start The start of the range as LocalDateTime.
-   * @param end   The end of the range as LocalDateTime.
-   * @return Returns the cost per click.
-   */
-  public double calcCostPerClick(LocalDateTime start, LocalDateTime end) {
-    double cost = calcTotalCost(start, end);
-    double clicks = totalClicks(start, end);
-    return cost / clicks;
-  }
 
   /**
    * Calculates the number of unique user clicks, utilising a hashSet for efficiency.
@@ -453,7 +432,8 @@ public class DataSet {
     int uniques = 0;
     for (int i = getLastClick(); i < clicks.size(); i++) {
 
-      if (matchesFilters(users.get(clicks.get(i).getId()))) { //if user legal
+      if (matchesFilters(users.get(clicks.get(i).getId()),
+          nearestImpression(clicks.get(i).getDate(), clicks.get(i).getId()))) { //if user legal
         if (clicks.get(i).getDate().compareTo(start) >= 0
             && clicks.get(i).getDate().compareTo(end) <= 0) {
           if (!visited.contains(clicks.get(i).getId())) {
@@ -481,8 +461,63 @@ public class DataSet {
   public double costPerThousandImpre(LocalDateTime start, LocalDateTime end) {
     double cost = calcTotalCost(start, end);
     double impressions = totalImpressions(start, end);
+    //todo: NaN divide by zero fix
     return cost / (impressions / 1000.0);
   }
+
+
+  /**
+   * Calculates the cost per click.
+   *
+   * @param start The start of the range as LocalDateTime.
+   * @param end   The end of the range as LocalDateTime.
+   * @return Returns the cost per click.
+   */
+  public double calcCostPerClick(LocalDateTime start, LocalDateTime end) {
+    double cost = calcTotalCost(start, end);
+    double clicks = totalClicks(start, end);
+    return cost / clicks;
+  }
+
+  /**
+   * Calculates the cost per acquisition (as the average money spent per acquisition)
+   *
+   * @param start       The start of the time range.
+   * @param granularEnd The end of the time range.
+   * @return Returns the cost per acquisition.
+   */
+  public double calcCostAcquisition(LocalDateTime start, LocalDateTime granularEnd) {
+    double cost = calcTotalCost(start, granularEnd);
+    double conversions = calcNumConversions(start, granularEnd);
+    return cost / conversions;
+  }
+
+  /**
+   * Calculates the number of bounces per click (the bounce rate)
+   *
+   * @param start The start of the time range.
+   * @param end   The end of the time range.
+   * @return Returns the bounce rate.
+   */
+  public double calcBounceRate(LocalDateTime start, LocalDateTime end) {
+    double bounces = calcBounces(start, end);
+    double clicks = totalClicks(start, end);
+    return bounces / clicks;
+  }
+
+  /**
+   * Calculates the click-through rate (as the number of clicks per impression)
+   *
+   * @param start The start of the range as LocalDateTime.
+   * @param end   The end of the range as LocalDateTime.
+   * @return Returns the click-through rate for a range and set of filters.
+   */
+  public double calcClickThrough(LocalDateTime start, LocalDateTime end) {
+    double imp = totalImpressions(start, end);
+    double clicks = totalClicks(start, end);
+    return clicks / imp;
+  }
+
 
   /**
    * Generates a set of x and y coordinates to plot.
@@ -513,10 +548,6 @@ public class DataSet {
     return points;
   }
 
-
-  public void setPagesViewedBounceMetric(Boolean BounceMetric) {
-    this.pagesViewedBounceMetric = BounceMetric;
-  }
 
   public LocalDateTime earliestDate() {
     return impressions.get(0).getDate();
@@ -550,6 +581,27 @@ public class DataSet {
         through, acquisitionCosts, clickCosts, thousand, bounceRate};
     return stats;
 
+  }
+
+  public Impression nearestImpression(LocalDateTime time, long id) {
+
+    return null;
+  }
+
+  public void createHashMap() {
+    HashMap<Long, List<Impression>> map = new HashMap<>();
+    System.out.println("creating hash map");
+    for (Impression impression : impressions) {
+      if (map.containsKey(impression.getId())) {
+        map.get(impression.getId()).add(impression);
+
+      } else {
+
+        map.put(impression.getId(), new ArrayList<>());
+        map.get(impression.getId()).add(impression);
+      }
+    }
+    System.out.println("hasmap complete");
   }
 
 

@@ -8,11 +8,11 @@ import uk.ac.soton.adDashboard.enums.Stat;
 
 public class Filter {
 
-  Stat stat = null;
-  Context context = null;
-  String age = null;
-  Income income = null;
-  Gender gender = null;
+  Stat stat = Stat.ANY;
+  Context context = Context.ANY;
+  String age = "";
+  Income income = Income.ANY;
+  Gender gender = Gender.ANY;
   LocalDateTime startDate = null;
   LocalDateTime endDate = null;
 
@@ -26,6 +26,7 @@ public class Filter {
 
   public String getAge() {
     return age;
+
   }
 
   public void setAge(String age) {
