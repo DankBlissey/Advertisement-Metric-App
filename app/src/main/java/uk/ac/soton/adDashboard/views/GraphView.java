@@ -3,11 +3,13 @@ package uk.ac.soton.adDashboard.views;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -121,23 +123,19 @@ public class GraphView extends BaseView {
         dropShadow.setSpread(0.05);
         dropShadow.setColor(Color.GREY);
 
+        // This is the border pane included in the whole view which includes the top bars, graphs, filters etc.
         BorderPane borderPane = new BorderPane();
-
         borderPane.getStyleClass().add("apppane");
 
         borderPane.setTop(vbox);
-        borderPane.setBackground(new Background(new BackgroundFill(
-                backgroundPane, CornerRadii.EMPTY, Insets.EMPTY)));
         root.getChildren().add(borderPane);
 
-        GridPane gridPane = new GridPane();
-        borderPane.setCenter(gridPane);
-        //  gridPane.setGridLinesVisible(true);
-        gridPane.setAlignment(Pos.CENTER  );
-        gridPane.setHgap(20);
-        gridPane.setVgap(20);
-
-
+        // This is the center of the borderPane - contains the toggle to list/graph and the graphs
+        // There is a graphList which contains the toggle and multiple graphBoxes, each graphBox contains
+        // the dropdown for Clicks, impressions, etc. and the graph itself
+        VBox graphsList = new VBox(20);
+        borderPane.setCenter(graphsList);
+        graphsList.setMaxWidth(600);
 
         StackPane stack = new StackPane();
         Rectangle background = new Rectangle(100, 30);
@@ -162,8 +160,38 @@ public class GraphView extends BaseView {
               toggle.setTranslateX(switchedOn ? -30 : 30);
             appWindow.loadView(new ListView(appWindow,dataSet,filenames));
         });
-        gridPane.add(stack,0,0);
 
+        VBox graphBox = new VBox(20);
+        graphBox.getStyleClass().add("graph-box");
+
+        ComboBox<Color> cmb = new ComboBox<>();
+        cmb.getItems().addAll(Color.RED, Color.GREEN, Color.BLUE);
+
+        var graph = new Rectangle();
+        graph.setWidth(200);
+        graph.setHeight(100);
+        graph.setFill(Color.BLUEVIOLET);
+
+        graphBox.getChildren().addAll(cmb, graph);
+
+        graphsList.getChildren().addAll(stack,graphBox);
+
+        // This is the right side of the borderPane
+        Pane filterPane = new VBox(20);
+        filterPane.getStyleClass().add("filter-pane");
+
+        Text filterTitle = new Text("Filters");
+        filterTitle.getStyleClass().add("bigWhiteText");
+
+        Button buttonCurrent = new Button("Current");
+        buttonCurrent.setPrefSize(100, 20);
+
+        Button buttonProjected = new Button("Projected");
+        buttonProjected.setPrefSize(100, 20);
+        filterPane.getChildren().addAll(filterTitle, buttonCurrent, buttonProjected);
+
+        borderPane.setRight(filterPane);
+        borderPane.setPadding(new Insets(0,20,0,0));
 
     }
 
