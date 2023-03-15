@@ -81,4 +81,14 @@ public class Filter {
   public void setEndDate(LocalDateTime endDate) {
     this.endDate = endDate;
   }
+
+
+  public Stat getStat() {
+    return stat;
+  }
+
+  public void setStat(Stat stat) {
+    this.stat = stat;
+  }
 }
+

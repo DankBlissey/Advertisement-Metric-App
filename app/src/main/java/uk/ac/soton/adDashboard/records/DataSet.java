@@ -1,14 +1,17 @@
 package uk.ac.soton.adDashboard.records;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAmount;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import javafx.util.Pair;
+import uk.ac.soton.adDashboard.Interfaces.Function;
 import uk.ac.soton.adDashboard.enums.Context;
 import uk.ac.soton.adDashboard.enums.Gender;
+import uk.ac.soton.adDashboard.enums.Granularity;
 import uk.ac.soton.adDashboard.enums.Income;
 import uk.ac.soton.adDashboard.filter.Filter;
 
@@ -28,7 +31,7 @@ public class DataSet {
   /**
    * A boolean flag for efficiency that can enable or disable filtering.
    */
-  public boolean filteringEnabled=false;
+  public boolean filteringEnabled = false;
 
   /**
    * If true the pagesViewed is the bounce metric.
@@ -249,7 +252,8 @@ public class DataSet {
 
   /**
    * Checks if an impression and user match the filter.
-   * @param user The user to check.
+   *
+   * @param user       The user to check.
    * @param impression The impression to check.
    * @return Returns true if both match the filter and false otherwise.
    */
@@ -287,10 +291,10 @@ public class DataSet {
             && !impressions.get(i).getDate().isAfter(end)) {
           setLastImpression(i);
           totalCost += impressions.get(i).getCost();
-        }  else if (!impressions.get(i).getDate().isAfter(end)) {
+        } else if (!impressions.get(i).getDate().isAfter(end)) {
           setLastImpression(i);
 
-        }else {
+        } else {
           break;
         }
       }
@@ -317,10 +321,10 @@ public class DataSet {
             && !clicks.get(i).getDate().isAfter(end)) {
           totalCost += clicks.get(i).getCost();
           setLastClick(i);
-        }  else if (!clicks.get(i).getDate().isAfter(end)) {
+        } else if (!clicks.get(i).getDate().isAfter(end)) {
           setLastClick(i);
 
-        }else {
+        } else {
           break;
         }
       }
@@ -362,7 +366,7 @@ public class DataSet {
             && clicks.get(i).getDate().compareTo(end) <= 0) {
           setLastClick(i);
           count += 1;
-        }  else if (!clicks.get(i).getDate().isAfter(end)) {
+        } else if (!clicks.get(i).getDate().isAfter(end)) {
           setLastClick(i);
 
         } else {
@@ -470,10 +474,10 @@ public class DataSet {
             && !serverAccess.get(i).getStartDate().isAfter(end)) {
           bounces += 1;
           setLastAccess(i);
-        }  else if (!serverAccess.get(i).getStartDate().isAfter(end)) {
+        } else if (!serverAccess.get(i).getStartDate().isAfter(end)) {
           setLastAccess(i);
 
-        }else {
+        } else {
           break;
         }
       }
@@ -524,24 +528,27 @@ public class DataSet {
   public double costPerThousandImpre(LocalDateTime start, LocalDateTime end) {
     double cost = calcTotalCost(start, end);
     double impressions = totalImpressions(start, end);
-    if (impressions<=0) {
-      return cost/(1.0/1000);
+    if (impressions <= 0) {
+      return cost / (1.0 / 1000);
     }
     return cost / (impressions / 1000.0);
   }
 
   /**
    * Overloaded version that takes a precalculated impressions count.
-   * @param start
-   * @param end
-   * @param totalImpressions
-   * @return
+   *
+   * @param start The start of the range as LocalDateTime.
+   * @param end   The end of the range as LocalDateTime.
+   * @param totalImpressions A precalculated number of totalImpressions.
+   * @return Returns the cost per thousand impressions in a range, where the cost and impressions
+   * match a filter.
    */
-  public double costPerThousandImpre(LocalDateTime start, LocalDateTime end,double totalImpressions) {
+  public double costPerThousandImpre(LocalDateTime start, LocalDateTime end,
+      double totalImpressions) {
     double cost = calcTotalCost(start, end);
 
-    if (totalImpressions<=0) {
-      return cost/(1.0/1000);
+    if (totalImpressions <= 0) {
+      return cost / (1.0 / 1000);
     }
     return cost / (totalImpressions / 1000.0);
   }
@@ -557,22 +564,24 @@ public class DataSet {
   public double calcCostPerClick(LocalDateTime start, LocalDateTime end) {
     double cost = calcTotalCost(start, end);
     double clicks = totalClicks(start, end);
-    if (clicks<=0) {
+    if (clicks <= 0) {
       return cost;
     }
     return cost / clicks;
   }
+
   /**
    * Overloaded version that calculates the cost per click but taking in a precalculated cost.
    *
    * @param start The start of the range as LocalDateTime.
    * @param end   The end of the range as LocalDateTime.
+   * @param totalCost A precalculated totalCost.
    * @return Returns the cost per click.
    */
   public double calcCostPerClick(LocalDateTime start, LocalDateTime end, double totalCost) {
 
     double clicks = totalClicks(start, end);
-    if (clicks<=0) {
+    if (clicks <= 0) {
       return totalCost;
     }
     return totalCost / clicks;
@@ -588,7 +597,7 @@ public class DataSet {
   public double calcCostAcquisition(LocalDateTime start, LocalDateTime granularEnd) {
     double cost = calcTotalCost(start, granularEnd);
     double conversions = calcNumConversions(start, granularEnd);
-    if (conversions<=0) {
+    if (conversions <= 0) {
       return cost;
     }
     return cost / conversions;
@@ -596,14 +605,16 @@ public class DataSet {
 
   /**
    * Overloaded version that calculates the cost of acquisitions using a precalculated total cost.
-   * @param start
-   * @param granularEnd
-   * @param totalCost
-   * @return
+   *
+   * @param start       The start of the time range.
+   * @param granularEnd The end of the time range.
+   * @param totalCost A precalculated totalCost.
+   * @return Returns the cost per acquisition.
    */
-  public double calcCostAcquisition(LocalDateTime start, LocalDateTime granularEnd,double totalCost) {
+  public double calcCostAcquisition(LocalDateTime start, LocalDateTime granularEnd,
+      double totalCost) {
     double conversions = calcNumConversions(start, granularEnd);
-    if (conversions<=0) {
+    if (conversions <= 0) {
       return totalCost;
     }
     return totalCost / conversions;
@@ -620,7 +631,7 @@ public class DataSet {
   public double calcBounceRate(LocalDateTime start, LocalDateTime end) {
     double bounces = calcBounces(start, end);
     double clicks = totalClicks(start, end);
-    if (clicks<=0) {
+    if (clicks <= 0) {
       return bounces;
     }
     return bounces / clicks;
@@ -637,22 +648,24 @@ public class DataSet {
   public double calcClickThrough(LocalDateTime start, LocalDateTime end) {
     double clicks = totalClicks(start, end);
     double imp = totalImpressions(start, end);
-    if (imp<=0) {
+    if (imp <= 0) {
       return clicks;
     }
     return clicks / imp;
   }
 
   /**
-   * Overloaded version that calculates the clickthroughrate using a precalculated total number of impressions.
-   * @param start
-   * @param end
-   * @param totalImp
-   * @return
+   * Overloaded version that calculates the clickthroughrate using a precalculated total number of
+   * impressions.
+   *
+   * @param start The start of the range as LocalDateTime.
+   * @param end   The end of the range as LocalDateTime.
+   * @param totalImp A precalculated totalImpressions.
+   * @return Returns the click-through rate for a range and set of filters.
    */
-  public double calcClickThrough(LocalDateTime start, LocalDateTime end,double totalImp) {
+  public double calcClickThrough(LocalDateTime start, LocalDateTime end, double totalImp) {
     double clicks = totalClicks(start, end);
-    if (totalImp<=0) {
+    if (totalImp <= 0) {
       return clicks;
     }
     return clicks / totalImp;
@@ -660,7 +673,7 @@ public class DataSet {
 
 
   /**
-   * Generates a set of x and y coordinates to plot.
+   * Generates a set of x and y coordinates to plot based on the selected stat.
    *
    * @param startTime The start time.
    * @param endTime   The end time range.
@@ -668,23 +681,61 @@ public class DataSet {
    * @return Returns an ArrayList of coordinates on a relative axis.
    */
   public ArrayList<Pair<Integer, Double>> generateY(LocalDateTime startTime,
-      LocalDateTime endTime, ChronoUnit unit) {
+      LocalDateTime endTime, Granularity unit) {
     ArrayList<Pair<Integer, Double>> points = new ArrayList<>();
-    LocalDateTime next = startTime.plus(unit.getDuration());
-    int x = 0;
+
     setEfficiency(true);
     resetAllAccess();
-    for (LocalDateTime day = startTime; !day.isAfter(endTime);
-        day = day.plus(unit.getDuration())) {
-//      System.out.println(x + " " + day + " " + next);
-      points.add(new Pair<>(x, totalImpressions(day, next)));
-      next = next.plus(unit.getDuration());
-      x++;
+    Function f;
+    switch (filter.getStat()) {
+      case totalImpressions -> f = this::totalImpressions;
+      case totalClicks -> f = this::totalClicks;
+      case totalUniques -> f = this::calcUniqueUsersClick;
+      case totalBounces -> f = this::calcBounces;
+      case totalConversions -> f = this::calcNumConversions;
+      case totalCost -> f = this::calcTotalCost;
+      case CTR -> f = this::calcClickThrough;
+      case CPA -> f = this::calcCostAcquisition;
+      case CPC -> f = this::calcCostPerClick;
+      case CPM -> f = this::costPerThousandImpre;
+      case bounceRate -> f = this::calcBounceRate;
+      default -> f = this::totalImpressions;
     }
+    genPoints(startTime, endTime, unit, f);
+
     System.out.println(points);
 
     resetAllAccess();
     setEfficiency(false);
+    return points;
+  }
+
+
+  public TemporalAmount generateStep(Granularity unit) {
+    Duration step;
+    switch (unit) {
+      case DAY -> step = ChronoUnit.DAYS.getDuration();
+      case WEEK -> step = ChronoUnit.DAYS.getDuration().multipliedBy(7);
+      case MONTH -> step = ChronoUnit.MONTHS.getDuration();
+      case YEAR -> step = ChronoUnit.YEARS.getDuration();
+      default -> step = ChronoUnit.DAYS.getDuration();
+    }
+    return step;
+  }
+
+  public ArrayList<Pair<Integer, Double>> genPoints(LocalDateTime startTime,
+      LocalDateTime endTime, Granularity unit, Function f) {
+    ArrayList<Pair<Integer, Double>> points = new ArrayList<>();
+    TemporalAmount amount = generateStep(unit);
+    LocalDateTime next = startTime.plus(amount);
+    int x = 0;
+    for (LocalDateTime day = startTime; !day.isAfter(endTime);
+        day = day.plus(amount)) {
+
+      points.add(new Pair<>(x, f.run(day, next)));
+      next = next.plus(amount);
+      x++;
+    }
     return points;
   }
 
@@ -698,14 +749,16 @@ public class DataSet {
     return impressions.get(impressions.size() - 1).getDate();
   }
 
-
 //TODO: reset stats on changes to filter.
+
   /**
-   * Gets all the stats for the list view, only recalculating if there's been a change to any parameters.
+   * Gets all the stats for the list view, only recalculating if there's been a change to any
+   * parameters.
+   *
    * @param start The start of the time range.
-   * @param end The end of the time range.
-   * @return Returns an array of impressionCost, impressions, clicks, uniques, bounces, conversions, cost,
-   *         through, acquisitionCosts, clickCosts, thousand, bounceRate.
+   * @param end   The end of the time range.
+   * @return Returns an array of impressionCost, impressions, clicks, uniques, bounces, conversions,
+   * cost, through, acquisitionCosts, clickCosts, thousand, bounceRate.
    */
   public double[] allStats(LocalDateTime start, LocalDateTime end) {
     setEfficiency(false);
@@ -722,10 +775,10 @@ public class DataSet {
     double conversions = calcNumConversions(start, end);
     double cost = calcTotalCost(start, end);
     System.out.println("half way");
-    double through = calcClickThrough(start, end,impressions);
-    double acquisitionCosts = calcCostAcquisition(start, end,cost);
-    double clickCosts = calcCostPerClick(start, end,cost);
-    double thousand = costPerThousandImpre(start, end,impressions);
+    double through = calcClickThrough(start, end, impressions);
+    double acquisitionCosts = calcCostAcquisition(start, end, cost);
+    double clickCosts = calcCostPerClick(start, end, cost);
+    double thousand = costPerThousandImpre(start, end, impressions);
     double bounceRate = calcBounceRate(start, end);
     stats = new double[]{impressionCost, impressions, clicks, uniques, bounces, conversions, cost,
         through, acquisitionCosts, clickCosts, thousand, bounceRate};
@@ -736,40 +789,41 @@ public class DataSet {
 
   /**
    * Gets the nearest impression to a datetime that matches an id using a binary search.
+   *
    * @param time The time to aim for.
-   * @param id The id of the impression to match.
+   * @param id   The id of the impression to match.
    * @return Returns the matching impresion.
    */
   public Impression nearestImpression(LocalDateTime time, long id) {
     if (!filteringEnabled) {
       return null;
     }
-    int low=0;
-    int high=impressions.size()-1;
-    int index=Integer.MAX_VALUE;
-    int mid=0;
+    int low = 0;
+    int high = impressions.size() - 1;
+    int index = Integer.MAX_VALUE;
+    int mid = 0;
     while (low <= high) {
-      mid = low  + ((high - low) / 2);
-      if (mid<0 || mid>=impressions.size()) {
+      mid = low + ((high - low) / 2);
+      if (mid < 0 || mid >= impressions.size()) {
         break;
       }
 
-      if ( impressions.get(mid).getDate().isBefore(time)) {
+      if (impressions.get(mid).getDate().isBefore(time)) {
         //if the truncate to day is the same then
         low = mid + 1;
-      } else if ( impressions.get(mid).getDate().isAfter(time)) {
+      } else if (impressions.get(mid).getDate().isAfter(time)) {
         high = mid - 1;
       } else if (impressions.get(mid).getDate().equals(time)) {
         index = mid;
         break;
       }
     }
-    while (impressions.get(mid).getDate().isAfter(time) && impressions.get(mid).getId()!=id && mid>0) {
-      mid-=1;
+    while (impressions.get(mid).getDate().isAfter(time) && impressions.get(mid).getId() != id
+        && mid > 0) {
+      mid -= 1;
     }
     return impressions.get(mid);
   }
-
 
 
 }

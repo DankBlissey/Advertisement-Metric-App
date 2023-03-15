@@ -1,8 +1,12 @@
 package uk.ac.soton.adDashboard.enums;
 
+
+/**
+ * Represents the stat to be displayed on the graph.
+ */
 public enum Stat {
   totalImpressions,
-  totallicks,
+  totalClicks,
   totalUniques,
   totalBounces,
   totalConversions,
@@ -12,6 +16,6 @@ public enum Stat {
   CPC,
   CPM,
   bounceRate,
-  ANY;
+  ANY
 
 }
