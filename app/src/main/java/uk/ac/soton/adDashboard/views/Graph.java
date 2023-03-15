@@ -62,16 +62,6 @@ public class Graph {
         }
     }
 
-    //Used to change the points of a Series
-    public void resetSeries(List<Pair<Integer, Double>> data, XYChart.Series<Number, Number> series) {
-        // Creates a new Series for chart
-        XYChart.Series<Number, Number> newSeries = new XYChart.Series<>();
-        addDataPoints(data, newSeries);
-
-        // Replaces the old line on the graph
-        series = newSeries;
-    }
-
     //Gets the Series by Index
     public XYChart.Series<Number, Number> getSeriesByIndex(int index) {
         if (index < 0 || index >= dataSeriesList.size()) {
@@ -81,8 +71,8 @@ public class Graph {
     }
 
     //Used to change the points of a Series by Index in the ArrayList
-    public void resetIndexSeries(List<Pair<Integer, Double>> data, int index) {
-        resetSeries(data, getSeriesByIndex(index));
+    public void resetIndexSeries(List<Pair<Integer, Double>> data, int index){
+        this.dataSeriesList.add(index,createNewSeries(data));
     }
 
     //Creates a new Series
@@ -140,4 +130,13 @@ public class Graph {
             series.setName("Series " + i);  // Update the series name to reflect the new index
         }
     }
+
+    public void deleteAllSeries() {
+        // Remove all series from the chart
+        chart.getData().clear();
+
+        // Clear the dataSeriesList
+        dataSeriesList.clear();
+    }
+
 }
