@@ -6,28 +6,29 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.paint.Color;
-
 import java.util.ArrayList;
+import java.util.List;
+import javafx.util.Pair;
 
-public class Graph{
+public class Graph {
 
     protected LineChart<Number, Number> chart;
     protected NumberAxis xAxis;
     protected NumberAxis yAxis;
-    protected ArrayList<XYChart.Series<Number, Number>> dataSeriesList;
+    protected List<XYChart.Series<Number, Number>> dataSeriesList;
 
-    public Graph(){
+    public Graph() {
         this.dataSeriesList = new ArrayList<>();
         this.chart = createChart();
     }
 
-    public LineChart<Number, Number> createChart(){
+    public LineChart<Number, Number> createChart() {
         xAxis = new NumberAxis();
         yAxis = new NumberAxis();
 
-        chart = new LineChart<>(xAxis,yAxis);
+        chart = new LineChart<>(xAxis, yAxis);
 
-        //Set the axis and graph titles.
+        // Set the axis and graph titles.
         chart.setTitle("Graph");
         chart.setCreateSymbols(false);
         chart.setLegendVisible(false);
@@ -40,41 +41,38 @@ public class Graph{
         chart.setLegendVisible(true);
         chart.setLegendSide(Side.RIGHT);
 
-        //Set the size and position of the graph within the layout container.
+        // Set the size and position of the graph within the layout container.
         chart.setLayoutX(50);
         chart.setLayoutY(50);
         chart.setPrefSize(500, 500);
         return chart;
     }
 
-    public LineChart<Number, Number> getChart(){
+    public LineChart<Number, Number> getChart() {
         return this.chart;
     }
 
-    //Used to add all points to the Series
-    public void addDataPoints(ArrayList<Number> X,ArrayList<Number> Y, XYChart.Series<Number, Number> Series){
-        //Iterate through X and Y using a loop.
-        for (int i = 0; i < X.size() && i < Y.size(); i++) {
-            //Get the x and y values for the current data point.
-            Number xValue = X.get(i);
-            Number yValue = Y.get(i);
-
-            //Adds it to the dataSeries.
-            Series.getData().add(new XYChart.Data<>(xValue, yValue));
+    // Used to add all points to the Series
+    public void addDataPoints(List<Pair<Integer, Double>> data, XYChart.Series<Number, Number> series) {
+        // Iterate through the data and add each point to the series.
+        for (Pair<Integer, Double> point : data) {
+            Number xValue = point.getKey();
+            Number yValue = point.getValue();
+            series.getData().add(new XYChart.Data<>(xValue, yValue));
         }
     }
 
     //Used to change the points of a Series
-    public void resetSeries(ArrayList<Number> X,ArrayList<Number> Y, XYChart.Series<Number, Number> Series){
-        //Creates new Series for chart
+    public void resetSeries(List<Pair<Integer, Double>> data, XYChart.Series<Number, Number> series) {
+        // Creates a new Series for chart
         XYChart.Series<Number, Number> newSeries = new XYChart.Series<>();
-        addDataPoints(X,Y,newSeries);
+        addDataPoints(data, newSeries);
 
-        //Replaces old line on the graph
-        Series = newSeries;
+        // Replaces the old line on the graph
+        series = newSeries;
     }
 
-    //gets the Series by Index
+    //Gets the Series by Index
     public XYChart.Series<Number, Number> getSeriesByIndex(int index) {
         if (index < 0 || index >= dataSeriesList.size()) {
             throw new IndexOutOfBoundsException("Invalid series index: " + index);
@@ -82,33 +80,32 @@ public class Graph{
         return dataSeriesList.get(index);
     }
 
-    //Used to change the points of a Series by Index in the arraylist
-    public void resetIndexSeries(ArrayList<Number> X,ArrayList<Number> Y,int index){
-        resetSeries(X,Y,getSeriesByIndex(index));
+    //Used to change the points of a Series by Index in the ArrayList
+    public void resetIndexSeries(List<Pair<Integer, Double>> data, int index) {
+        resetSeries(data, getSeriesByIndex(index));
     }
 
     //Creates a new Series
-    public XYChart.Series<Number, Number> createNewSeries(ArrayList<Number> X,ArrayList<Number> Y){
-        //Creates a new Series
+    public XYChart.Series<Number, Number> createNewSeries(List<Pair<Integer, Double>> data) {
+        // Creates a new Series
         XYChart.Series<Number, Number> newSeries = new XYChart.Series<>();
 
-        //Gets the points for the series
-        addDataPoints(X,Y,newSeries);
+        // Gets the points for the series
+        addDataPoints(data, newSeries);
 
         //returns the new Series
         return newSeries;
     }
 
     //creates a new Series and adds it to the Series Lists and the Chart
-    public void addNewSeries(ArrayList<Number> X,ArrayList<Number> Y){
+    public void addNewSeries(ArrayList<Pair<Integer, Double>> data) {
+        // Creates a new Series
+        XYChart.Series<Number, Number> newSeries = createNewSeries(data);
 
-        //Creates a new Series
-        XYChart.Series<Number, Number> newSeries = createNewSeries(X,Y);
-
-        //Adds Series to the List
+        // Adds the new series to the list
         this.dataSeriesList.add(newSeries);
 
-        //Adds Series to the Chart
+        // Adds the new series to the chart
         this.chart.getData().add(newSeries);
     }
 
@@ -127,4 +124,20 @@ public class Graph{
                 (int) (color.getBlue() * 255));
     }
 
+    public void deleteSeriesByIndex(int index) {
+        // Check if the index is valid
+        if (index < 0 || index >= dataSeriesList.size()) {
+            throw new IndexOutOfBoundsException("Invalid series index: " + index);
+        }
+
+        // Remove the series from the data series list and the chart
+        XYChart.Series<Number, Number> seriesToRemove = dataSeriesList.remove(index);
+        chart.getData().remove(seriesToRemove);
+
+        // Update the series index for all the remaining series
+        for (int i = index; i < dataSeriesList.size(); i++) {
+            XYChart.Series<Number, Number> series = dataSeriesList.get(i);
+            series.setName("Series " + i);  // Update the series name to reflect the new index
+        }
+    }
 }
