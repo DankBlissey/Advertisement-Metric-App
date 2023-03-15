@@ -164,8 +164,6 @@ public class GraphView extends BaseView {
 
         gridPane.add(stack,0,0);
 
-        graph = new Graph();
-        borderPane.setLeft(graph.getChart());
         root.getChildren().add(borderPane);
 
     }
