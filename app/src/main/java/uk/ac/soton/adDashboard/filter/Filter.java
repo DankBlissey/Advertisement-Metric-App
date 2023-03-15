@@ -6,12 +6,29 @@ import uk.ac.soton.adDashboard.enums.Gender;
 import uk.ac.soton.adDashboard.enums.Income;
 import uk.ac.soton.adDashboard.enums.Stat;
 
+/**
+ * Represents a set of filters.
+ */
 public class Filter {
-
+  /**
+   * The filter for the type of data to calculate which is the enum ANY if no filter is applied.
+   */
   Stat stat = Stat.ANY;
+  /**
+   * The context filter which is the enum ANY if no filter is applied.
+   */
   Context context = Context.ANY;
+  /**
+   * The age filter which is the empty string if no filter is applied.
+   */
   String age = "";
+  /**
+   * The income filter which is the enum ANY if no filter is applied.
+   */
   Income income = Income.ANY;
+  /**
+   * The gender filter which is the enum ANY if no filter is applied.
+   */
   Gender gender = Gender.ANY;
   LocalDateTime startDate = null;
   LocalDateTime endDate = null;

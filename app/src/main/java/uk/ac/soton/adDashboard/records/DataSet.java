@@ -21,7 +21,13 @@ public class DataSet {
   private ArrayList<Impression> impressions;
   private ArrayList<ServerAccess> serverAccess;
   private HashMap<Long, User> users;
+  /**
+   * Stores the basic overall stats list.
+   */
   public double[] stats = {};
+  /**
+   * A boolean flag for efficiency that can enable or disable filtering.
+   */
   public boolean filteringEnabled=false;
 
   /**
@@ -42,9 +48,23 @@ public class DataSet {
 
   private Filter filter = new Filter();
 
+  /**
+   * Stores the index of the last impression accessed from impressions.
+   */
   private int lastImpression = 0;
+
+  /**
+   * Stores the index of the last ServerAccess in serverAccess.
+   */
   private int lastAccess = 0;
+  /**
+   * Stores the index of the last click in clicks.
+   */
   private int lastClick = 0;
+
+  /**
+   * A flag to internally toggle efficiency gains. Should usually be false.
+   */
   private boolean efficiency = false;
 
 
@@ -100,6 +120,9 @@ public class DataSet {
     resetStats();
   }
 
+  /**
+   * Resets the stats array.
+   */
   public void resetStats() {
     stats = new double[]{};
   }
@@ -160,6 +183,9 @@ public class DataSet {
     return clicks;
   }
 
+  /**
+   * Resets the last accessed global variables.
+   */
   public void resetAllAccess() {
     setLastClick(0);
     setLastAccess(0);
@@ -206,7 +232,7 @@ public class DataSet {
    * Checks if the user matches the filterObject.
    *
    * @param user The User to be checked.
-   * @return True if the user matches the filter.
+   * @return True if the user matches the filter and False otherwise.
    */
   public boolean matchesFilters(User user) {
     if (!filter.getAge().equals("") && !user.getAge().equals(filter.getAge())) {
@@ -221,6 +247,12 @@ public class DataSet {
     return user.getIncome().equals(filter.getIncome());
   }
 
+  /**
+   * Checks if an impression and user match the filter.
+   * @param user The user to check.
+   * @param impression The impression to check.
+   * @return Returns true if both match the filter and false otherwise.
+   */
   public boolean matchesFilters(User user, Impression impression) {
     if (!filteringEnabled) {
       return true;
@@ -492,8 +524,26 @@ public class DataSet {
   public double costPerThousandImpre(LocalDateTime start, LocalDateTime end) {
     double cost = calcTotalCost(start, end);
     double impressions = totalImpressions(start, end);
-    //todo: NaN divide by zero fix
+    if (impressions<=0) {
+      return cost/(1.0/1000);
+    }
     return cost / (impressions / 1000.0);
+  }
+
+  /**
+   * Overloaded version that takes a precalculated impressions count.
+   * @param start
+   * @param end
+   * @param totalImpressions
+   * @return
+   */
+  public double costPerThousandImpre(LocalDateTime start, LocalDateTime end,double totalImpressions) {
+    double cost = calcTotalCost(start, end);
+
+    if (totalImpressions<=0) {
+      return cost/(1.0/1000);
+    }
+    return cost / (totalImpressions / 1000.0);
   }
 
 
@@ -507,7 +557,25 @@ public class DataSet {
   public double calcCostPerClick(LocalDateTime start, LocalDateTime end) {
     double cost = calcTotalCost(start, end);
     double clicks = totalClicks(start, end);
+    if (clicks<=0) {
+      return cost;
+    }
     return cost / clicks;
+  }
+  /**
+   * Overloaded version that calculates the cost per click but taking in a precalculated cost.
+   *
+   * @param start The start of the range as LocalDateTime.
+   * @param end   The end of the range as LocalDateTime.
+   * @return Returns the cost per click.
+   */
+  public double calcCostPerClick(LocalDateTime start, LocalDateTime end, double totalCost) {
+
+    double clicks = totalClicks(start, end);
+    if (clicks<=0) {
+      return totalCost;
+    }
+    return totalCost / clicks;
   }
 
   /**
@@ -520,8 +588,27 @@ public class DataSet {
   public double calcCostAcquisition(LocalDateTime start, LocalDateTime granularEnd) {
     double cost = calcTotalCost(start, granularEnd);
     double conversions = calcNumConversions(start, granularEnd);
+    if (conversions<=0) {
+      return cost;
+    }
     return cost / conversions;
   }
+
+  /**
+   * Overloaded version that calculates the cost of acquisitions using a precalculated total cost.
+   * @param start
+   * @param granularEnd
+   * @param totalCost
+   * @return
+   */
+  public double calcCostAcquisition(LocalDateTime start, LocalDateTime granularEnd,double totalCost) {
+    double conversions = calcNumConversions(start, granularEnd);
+    if (conversions<=0) {
+      return totalCost;
+    }
+    return totalCost / conversions;
+  }
+
 
   /**
    * Calculates the number of bounces per click (the bounce rate)
@@ -533,8 +620,12 @@ public class DataSet {
   public double calcBounceRate(LocalDateTime start, LocalDateTime end) {
     double bounces = calcBounces(start, end);
     double clicks = totalClicks(start, end);
+    if (clicks<=0) {
+      return bounces;
+    }
     return bounces / clicks;
   }
+
 
   /**
    * Calculates the click-through rate (as the number of clicks per impression)
@@ -544,9 +635,27 @@ public class DataSet {
    * @return Returns the click-through rate for a range and set of filters.
    */
   public double calcClickThrough(LocalDateTime start, LocalDateTime end) {
-    double imp = totalImpressions(start, end);
     double clicks = totalClicks(start, end);
+    double imp = totalImpressions(start, end);
+    if (imp<=0) {
+      return clicks;
+    }
     return clicks / imp;
+  }
+
+  /**
+   * Overloaded version that calculates the clickthroughrate using a precalculated total number of impressions.
+   * @param start
+   * @param end
+   * @param totalImp
+   * @return
+   */
+  public double calcClickThrough(LocalDateTime start, LocalDateTime end,double totalImp) {
+    double clicks = totalClicks(start, end);
+    if (totalImp<=0) {
+      return clicks;
+    }
+    return clicks / totalImp;
   }
 
 
@@ -588,6 +697,8 @@ public class DataSet {
   public LocalDateTime latestDate() {
     return impressions.get(impressions.size() - 1).getDate();
   }
+
+
 //TODO: reset stats on changes to filter.
   /**
    * Gets all the stats for the list view, only recalculating if there's been a change to any parameters.
@@ -611,10 +722,10 @@ public class DataSet {
     double conversions = calcNumConversions(start, end);
     double cost = calcTotalCost(start, end);
     System.out.println("half way");
-    double through = calcClickThrough(start, end);
-    double acquisitionCosts = calcCostAcquisition(start, end);
-    double clickCosts = calcCostPerClick(start, end);
-    double thousand = costPerThousandImpre(start, end);
+    double through = calcClickThrough(start, end,impressions);
+    double acquisitionCosts = calcCostAcquisition(start, end,cost);
+    double clickCosts = calcCostPerClick(start, end,cost);
+    double thousand = costPerThousandImpre(start, end,impressions);
     double bounceRate = calcBounceRate(start, end);
     stats = new double[]{impressionCost, impressions, clicks, uniques, bounces, conversions, cost,
         through, acquisitionCosts, clickCosts, thousand, bounceRate};
@@ -623,32 +734,40 @@ public class DataSet {
 
   }
 
+  /**
+   * Gets the nearest impression to a datetime that matches an id using a binary search.
+   * @param time The time to aim for.
+   * @param id The id of the impression to match.
+   * @return Returns the matching impresion.
+   */
   public Impression nearestImpression(LocalDateTime time, long id) {
-    return null;
-//    int low=0;
-//    int high=impressions.size()-1;
-//    int index=Integer.MAX_VALUE;
-//    int mid=0;
-//    while (low <= high) {
-//      mid = low  + ((high - low) / 2);
-//      if (mid<0 || mid>=impressions.size()) {
-//        break;
-//      }
-//
-//      if ( impressions.get(mid).getDate().isBefore(time)) {
-//        //if the truncate to day is the same then
-//        low = mid + 1;
-//      } else if ( impressions.get(mid).getDate().isAfter(time)) {
-//        high = mid - 1;
-//      } else if (impressions.get(mid).getDate().equals(time)) {
-//        index = mid;
-//        break;
-//      }
-//    }
-//    while (impressions.get(mid).getDate().isAfter(time) && impressions.get(mid).getId()!=id && mid>0) {
-//      mid-=1;
-//    }
-//    return impressions.get(mid);
+    if (!filteringEnabled) {
+      return null;
+    }
+    int low=0;
+    int high=impressions.size()-1;
+    int index=Integer.MAX_VALUE;
+    int mid=0;
+    while (low <= high) {
+      mid = low  + ((high - low) / 2);
+      if (mid<0 || mid>=impressions.size()) {
+        break;
+      }
+
+      if ( impressions.get(mid).getDate().isBefore(time)) {
+        //if the truncate to day is the same then
+        low = mid + 1;
+      } else if ( impressions.get(mid).getDate().isAfter(time)) {
+        high = mid - 1;
+      } else if (impressions.get(mid).getDate().equals(time)) {
+        index = mid;
+        break;
+      }
+    }
+    while (impressions.get(mid).getDate().isAfter(time) && impressions.get(mid).getId()!=id && mid>0) {
+      mid-=1;
+    }
+    return impressions.get(mid);
   }
 
 
