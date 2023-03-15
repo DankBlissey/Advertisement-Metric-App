@@ -8,6 +8,7 @@ public enum Gender {
   FEMALE,
   NONBINARY,
   PREFERNOTTOSAY,
-  OTHER;
+  OTHER,
+  ANY;
 
 }

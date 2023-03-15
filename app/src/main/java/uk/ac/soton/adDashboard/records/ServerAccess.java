@@ -27,6 +27,7 @@ public class ServerAccess extends LogRow {
       String conversion) throws Exception {
     super(id);
     this.startDate = parseDateTime(entryDate);
+    if (this.startDate==null) {throw new Exception("start date can't be null");}
     this.endDate = parseDateTime(exitDate);
     Integer parsedPagesViewed = Integer.parseInt(pagesViewed);
     if (parsedPagesViewed < 0) {

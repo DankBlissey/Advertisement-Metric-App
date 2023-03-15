@@ -137,6 +137,7 @@ public class DataSetTest {
     //number of bounces per click
     dataSet.setPagesForBounce(2);
     assertEquals(2.0 / 3, dataSet.calcBounceRate(dataSet.earliestDate(), dataSet.latestDate()));
+    //test the affects of changing the bounce rate measurement
   }
 
   @Test
