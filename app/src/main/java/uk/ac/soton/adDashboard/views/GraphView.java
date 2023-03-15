@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -20,7 +21,6 @@ import uk.ac.soton.adDashboard.records.DataSet;
 import uk.ac.soton.adDashboard.ui.AppPane;
 import uk.ac.soton.adDashboard.ui.AppWindow;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class GraphView extends BaseView {
@@ -33,6 +33,7 @@ public class GraphView extends BaseView {
 
     protected DataSet dataSet;
     protected ArrayList<String> filenames;
+    protected Graph graph;
 
     public GraphView(AppWindow appWindow, DataSet dataSet, ArrayList<String> filenames) {
         super(appWindow);
