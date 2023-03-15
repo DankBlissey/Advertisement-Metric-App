@@ -537,8 +537,8 @@ public class DataSet {
   /**
    * Overloaded version that takes a precalculated impressions count.
    *
-   * @param start The start of the range as LocalDateTime.
-   * @param end   The end of the range as LocalDateTime.
+   * @param start            The start of the range as LocalDateTime.
+   * @param end              The end of the range as LocalDateTime.
    * @param totalImpressions A precalculated number of totalImpressions.
    * @return Returns the cost per thousand impressions in a range, where the cost and impressions
    * match a filter.
@@ -573,8 +573,8 @@ public class DataSet {
   /**
    * Overloaded version that calculates the cost per click but taking in a precalculated cost.
    *
-   * @param start The start of the range as LocalDateTime.
-   * @param end   The end of the range as LocalDateTime.
+   * @param start     The start of the range as LocalDateTime.
+   * @param end       The end of the range as LocalDateTime.
    * @param totalCost A precalculated totalCost.
    * @return Returns the cost per click.
    */
@@ -608,7 +608,7 @@ public class DataSet {
    *
    * @param start       The start of the time range.
    * @param granularEnd The end of the time range.
-   * @param totalCost A precalculated totalCost.
+   * @param totalCost   A precalculated totalCost.
    * @return Returns the cost per acquisition.
    */
   public double calcCostAcquisition(LocalDateTime start, LocalDateTime granularEnd,
@@ -658,8 +658,8 @@ public class DataSet {
    * Overloaded version that calculates the clickthroughrate using a precalculated total number of
    * impressions.
    *
-   * @param start The start of the range as LocalDateTime.
-   * @param end   The end of the range as LocalDateTime.
+   * @param start    The start of the range as LocalDateTime.
+   * @param end      The end of the range as LocalDateTime.
    * @param totalImp A precalculated totalImpressions.
    * @return Returns the click-through rate for a range and set of filters.
    */
@@ -687,7 +687,7 @@ public class DataSet {
     setEfficiency(true);
     resetAllAccess();
     Function f;
-    switch (filter.getStat()) {
+    switch (filter.getStat()) {  //sets the function to perform in genPoints depending on the stat needed.
       case totalImpressions -> f = this::totalImpressions;
       case totalClicks -> f = this::totalClicks;
       case totalUniques -> f = this::calcUniqueUsersClick;
@@ -710,7 +710,12 @@ public class DataSet {
     return points;
   }
 
-
+  /**
+   * Calculates the step based on the granularity enum.
+   *
+   * @param unit The enum that represents the step.
+   * @return Returns a temporal amount to step by.
+   */
   public TemporalAmount generateStep(Granularity unit) {
     Duration step;
     switch (unit) {
@@ -723,6 +728,16 @@ public class DataSet {
     return step;
   }
 
+  /**
+   * Generates a set of points calculated by the passed function, between a given range, stepping by
+   * a given unit.
+   *
+   * @param startTime The start of the range of points.
+   * @param endTime   The end of the range of points.
+   * @param unit      The unit to step by.
+   * @param f         The function to calculate the y point, which is passed a range of dates.
+   * @return Returns an arraylist of pairs of points.
+   */
   public ArrayList<Pair<Integer, Double>> genPoints(LocalDateTime startTime,
       LocalDateTime endTime, Granularity unit, Function f) {
     ArrayList<Pair<Integer, Double>> points = new ArrayList<>();
