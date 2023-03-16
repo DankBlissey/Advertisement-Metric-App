@@ -1,6 +1,5 @@
 package uk.ac.soton.adDashboard.controller;
 
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.util.Pair;
@@ -11,8 +10,9 @@ import uk.ac.soton.adDashboard.filter.Filter;
 import uk.ac.soton.adDashboard.records.DataSet;
 
 public class Controller {
-  private List<GraphFeatures> subscribers= new ArrayList<>();
-  private List<DataSet> models = new ArrayList<>();
+
+  private GraphFeatures graph;
+  private DataSet model;
 
   private List<Filter> filters = new ArrayList<>();
 
@@ -20,21 +20,21 @@ public class Controller {
 
   private Granularity granularity = Granularity.DAY;
 
-  public List<?> getSubscribers() {
-    return subscribers;
+  public GraphFeatures getGraph() {
+    return graph;
   }
 
 
-  public void setSubscribers(List<GraphFeatures> subscribers) {
-    this.subscribers = subscribers;
+  public void setGraph(GraphFeatures graph) {
+    this.graph = graph;
   }
 
-  public List<DataSet> getModels() {
-    return models;
+  public DataSet getModel() {
+    return model;
   }
 
-  public void setModels(List<DataSet> models) {
-    this.models = models;
+  public void setModels(DataSet model) {
+    this.model = model;
   }
 
   public List<Filter> getFilters() {
@@ -54,7 +54,7 @@ public class Controller {
   }
 
   public Granularity getGranularity() {
-   return granularity;
+    return granularity;
   }
 
   public void setGranularity(Granularity granularity) {
@@ -62,13 +62,13 @@ public class Controller {
   }
 
   public void filterUpdated(Filter filter) {
-    for (DataSet model : models) {
-      model.setFilter(filter);
-      filter.setStat(statType);
-      List<Pair<Integer,Double>> points = model.generateY(filter.getStartDate(),filter.getEndDate(), getGranularity()); //todo: should the filter contain the unit?
-      for (GraphFeatures subscriber : subscribers) {
-        subscriber.plot(points);
-      }
-    }
+
+    model.setFilter(filter);
+    filter.setStat(statType);
+    List<Pair<Integer, Double>> points = model.generateY(filter.getStartDate(),
+        filter.getEndDate(), getGranularity()); //todo: should the filter contain the unit?
+    graph.plot(points);
   }
+
+
 }
