@@ -701,7 +701,7 @@ public class DataSet {
       case bounceRate -> f = this::calcBounceRate;
       default -> f = this::totalImpressions;
     }
-    genPoints(startTime, endTime, unit, f);
+    points =genPoints(startTime, endTime, unit, f);
 
     System.out.println(points);
 
