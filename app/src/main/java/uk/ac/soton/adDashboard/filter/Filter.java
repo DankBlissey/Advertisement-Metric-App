@@ -13,7 +13,7 @@ public class Filter {
   /**
    * The filter for the type of data to calculate which is the enum ANY if no filter is applied.
    */
-  Stat stat = Stat.ANY;
+  Stat stat = Stat.totalImpressions;
   /**
    * The context filter which is the enum ANY if no filter is applied.
    */
