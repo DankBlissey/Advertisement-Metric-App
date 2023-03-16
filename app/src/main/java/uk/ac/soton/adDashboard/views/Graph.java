@@ -26,6 +26,7 @@ public class Graph {
         xAxis = new NumberAxis();
         yAxis = new NumberAxis();
 
+        yAxis.setUpperBound(43000);
         chart = new LineChart<>(xAxis, yAxis);
 
         // Set the axis and graph titles.

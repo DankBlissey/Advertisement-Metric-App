@@ -82,7 +82,6 @@ public class Filter {
     this.endDate = endDate;
   }
 
-
   public Stat getStat() {
     return stat;
   }
