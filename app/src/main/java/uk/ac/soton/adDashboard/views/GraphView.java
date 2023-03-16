@@ -16,6 +16,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import uk.ac.soton.adDashboard.components.FilterSet;
 import uk.ac.soton.adDashboard.controller.Controller;
 import uk.ac.soton.adDashboard.records.DataSet;
 import uk.ac.soton.adDashboard.ui.AppPane;
@@ -114,7 +115,7 @@ public class GraphView extends BaseView {
         StackPane longBar = new StackPane(backBar,longBarContent);
 
         VBox vbox = new VBox(hbox, longBar);
-///
+
 
         Color switchBack = Color.web("#4B51FF"); // create a Color object with the hex value for purple
         Color switchToggle = Color.web("4b0076");
@@ -129,6 +130,7 @@ public class GraphView extends BaseView {
         borderPane.getStyleClass().add("apppane");
 
         borderPane.setTop(vbox);
+        BorderPane.setMargin(vbox, new Insets(0, 0, 25, 0));
         root.getChildren().add(borderPane);
 
         // This is the center of the borderPane - contains the toggle to list/graph and the graphs
@@ -178,22 +180,22 @@ public class GraphView extends BaseView {
         graphsList.getChildren().addAll(stack,graphBox);
 
         // This is the right side of the borderPane
-        Pane filterPane = new VBox(20);
+        Pane filterPane = new VBox(15);
         filterPane.getStyleClass().add("filter-pane");
 
         Text filterTitle = new Text("Filters");
-        filterTitle.getStyleClass().add("bigWhiteText");
+        filterTitle.getStyleClass().add("mediumWhiteText");
 
-        Button buttonCurrent = new Button("Current");
-        buttonCurrent.setPrefSize(100, 20);
+        FilterSet set1 = new FilterSet("Filter set 1");
 
-        Button buttonProjected = new Button("Projected");
-        buttonProjected.setPrefSize(100, 20);
-        filterPane.getChildren().addAll(filterTitle, buttonCurrent, buttonProjected);
+        filterPane.getChildren().addAll(filterTitle, set1);
 
-        borderPane.setRight(filterPane);
-        borderPane.setPadding(new Insets(0,20,0,0));
+        ScrollPane filtersScroll = new ScrollPane();
+        filtersScroll.setContent(filterPane);
+        filtersScroll.setPrefWidth(filterPane.USE_COMPUTED_SIZE);
 
+        borderPane.setRight(filtersScroll);
+        BorderPane.setMargin(filtersScroll, new Insets(0, 35, 0, 0));
     }
 
     /**
