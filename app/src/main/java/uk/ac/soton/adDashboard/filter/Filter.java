@@ -85,13 +85,7 @@ public class Filter {
   }
 
 
-  public Stat getStat() {
-    return stat;
-  }
 
-  public void setStat(Stat stat) {
-    this.stat = stat;
-  }
 
   public int getId() {
     return id;
