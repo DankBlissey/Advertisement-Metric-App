@@ -14,7 +14,7 @@ public class Controller {
   private GraphFeatures graph;
   private DataSet model;
 
-  private List<Filter> filters = new ArrayList<>();
+  private Filter filter;
 
   private Stat statType;
 
@@ -37,8 +37,8 @@ public class Controller {
     this.model = model;
   }
 
-  public List<Filter> getFilters() {
-    return filters;
+  public Filter getFilters() {
+    return filter;
   }
 
   public Stat getStatType() {
@@ -49,8 +49,8 @@ public class Controller {
     this.statType = statType;
   }
 
-  public void setFilters(List<Filter> filters) {
-    this.filters = filters;
+  public void setFilters(Filter filter) {
+    this.filter= filter;
   }
 
   public Granularity getGranularity() {
@@ -67,7 +67,11 @@ public class Controller {
     filter.setStat(statType);
     List<Pair<Integer, Double>> points = model.generateY(filter.getStartDate(),
         filter.getEndDate(), getGranularity()); //todo: should the filter contain the unit?
-    graph.plot(points);
+    graph.plot(filter.getId(),points);
+  }
+
+  public void deleteLine(Filter filter) {
+    graph.delete(filter.getId());
   }
 
 

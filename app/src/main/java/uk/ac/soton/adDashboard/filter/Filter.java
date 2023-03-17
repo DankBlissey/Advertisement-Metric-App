@@ -33,6 +33,8 @@ public class Filter {
   LocalDateTime startDate = null;
   LocalDateTime endDate = null;
 
+  int id;
+
   public Context getContext() {
     return context;
   }
@@ -89,6 +91,14 @@ public class Filter {
 
   public void setStat(Stat stat) {
     this.stat = stat;
+  }
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
   }
 }
 
