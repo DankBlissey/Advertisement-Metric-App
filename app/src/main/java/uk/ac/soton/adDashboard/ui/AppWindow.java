@@ -38,6 +38,9 @@ public class AppWindow {
 
     private Boolean darkMode = false;
 
+    /**
+     * The controller for the system.
+     */
     private final Controller controller = new Controller();
 
     public Controller getController() {
