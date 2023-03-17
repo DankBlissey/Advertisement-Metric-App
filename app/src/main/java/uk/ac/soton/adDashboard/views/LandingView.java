@@ -247,7 +247,9 @@ public class LandingView extends BaseView {
         filenames.add(clicksFileName.getValue());
         filenames.add(serverFileName.getValue());
 
-        appWindow.bounceRateWindow(dataSet, filenames);
+
+        appWindow.getController().setModel(dataSet);
+        appWindow.bounceRateWindow( filenames);
     }
 
     public ArrayList<Impression> getImpressionsFromCSV(String filePath) {

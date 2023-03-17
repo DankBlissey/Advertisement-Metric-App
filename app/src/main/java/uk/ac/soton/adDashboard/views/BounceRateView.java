@@ -26,17 +26,13 @@ import java.util.TimerTask;
 public class BounceRateView extends BaseView {
     private static final Logger logger = LogManager.getLogger(BounceRateView.class);
 
-    /**
-     * App class (logic)
-     */
-    protected Controller controller;
 
     protected DataSet dataSet;
     protected ArrayList<String> filenames;
 
-    public BounceRateView(AppWindow appWindow, DataSet dataSet, ArrayList<String> filenames) {
+    public BounceRateView(AppWindow appWindow,  ArrayList<String> filenames) {
         super(appWindow);
-        this.dataSet = dataSet;
+        this.dataSet = appWindow.getController().getModel();
         this.filenames = filenames;
         logger.info("Creating the BounceRate View");
     }
@@ -186,7 +182,7 @@ public class BounceRateView extends BaseView {
                     logger.info("Maximum page number read");
                     dataSet.setPagesForBounce(Integer.parseInt(pages.getText()));
                     dataSet.setPagesViewedBounceMetric(true);
-                    appWindow.listViewWindow(dataSet, filenames);
+                    appWindow.listViewWindow(filenames);
                 } catch (NumberFormatException ignored) {}
                 TimerTask wait = new TimerTask() {
                     @Override
@@ -212,7 +208,7 @@ public class BounceRateView extends BaseView {
                             dataSet.setInterval(Integer.parseInt(custom.getText()) * 60);
                         }
                         dataSet.setPagesViewedBounceMetric(false);
-                        appWindow.listViewWindow(dataSet, filenames);
+                        appWindow.listViewWindow(filenames);
 
                     }
                 } catch (NumberFormatException ignored) {}

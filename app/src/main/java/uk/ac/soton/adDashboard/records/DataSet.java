@@ -13,6 +13,7 @@ import uk.ac.soton.adDashboard.enums.Context;
 import uk.ac.soton.adDashboard.enums.Gender;
 import uk.ac.soton.adDashboard.enums.Granularity;
 import uk.ac.soton.adDashboard.enums.Income;
+import uk.ac.soton.adDashboard.enums.Stat;
 import uk.ac.soton.adDashboard.filter.Filter;
 
 /**
@@ -681,13 +682,13 @@ public class DataSet {
    * @return Returns an ArrayList of coordinates on a relative axis.
    */
   public ArrayList<Pair<Integer, Double>> generateY(LocalDateTime startTime,
-      LocalDateTime endTime, Granularity unit) {
+      LocalDateTime endTime, Granularity unit, Stat stat) {
     ArrayList<Pair<Integer, Double>> points = new ArrayList<>();
 
     setEfficiency(true);
     resetAllAccess();
     Function f;
-    switch (filter.getStat()) {  //sets the function to perform in genPoints depending on the stat needed.
+    switch (stat) {  //sets the function to perform in genPoints depending on the stat needed.
       case totalImpressions -> f = this::totalImpressions;
       case totalClicks -> f = this::totalClicks;
       case totalUniques -> f = this::calcUniqueUsersClick;
@@ -710,23 +711,7 @@ public class DataSet {
     return points;
   }
 
-  /**
-   * Calculates the step based on the granularity enum.
-   *
-   * @param unit The enum that represents the step.
-   * @return Returns a temporal amount to step by.
-   */
-  public TemporalAmount generateStep(Granularity unit) {
-    Duration step;
-    switch (unit) {
-      case DAY -> step = ChronoUnit.DAYS.getDuration();
-      case WEEK -> step = ChronoUnit.DAYS.getDuration().multipliedBy(7);
-      case MONTH -> step = ChronoUnit.MONTHS.getDuration();
-      case YEAR -> step = ChronoUnit.YEARS.getDuration();
-      default -> step = ChronoUnit.DAYS.getDuration();
-    }
-    return step;
-  }
+
 
   /**
    * Generates a set of points calculated by the passed function, between a given range, stepping by
@@ -741,7 +726,7 @@ public class DataSet {
   public ArrayList<Pair<Integer, Double>> genPoints(LocalDateTime startTime,
       LocalDateTime endTime, Granularity unit, Function f) {
     ArrayList<Pair<Integer, Double>> points = new ArrayList<>();
-    TemporalAmount amount = generateStep(unit);
+    TemporalAmount amount = unit.generateStep();
     LocalDateTime next = startTime.plus(amount);
     int x = 0;
     for (LocalDateTime day = startTime; !day.isAfter(endTime);

@@ -32,14 +32,11 @@ public class ListView extends BaseView {
     private GridPane gridPane;
     private double[] data;
 
-    /**
-     * App class (logic)
-     */
-    protected Controller controller;
 
-    public ListView(AppWindow appWindow, DataSet dataset, ArrayList<String> filenames) {
+
+    public ListView(AppWindow appWindow, ArrayList<String> filenames) {
         super(appWindow);
-        this.dataSet = dataset;
+        this.dataSet = appWindow.getController().getModel();
         this.filenames = filenames;
         logger.info("Creating the list view View");
     }
@@ -64,7 +61,7 @@ public class ListView extends BaseView {
         Button startAgain = new Button("Start Again");
         startAgain.getStyleClass().add("blueButton");
         startAgain.setOnAction(e -> {
-            appWindow.bounceRateWindow(dataSet,filenames);
+            appWindow.bounceRateWindow(filenames);
         });
 
         //drop down button for dark and light theme
@@ -75,11 +72,11 @@ public class ListView extends BaseView {
         theme.getItems().addAll(light, dark);
         light.setOnAction(e -> {
             appWindow.setDarkMode(false);
-            appWindow.listViewWindow(dataSet,filenames);
+            appWindow.listViewWindow(filenames);
         });
         dark.setOnAction(e -> {
             appWindow.setDarkMode(true);
-            appWindow.listViewWindow(dataSet,filenames);
+            appWindow.listViewWindow(filenames);
         });
 
 
@@ -168,7 +165,7 @@ public class ListView extends BaseView {
 
         // event handling when the button is pressed
         stack.setOnMouseClicked(event -> {
-            appWindow.loadView(new GraphView(appWindow, dataSet, filenames));
+            appWindow.loadView(new GraphView(appWindow, filenames));
         });
 
         //adding switch button to the top left of the grid pane
@@ -227,12 +224,12 @@ public class ListView extends BaseView {
         double value = data[dataIndex];
         Text valueText;
 
-        if(text == "CTR"){
+        if(text.equals("CTR")){
             value = value * 100;
             DecimalFormat df = new DecimalFormat("#.##");
             String formattedNumber = df.format(value);
             valueText = new Text(formattedNumber + "%");
-        } else if (text == "CPA"|| text == "CPC" || text == "Bounce rate") {
+        } else if (text.equals("CPA")|| text.equals("CPC") || text.equals("Bounce rate")) {
             DecimalFormat df = new DecimalFormat("#,###.##");
             String formattedNumber = df.format(value);
             valueText = new Text(formattedNumber);
