@@ -54,11 +54,11 @@ public class Controller {
     this.statType = statType;
   }
 
-  public void setFilterSet(FilterWindow filter) {
+  public void setFilterWindow(FilterWindow filter) {
     this.filterWindow= filter;
   }
 
-  public FilterWindow getFilterSet() {
+  public FilterWindow getFilterWindow() {
     return filterWindow;
   }
 
