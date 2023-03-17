@@ -50,8 +50,13 @@ public class Controller {
     return statType;
   }
 
+  /**
+   * Sets the stat type and re-plots all the filters with the new stat.
+   * @param statType The new stat to display on the graph.
+   */
   public void setStatType(Stat statType) {
     this.statType = statType;
+    rePlot();
   }
 
   public void setFilterWindow(FilterWindow filter) {
