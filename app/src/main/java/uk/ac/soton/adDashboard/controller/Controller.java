@@ -33,7 +33,7 @@ public class Controller {
     return model;
   }
 
-  public void setModels(DataSet model) {
+  public void setModel(DataSet model) {
     this.model = model;
   }
 
@@ -64,9 +64,9 @@ public class Controller {
   public void filterUpdated(Filter filter) {
 
     model.setFilter(filter);
-    filter.setStat(statType);
+
     List<Pair<Integer, Double>> points = model.generateY(filter.getStartDate(),
-        filter.getEndDate(), getGranularity()); //todo: should the filter contain the unit?
+        filter.getEndDate(), getGranularity(),statType); //todo: should the filter contain the unit?
     graph.plot(filter.getId(),points);
   }
 

@@ -30,15 +30,14 @@ public class GraphView extends BaseView {
     /**
      * App class (logic)
      */
-    protected Controller controller;
 
     protected DataSet dataSet;
     protected ArrayList<String> filenames;
     protected Graph graph;
 
-    public GraphView(AppWindow appWindow, DataSet dataSet, ArrayList<String> filenames) {
+    public GraphView(AppWindow appWindow, ArrayList<String> filenames) {
         super(appWindow);
-        this.dataSet = dataSet;
+        this.dataSet = appWindow.getController().getModel();
         this.filenames = filenames;
         logger.info("Creating the graph view View");
     }
@@ -69,11 +68,11 @@ public class GraphView extends BaseView {
         theme.getItems().addAll(light, dark);
         light.setOnAction(e -> {
             appWindow.setDarkMode(false);
-            appWindow.listViewWindow(dataSet,filenames);
+            appWindow.listViewWindow(filenames);
         });
         dark.setOnAction(e -> {
             appWindow.setDarkMode(true);
-            appWindow.listViewWindow(dataSet,filenames);
+            appWindow.listViewWindow(filenames);
         });
 
 
@@ -161,7 +160,7 @@ public class GraphView extends BaseView {
         stack.setOnMouseClicked(event -> {
               switchedOn = !switchedOn;
               toggle.setTranslateX(switchedOn ? -30 : 30);
-            appWindow.loadView(new ListView(appWindow,dataSet,filenames));
+            appWindow.loadView(new ListView(appWindow,filenames));
         });
 
         VBox graphBox = new VBox(20);
