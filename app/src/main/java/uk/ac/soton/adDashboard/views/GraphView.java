@@ -156,6 +156,9 @@ public class GraphView extends BaseView {
         toggle.setArcHeight(30);
         toggle.setTranslateX(switchedOn ? -50 : 50);
         stack.getChildren().addAll(background, toggle, text);
+        VBox toggleButton = new VBox();
+        BorderPane.setMargin(toggleButton, new Insets(10, 0, 0, 10));
+        toggleButton.getChildren().add(stack);
         stack.setAlignment(Pos.CENTER_LEFT);
 
         stack.setOnMouseClicked(event -> {
