@@ -169,6 +169,10 @@ public class GraphView extends BaseView {
         ComboBox<Color> cmb = new ComboBox<>();
         cmb.getItems().addAll(Color.RED, Color.GREEN, Color.BLUE);
 
+        // Creates filter and graph object sets the filter and displays the graph
+        Filter filter = new Filter();
+        filter.setStat(Stat.totalImpressions);
+        dataSet.setFilter(filter);
         graph = new Graph();
         graph.addNewSeries(dataSet.generateY(dataSet.earliestDate(),dataSet.latestDate(), Granularity.DAY));
 
