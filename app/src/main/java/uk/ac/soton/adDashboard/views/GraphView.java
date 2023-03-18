@@ -6,18 +6,19 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.soton.adDashboard.components.FilterSet;
 import uk.ac.soton.adDashboard.controller.Controller;
+import uk.ac.soton.adDashboard.enums.Granularity;
+import uk.ac.soton.adDashboard.enums.Stat;
+import uk.ac.soton.adDashboard.filter.Filter;
 import uk.ac.soton.adDashboard.records.DataSet;
 import uk.ac.soton.adDashboard.ui.AppPane;
 import uk.ac.soton.adDashboard.ui.AppWindow;
@@ -172,15 +173,16 @@ public class GraphView extends BaseView {
         ComboBox<Color> cmb = new ComboBox<>();
         cmb.getItems().addAll(Color.RED, Color.GREEN, Color.BLUE);
 
-        var graph = new Rectangle();
-        graph.setWidth(200);
-        graph.setHeight(100);
-        graph.setFill(Color.BLUEVIOLET);
+        // Creates filter and graph object sets the filter and displays the graph
+        Filter filter = new Filter();
+        filter.setStat(Stat.totalImpressions);
+        dataSet.setFilter(filter);
+        graph = new Graph();
+        graph.addNewSeries(dataSet.generateY(dataSet.earliestDate(),dataSet.latestDate(), Granularity.DAY));
 
-        graphBox.getChildren().addAll(cmb, graph);
+        graphBox.getChildren().addAll(cmb, graph.getChart());
+        graphsList.getChildren().addAll(stack,graphBox);
 
-        graphsList.getChildren().addAll(graphBox);
-        borderPane.setLeft(toggleButton);
         // This is the right side of the borderPane
         Pane filterPane = new VBox(15);
         filterPane.getStyleClass().add("filter-pane");
