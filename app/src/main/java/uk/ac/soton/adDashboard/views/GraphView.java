@@ -165,6 +165,7 @@ public class GraphView extends BaseView {
         ComboBox<Color> cmb = new ComboBox<>();
         cmb.getItems().addAll(Color.RED, Color.GREEN, Color.BLUE);
 
+        graph = new Graph();
         graphBox.getChildren().addAll(cmb, graph.getChart());
         graphsList.getChildren().addAll(stack,graphBox);
 
@@ -174,7 +175,6 @@ public class GraphView extends BaseView {
 
         Text filterTitle = new Text("Filters");
         filterTitle.getStyleClass().add("mediumWhiteText");
-
         FilterSet set1 = new FilterSet("Filter set 1");
 
         filterPane.getChildren().addAll(filterTitle, set1);
