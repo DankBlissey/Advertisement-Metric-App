@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.soton.adDashboard.App;
+import uk.ac.soton.adDashboard.controller.Controller;
 import uk.ac.soton.adDashboard.records.DataSet;
 import uk.ac.soton.adDashboard.views.BaseView;
 import uk.ac.soton.adDashboard.views.BounceRateView;
@@ -21,7 +22,6 @@ import java.util.ArrayList;
 /**
  * The AppWindow is the single window for the app where everything takes place. To move between screens in the app,
  * we simply change the scene aka view in our app.
- *
  * The appWindow has methods to launch each of the different parts of the app by switching scenes (aka views). You can add more
  * methods here to add more screens to the app.
  */
@@ -37,6 +37,15 @@ public class AppWindow {
     private Scene view;
 
     private Boolean darkMode = false;
+
+    /**
+     * The controller for the system.
+     */
+    private final Controller controller = new Controller();
+
+    public Controller getController() {
+        return controller;
+    }
     /**
      * Create a new appWindow attached to the given stage with the specified width and height
      * @param stage stage
@@ -122,22 +131,22 @@ public class AppWindow {
     /**
      * Display the list view of the data
      */
-    public void listViewWindow(DataSet dataset, ArrayList<String> filenames) {
-        loadView(new ListView(this, dataset, filenames));
+    public void listViewWindow(ArrayList<String> filenames) {
+        loadView(new ListView(this, filenames));
     }
 
     /**
      * Display the graph view of the data
      */
-    public void graphViewWindow(DataSet dataset, ArrayList<String> filenames) {
-        loadView(new ListView(this, dataset, filenames));
+    public void graphViewWindow( ArrayList<String> filenames) {
+        loadView(new ListView(this, filenames));
     }
 
     /**
      * Display the second menu(scene/view) where you select the bounce rate
      */
-    public void bounceRateWindow(DataSet dataSet, ArrayList<String> filenames) {
-        loadView(new BounceRateView(this, dataSet, filenames));
+    public void bounceRateWindow( ArrayList<String> filenames) {
+        loadView(new BounceRateView(this, filenames));
     }
 
     /**

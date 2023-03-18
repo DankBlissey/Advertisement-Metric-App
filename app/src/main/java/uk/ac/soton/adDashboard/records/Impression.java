@@ -4,7 +4,6 @@ package uk.ac.soton.adDashboard.records;
 import java.time.LocalDateTime;
 
 import uk.ac.soton.adDashboard.enums.Context;
-import uk.ac.soton.adDashboard.enums.Gender;
 
 /**
  * Stores an impression, without the user's data.
@@ -70,8 +69,6 @@ public class Impression extends LogRow {
       return Context.Hobbies;
     } else if (context.equals("Travel")) {
       return Context.Travel;
-    } else if (context.equals("Media")) {
-      return Context.Media;
     } else {
       throw new Exception("context invalid");
     }
