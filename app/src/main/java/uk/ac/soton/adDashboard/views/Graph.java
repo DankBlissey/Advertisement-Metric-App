@@ -50,6 +50,10 @@ public class Graph implements GraphFeatures {
         return chart;
     }
 
+    public LineChart<Number, Number> getChart(){
+        return this.chart;
+    }
+
     // Used to add all points to the Series
     private void addDataPoints(List<Pair<Number, Number>> data, XYChart.Series<Number, Number> series) {
         // Iterate through the data and add each point to the series.
