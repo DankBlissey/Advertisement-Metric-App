@@ -139,7 +139,13 @@ public class ListView extends BaseView {
 
         //Using the gridpane component to organise the list view objects
         gridPane = new GridPane();
-        borderPane.setCenter(gridPane); // grid pane is set in the centre of the border pane as per storyboard
+
+
+        //vbox so that button is not part of the list objects
+        VBox centerVbox = new VBox(20);
+        centerVbox.setMaxWidth(600);
+
+        borderPane.setCenter(centerVbox); // grid pane is set in the centre of the border pane as per storyboard
         //gridPane.setGridLinesVisible(true); //used for debugging
         gridPane.setAlignment(Pos.CENTER );
         gridPane.setHgap(20);
@@ -161,6 +167,9 @@ public class ListView extends BaseView {
         toggle.setArcWidth(29);
         toggle.setArcHeight(30);
         stack.getChildren().addAll(background, toggle, text);
+        VBox toggleButton = new VBox();
+        BorderPane.setMargin(toggleButton, new Insets(10, 0, 0, 10));
+        toggleButton.getChildren().add(stack);
         stack.setAlignment(Pos.CENTER_LEFT);
 
         // event handling when the button is pressed
@@ -168,8 +177,12 @@ public class ListView extends BaseView {
             appWindow.loadView(new GraphView(appWindow, filenames));
         });
 
+        centerVbox.getChildren().addAll(gridPane);
+        borderPane.setLeft(toggleButton);
+
+        BorderPane.setMargin(vbox, new Insets(0, 0, 25, 0));
         //adding switch button to the top left of the grid pane
-        gridPane.add(stack,0,0);
+       // gridPane.add(stack,0,0);
         data = dataSet.allStats(dataSet.earliestDate(),dataSet.latestDate());
         //private void createListBlock(GridPane gridPane, double[] data, DropShadow dropShadow,  String text, int dataIndex, int xGrid, int yGrid){
         createListBlock("Total clicks", 2, 0, 1 );
