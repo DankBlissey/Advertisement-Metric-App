@@ -11,6 +11,8 @@ import javafx.scene.text.Text;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.soton.adDashboard.components.FilterSet;
+import uk.ac.soton.adDashboard.controller.Controller;
+import uk.ac.soton.adDashboard.enums.Stat;
 import uk.ac.soton.adDashboard.records.DataSet;
 import uk.ac.soton.adDashboard.ui.AppPane;
 import uk.ac.soton.adDashboard.ui.AppWindow;
@@ -162,8 +164,53 @@ public class GraphView extends BaseView {
         VBox graphBox = new VBox(20);
         graphBox.getStyleClass().add("graph-box");
 
-        ComboBox<Color> cmb = new ComboBox<>();
-        cmb.getItems().addAll(Color.RED, Color.GREEN, Color.BLUE);
+        ComboBox<String> cmb = new ComboBox<>();
+        cmb.getItems().addAll("total Impressions", "total Clicks", "total Uniques", "total Bounces", "total Conversions", "total Cost", "CTR", "CPA", "CPC", "CPM", "bounce Rate");
+
+        cmb.setOnAction((e) -> {
+            String selectedOption = cmb.getValue();
+            Stat selectedStat = null;
+            switch(selectedOption) {
+                case "total Impressions":
+                    selectedStat = Stat.totalImpressions;
+                    break;
+                case "total Clicks":
+                    selectedStat = Stat.totalClicks;
+                    break;
+                case "total Uniques":
+                    selectedStat = Stat.totalUniques;
+                    break;
+                case "total Bounces":
+                    selectedStat = Stat.totalBounces;
+                    break;
+                case "total Conversions":
+                    selectedStat = Stat.totalConversions;
+                    break;
+                case "total Cost":
+                    selectedStat = Stat.totalCost;
+                    break;
+                case "CTR":
+                    selectedStat = Stat.CTR;
+                    break;
+                case "CPA":
+                    selectedStat = Stat.CPA;
+                    break;
+                case "CPC":
+                    selectedStat = Stat.CPC;
+                    break;
+                case "CPM":
+                    selectedStat = Stat.CPM;
+                    break;
+                case "bounce Rate":
+                    selectedStat = Stat.bounceRate;
+                    break;
+                default:
+                    break;
+            }
+            if(selectedStat != null) {
+                appWindow.getController().setStatType(selectedStat);
+            }
+        });
 
         graph = new Graph();
         graphBox.getChildren().addAll(cmb, graph.getChart());
