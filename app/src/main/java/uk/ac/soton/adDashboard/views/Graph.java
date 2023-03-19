@@ -23,14 +23,13 @@ public class Graph implements GraphFeatures {
         this.series = new HashMap<>();
     }
 
-    public LineChart<Number, Number> createChart() {
+    private LineChart<Number, Number> createChart() {
         xAxis = new NumberAxis();
         yAxis = new NumberAxis();
 
-        yAxis.setUpperBound(43000);
         chart = new LineChart<>(xAxis, yAxis);
 
-        // Set the axis and graph titles.
+        //Set the axis and graph titles.
         chart.setTitle("Graph");
         chart.setCreateSymbols(false);
         chart.setLegendVisible(false);
@@ -43,7 +42,7 @@ public class Graph implements GraphFeatures {
         chart.setLegendVisible(true);
         chart.setLegendSide(Side.RIGHT);
 
-        // Set the size and position of the graph within the layout container.
+        //Set the size and position of the graph within the layout container.
         chart.setLayoutX(50);
         chart.setLayoutY(50);
         chart.setPrefSize(500, 500);
@@ -54,9 +53,9 @@ public class Graph implements GraphFeatures {
         return this.chart;
     }
 
-    // Used to add all points to the Series
+    //Used to add all points to the Series
     private void addDataPoints(List<Pair<Number, Number>> data, XYChart.Series<Number, Number> series) {
-        // Iterate through the data and add each point to the series.
+        //Iterate through the data and add each point to the series.
         for (Pair<Number, Number> point : data) {
             Number xValue = point.getKey();
             Number yValue = point.getValue();
@@ -64,23 +63,23 @@ public class Graph implements GraphFeatures {
         }
     }
 
-    // Creates a new Series
+    //Creates a new Series
     private XYChart.Series<Number, Number> createNewSeries(List<Pair<Integer, Double>> data) {
-        // Creates a new Series
+        //Creates a new Series
         XYChart.Series<Number, Number> newSeries = new XYChart.Series<>();
 
-        // Gets the points for the series
+        //Gets the points for the series
         List<Pair<Number, Number>> points = data.stream()
                 .map(pair -> new Pair<Number, Number>(pair.getKey(), pair.getValue()))
                 .collect(Collectors.toList());
         addDataPoints(points, newSeries);
 
-        // Returns the new Series
+        //Returns the new Series
         return newSeries;
     }
 
 
-    // Adds data to an existing series in the chart
+    //Adds data to an existing series in the chart
     @Override
     public void plot(int id, List<Pair<Integer, Double>> values) {
         // Gets the existing series for the specified ID
