@@ -41,9 +41,9 @@ public class AppWindow {
     /**
      * The controller for the system.
      */
-    private final Controller controller = new Controller();
+    private static final Controller controller = new Controller();
 
-    public Controller getController() {
+    public static Controller getController() {
         return controller;
     }
     /**

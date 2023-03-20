@@ -32,7 +32,7 @@ public class BounceRateView extends BaseView {
 
     public BounceRateView(AppWindow appWindow,  ArrayList<String> filenames) {
         super(appWindow);
-        this.dataSet = appWindow.getController().getModel();
+        this.dataSet = controller.getModel();
         this.filenames = filenames;
         logger.info("Creating the BounceRate View");
     }

@@ -11,11 +11,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import uk.ac.soton.adDashboard.controller.Controller;
+import uk.ac.soton.adDashboard.ui.AppWindow;
+
 import uk.ac.soton.adDashboard.filter.Filter;
 import uk.ac.soton.adDashboard.views.GraphView;
 
 public class FilterSet extends VBox {
-
+    private final Controller controller= AppWindow.getController();
     private static final Logger logger = LogManager.getLogger(GraphView.class);
 
     private final String dateRangeOptions[] = {"Last week", "Last 30 days", "Last 90 days", "Last 12 months"};
