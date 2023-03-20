@@ -173,6 +173,8 @@ public class GraphView extends BaseView {
             appWindow.loadView(new ListView(appWindow,filenames));
         });
 
+        borderPane.setLeft(toggleButton);
+
         VBox graphBox = new VBox(20);
         graphBox.getStyleClass().add("graph-box");
 
@@ -226,7 +228,7 @@ public class GraphView extends BaseView {
 
         graph = new Graph();
         graphBox.getChildren().addAll(cmb, graph.getChart());
-        graphsList.getChildren().addAll(stack,graphBox);
+        graphsList.getChildren().addAll(graphBox);
 
         // This is the right side of the borderPane which includes a "filterPane"
         VBox filterPane = new VBox(15);
