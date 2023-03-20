@@ -1,11 +1,11 @@
 package uk.ac.soton.adDashboard.controller;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import javafx.util.Pair;
 import uk.ac.soton.adDashboard.Interfaces.FilterWindow;
 import uk.ac.soton.adDashboard.Interfaces.GraphFeatures;
-import uk.ac.soton.adDashboard.components.FilterSet;
+
 import uk.ac.soton.adDashboard.enums.Granularity;
 import uk.ac.soton.adDashboard.enums.Stat;
 import uk.ac.soton.adDashboard.filter.Filter;
@@ -22,7 +22,7 @@ public class Controller {
 
   private FilterWindow filterWindow;
 
-  private Stat statType = Stat.totalImpressions;
+  private Stat statType=Stat.totalImpressions;
 
   private Granularity granularity = Granularity.DAY;
 
@@ -98,6 +98,7 @@ public class Controller {
 
     List<Pair<Integer, Double>> points = model.generateY(filter.getStartDate(),
         filter.getEndDate(), getGranularity(),statType); //todo: should the filter contain the unit?
+    graph.delete(filter.getId());
     graph.plot(filter.getId(),points);
   }
 

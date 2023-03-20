@@ -47,6 +47,7 @@ public class GraphView extends BaseView implements FilterWindow {
         super(appWindow);
         this.dataSet = controller.getModel();
         this.filenames = filenames;
+        controller.setFilterWindow(this);
         logger.info("Creating the graph view View");
     }
 
@@ -220,12 +221,15 @@ public class GraphView extends BaseView implements FilterWindow {
                 default:
                     break;
             }
+            logger.info("Selected stat: " + selectedStat);
             if(selectedStat != null) {
-                appWindow.getController().setStatType(selectedStat);
+                AppWindow.getController().setStatType(selectedStat);
             }
         });
+        cmb.setValue("total Impressions");
 
         graph = new Graph();
+        controller.setGraph(graph);
         graphBox.getChildren().addAll(cmb, graph.getChart());
         graphsList.getChildren().addAll(stack,graphBox);
 
@@ -246,10 +250,8 @@ public class GraphView extends BaseView implements FilterWindow {
         filterSetPane = new VBox(15);
         filterSetPane.getStyleClass().add("filter-set-pane");
 
-        Filter defaultFilter = new Filter();
-        defaultFilter.setStartDate(controller.getModel().earliestDate());
-        defaultFilter.setEndDate(controller.getModel().latestDate());
-        defaultFilter.setId(0);
+        Filter defaultFilter = defaultFilter();
+        logger.info("creating the filter");
         filters = new ArrayList<Filter>();
         filters.add(defaultFilter);
         FilterSet defaultFilterSet = new FilterSet("Filter set 1", defaultFilter, null, appWindow);
@@ -266,6 +268,14 @@ public class GraphView extends BaseView implements FilterWindow {
 
         borderPane.setRight(filterPane);
         BorderPane.setMargin(filterPane, new Insets(0, 35, 0, 0));
+    }
+
+    private Filter defaultFilter() {
+        var defaultFilter = new Filter();
+        defaultFilter.setStartDate(controller.getModel().earliestDate());
+        defaultFilter.setEndDate(controller.getModel().latestDate());
+        defaultFilter.setId(0);
+        return defaultFilter;
     }
 
     /**
@@ -291,7 +301,7 @@ public class GraphView extends BaseView implements FilterWindow {
     private void addNewFilter() {
         int index = getValidIndex();
 
-        Filter newFilter = new Filter();
+        Filter newFilter = defaultFilter();
         newFilter.setId(index);
         filters.add(newFilter);
 
