@@ -2,6 +2,7 @@ package uk.ac.soton.adDashboard.views;
 
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
+import uk.ac.soton.adDashboard.controller.Controller;
 import uk.ac.soton.adDashboard.ui.AppPane;
 import uk.ac.soton.adDashboard.ui.AppWindow;
 
@@ -18,12 +19,15 @@ public abstract class BaseView {
 
     protected Scene view;
 
+    protected Controller controller;
+
     /**
      * Create a new scene/view, passing in the AppWindow the scene will be displayed in
      * @param appWindow the game window
      */
     public BaseView(AppWindow appWindow) {
         this.appWindow = appWindow;
+        controller = AppWindow.getController();
     }
 
     /**
