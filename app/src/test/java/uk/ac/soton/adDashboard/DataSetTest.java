@@ -19,10 +19,10 @@ import uk.ac.soton.adDashboard.records.User;
 
 public class DataSetTest {
 
-
   private static DataSet dataSet;
   private static double cost;
 
+  // Creates sample DataSet for testing
   @BeforeAll
   static void setup() throws Exception {
 
@@ -34,6 +34,7 @@ public class DataSetTest {
     cost = 42.5;
   }
 
+  // Resets the DataSet object after each test case is executed
   @AfterEach
   void afterEach() {
     dataSet.setInterval(30);
@@ -41,13 +42,14 @@ public class DataSetTest {
     dataSet.setPagesViewedBounceMetric(true);
   }
 
+  //  Creates sample data for the DataSet
 
   static ArrayList<Impression> generateImpressions() throws Exception {
     var impressions = new ArrayList<Impression>();
     impressions.add(new Impression("2015-01-01 23:00:02", "25", "12.5", "Shopping"));
     impressions.add(new Impression("2015-02-01 23:05:00", "26", "10", "Shopping"));
     impressions.add(new Impression("2015-02-03 23:10:00", "27", "15", "Blog"));
-    impressions.add(new Impression("2015-05-01 23:05:00", "26", "0", "Shopping"));
+    impressions.add(new Impression("2015-05-01 23:05:00", "26", "0", "Hobbies"));
     return impressions;
   }
 
@@ -56,7 +58,6 @@ public class DataSetTest {
     users.put(25L, new User("25", "<25", "Male", "Low"));
     users.put(26L, new User("26", "25-34", "Female", "High"));
     users.put(27L, new User("27", "25-34", "Female", "Medium"));
-
     return users;
   }
 
@@ -65,7 +66,6 @@ public class DataSetTest {
     access.add(new ServerAccess("2015-01-01 23:01:02", "25", "2015-01-01 23:02:02", "2", "Yes"));
     access.add(new ServerAccess("2015-01-01 23:05:03", "26", "2015-01-01 23:05:08", "1", "Yes"));
     access.add(new ServerAccess("2015-05-01 23:05:00", "26", "2015-05-01 23:05:50", "1", "No"));
-
     return access;
   }
 
@@ -77,37 +77,28 @@ public class DataSetTest {
     return clicks;
   }
 
-  //11 main things to test
+  // Test of all metrics
 
-
+  // Number of Impressions
   @Test
-  void calcTotalCost() {
-    assertEquals(cost, dataSet.calcTotalCost(dataSet.earliestDate(), dataSet.latestDate()));
-
+  void totalImpressions() {
+    assertEquals(4, dataSet.totalImpressions(dataSet.earliestDate(), dataSet.latestDate()));
   }
 
+  // Number of Clicks
   @Test
   void totalClicks() {
     assertEquals(3, dataSet.totalClicks(dataSet.earliestDate(), dataSet.latestDate()));
 
   }
 
+  // Number of Uniques
   @Test
-  void totalImpressions() {
-    assertEquals(4, dataSet.totalImpressions(dataSet.earliestDate(), dataSet.latestDate()));
+  void calcUniqueUsersClick() {
+    assertEquals(2, dataSet.calcUniqueUsersClick(dataSet.earliestDate(), dataSet.latestDate()));
   }
 
-  @Test
-  void calcClickThrough() {
-    //clicks per impression
-    assertEquals(3 / 4.0, dataSet.calcClickThrough(dataSet.earliestDate(), dataSet.latestDate()));
-  }
-
-  @Test
-  void calcNumConversions() {
-    assertEquals(2, dataSet.calcNumConversions(dataSet.earliestDate(), dataSet.latestDate()));
-  }
-
+  // Bounce
   @Test
   void isBounce() {
     dataSet.setPagesViewedBounceMetric(true);
@@ -126,36 +117,54 @@ public class DataSetTest {
 
   }
 
+  // Number of Bounces (Number of Pages)
   @Test
   void calcBounces() {
     dataSet.setPagesForBounce(2);
     assertEquals(2, dataSet.calcBounces(dataSet.earliestDate(), dataSet.latestDate()));
   }
 
+  // Number of Bounces (Time Interval)
   @Test
-  void calcBounceRate() {
-    //number of bounces per click
-    dataSet.setPagesForBounce(2);
-    assertEquals(2.0 / 3, dataSet.calcBounceRate(dataSet.earliestDate(), dataSet.latestDate()));
-    //test the affects of changing the bounce rate measurement
+  void calcBouncesTime() {
+    dataSet.setPagesViewedBounceMetric(false);
+    dataSet.setInterval(120);
+    assertEquals(3, dataSet.calcBounces(dataSet.earliestDate(), dataSet.latestDate()));
   }
 
+  // Number of Conversions
+  @Test
+  void calcNumConversions() {
+    assertEquals(2, dataSet.calcNumConversions(dataSet.earliestDate(), dataSet.latestDate()));
+  }
+
+  // Total Cost
+  @Test
+  void calcTotalCost() {
+    assertEquals(cost, dataSet.calcTotalCost(dataSet.earliestDate(), dataSet.latestDate()));
+
+  }
+
+  // CTR
+  @Test
+  void calcClickThrough() {
+    assertEquals(3 / 4.0, dataSet.calcClickThrough(dataSet.earliestDate(), dataSet.latestDate()));
+  }
+
+  // CPA
   @Test
   void calcCostAcquisition() {
     assertEquals(cost / 2,
         dataSet.calcCostAcquisition(dataSet.earliestDate(), dataSet.latestDate()));
   }
 
+  // CPC
   @Test
   void calcCostPerClick() {
     assertEquals(cost / 3, dataSet.calcCostPerClick(dataSet.earliestDate(), dataSet.latestDate()));
   }
 
-  @Test
-  void calcUniqueUsersClick() {
-    assertEquals(2, dataSet.calcUniqueUsersClick(dataSet.earliestDate(), dataSet.latestDate()));
-  }
-
+  // CPM
   @Test
   void costPerThousandImpre() {
     double value = Math.round(
@@ -163,5 +172,13 @@ public class DataSetTest {
     assertEquals(cost / (4.0 / 1000), value);
   }
 
+  // Bounce Rate
+  @Test
+  void calcBounceRate() {
+    //number of bounces per click
+    dataSet.setPagesForBounce(2);
+    assertEquals(2.0 / 3, dataSet.calcBounceRate(dataSet.earliestDate(), dataSet.latestDate()));
+    //test the effects of changing the bounce rate measurement
+  }
 
 }
