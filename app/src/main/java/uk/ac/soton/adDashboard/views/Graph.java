@@ -64,9 +64,13 @@ public class Graph implements GraphFeatures {
     }
 
     //Creates a new Series
-    private XYChart.Series<Number, Number> createNewSeries(List<Pair<Integer, Double>> data) {
+    private XYChart.Series<Number, Number> createNewSeries(int id, List<Pair<Integer, Double>> data) {
         //Creates a new Series
         XYChart.Series<Number, Number> newSeries = new XYChart.Series<>();
+
+        //Sets key/Legend of the line in the graph
+        String name = "Filter Set " + (id + 1);
+        newSeries.setName(name);
 
         //Gets the points for the series
         List<Pair<Number, Number>> points = data.stream()
@@ -78,7 +82,6 @@ public class Graph implements GraphFeatures {
         return newSeries;
     }
 
-
     //Adds data to an existing series in the chart
     @Override
     public void plot(int id, List<Pair<Integer, Double>> values) {
@@ -87,7 +90,7 @@ public class Graph implements GraphFeatures {
 
         if (existingSeries == null) {
             // If the series doesn't exist, create a new series and add it to the chart
-            existingSeries = createNewSeries(values);
+            existingSeries = createNewSeries(id, values);
             series.put(id, existingSeries);
             chart.getData().add(existingSeries);
         } else {
