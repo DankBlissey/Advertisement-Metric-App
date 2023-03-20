@@ -15,6 +15,7 @@ import uk.ac.soton.adDashboard.controller.Controller;
 import uk.ac.soton.adDashboard.ui.AppWindow;
 
 import uk.ac.soton.adDashboard.filter.Filter;
+import uk.ac.soton.adDashboard.ui.AppWindow;
 import uk.ac.soton.adDashboard.views.GraphView;
 
 public class FilterSet extends VBox {
@@ -29,8 +30,11 @@ public class FilterSet extends VBox {
 
     private final Filter filter;
 
-    public FilterSet(String title, Filter filter, Button deleteButton) {
+    protected AppWindow appWindow;
+
+    public FilterSet(String title, Filter filter, Button deleteButton, AppWindow appWindow) {
         this.filter = filter;
+        this.appWindow = appWindow;
 
         setSpacing(10);
         setPrefWidth(300);
@@ -71,7 +75,7 @@ public class FilterSet extends VBox {
         // ---------- Context filter ----------
         renderFilter("Context:", contextOptions, "context");
 
-        //todo: Controller.filterUpdated();
+        //todo: appWindow.getController().filterUpdated(filter);
     }
 
     public void renderFilter(String filterTitle, String[] optionsText, String filterType) {
@@ -95,7 +99,6 @@ public class FilterSet extends VBox {
 
     public void updatedFilter(String filterType, String newValue) {
         logger.info("Changed filter " + filterType + " to value: " + newValue);
-
-        //todo: Controller.filterUpdated();
+        //todo: appWindow.getController().filterUpdated(this.filter);
     }
 }
