@@ -1,6 +1,5 @@
 package uk.ac.soton.adDashboard.records;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAmount;
@@ -683,10 +682,11 @@ public class DataSet {
    */
   public ArrayList<Pair<Integer, Double>> generateY(LocalDateTime startTime,
       LocalDateTime endTime, Granularity unit, Stat stat) {
-    ArrayList<Pair<Integer, Double>> points = new ArrayList<>();
+    ArrayList<Pair<Integer, Double>> points;
 
     setEfficiency(true);
     resetAllAccess();
+    filteringEnabled(true);
     Function f;
     switch (stat) {  //sets the function to perform in genPoints depending on the stat needed.
       case totalImpressions -> f = this::totalImpressions;

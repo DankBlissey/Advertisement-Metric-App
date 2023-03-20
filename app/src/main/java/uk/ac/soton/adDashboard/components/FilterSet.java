@@ -12,6 +12,9 @@ import javafx.scene.text.Text;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.soton.adDashboard.controller.Controller;
+import uk.ac.soton.adDashboard.enums.Context;
+import uk.ac.soton.adDashboard.enums.Gender;
+import uk.ac.soton.adDashboard.enums.Income;
 import uk.ac.soton.adDashboard.ui.AppWindow;
 
 import uk.ac.soton.adDashboard.filter.Filter;
@@ -26,7 +29,7 @@ public class FilterSet extends VBox {
     private final String genderOptions[] = {"Any", "Male", "Female"};
     private final String ageOptions[] = {"Any", "<25", "25-34", "35-44", "45-54", ">54"};
     private final String incomeOptions[] = {"Any", "Low", "Medium", "High"};
-    private final String contextOptions[] = {"Any", "News", "Shopping", "Social", "Media", "Blog", "Hobbies", "Travel"};
+    private final String contextOptions[] = {"Any", "News", "Shopping", "Social", "Blog", "Hobbies", "Travel"};
 
     private final Filter filter;
 
@@ -61,7 +64,7 @@ public class FilterSet extends VBox {
         }
 
         // ---------- Date range filter ----------
-        renderFilter("Date range:", dateRangeOptions, "dateRange");
+//        renderFilter("Date range:", dateRangeOptions, "dateRange");
 
         // ---------- Gender filter ----------
         renderFilter("Gender:", genderOptions, "gender");
@@ -75,7 +78,7 @@ public class FilterSet extends VBox {
         // ---------- Context filter ----------
         renderFilter("Context:", contextOptions, "context");
 
-        //todo: appWindow.getController().filterUpdated(filter);
+        AppWindow.getController().filterUpdated(filter);
     }
 
     public void renderFilter(String filterTitle, String[] optionsText, String filterType) {
@@ -98,7 +101,16 @@ public class FilterSet extends VBox {
     }
 
     public void updatedFilter(String filterType, String newValue) {
+        if (filterType.equals("gender")) {
+            filter.setGender(Gender.parseGender(newValue));
+        } else if (filterType.equals("age")) {
+            filter.setAge(newValue);
+        } else if (filterType.equals("income")) {
+            filter.setIncome(Income.parseIncome(newValue));
+        }  else if (filterType.equals("context")) {
+            filter.setContext(Context.parseContext(newValue));
+        }
         logger.info("Changed filter " + filterType + " to value: " + newValue);
-        //todo: appWindow.getController().filterUpdated(this.filter);
+        AppWindow.getController().filterUpdated(this.filter);
     }
 }
