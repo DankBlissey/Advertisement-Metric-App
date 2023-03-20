@@ -11,6 +11,7 @@ import javafx.scene.text.Text;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.soton.adDashboard.App;
+import uk.ac.soton.adDashboard.Interfaces.FilterWindow;
 import uk.ac.soton.adDashboard.components.FilterSet;
 import uk.ac.soton.adDashboard.controller.Controller;
 import uk.ac.soton.adDashboard.enums.Stat;
@@ -21,7 +22,7 @@ import uk.ac.soton.adDashboard.ui.AppWindow;
 
 import java.util.ArrayList;
 
-public class GraphView extends BaseView {
+public class GraphView extends BaseView implements FilterWindow {
     private static final Logger logger = LogManager.getLogger(GraphView.class);
     private boolean switchedOn = false;
     /**
@@ -246,6 +247,8 @@ public class GraphView extends BaseView {
         filterSetPane.getStyleClass().add("filter-set-pane");
 
         Filter defaultFilter = new Filter();
+        defaultFilter.setStartDate(controller.getModel().earliestDate());
+        defaultFilter.setEndDate(controller.getModel().latestDate());
         defaultFilter.setId(0);
         filters = new ArrayList<Filter>();
         filters.add(defaultFilter);
@@ -299,7 +302,7 @@ public class GraphView extends BaseView {
         deleteButton.setOnAction(e -> {
             filterSetPane.getChildren().remove(newFilterSet);
             filters.remove(newFilter);
-            //todo: appWindow.getController().deleteLine(newFilter);
+            AppWindow.getController().deleteLine(newFilter);
             logger.info("Deleted filter at index " + index);
         });
 

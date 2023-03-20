@@ -22,7 +22,7 @@ public class Controller {
 
   private FilterWindow filterWindow;
 
-  private Stat statType;
+  private Stat statType = Stat.totalImpressions;
 
   private Granularity granularity = Granularity.DAY;
 
