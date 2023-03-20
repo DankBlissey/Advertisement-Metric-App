@@ -82,7 +82,6 @@ public class Graph implements GraphFeatures {
         return newSeries;
     }
 
-
     //Adds data to an existing series in the chart
     @Override
     public void plot(int id, List<Pair<Integer, Double>> values) {
