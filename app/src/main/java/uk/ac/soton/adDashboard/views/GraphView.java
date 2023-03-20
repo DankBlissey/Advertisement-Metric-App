@@ -232,6 +232,7 @@ public class GraphView extends BaseView implements FilterWindow {
         });
 
         HBox itemMenus = new HBox(cmb, granularity);
+        granularity.setTranslateX(350);
 
         graphBox.getChildren().addAll(itemMenus, graph.getChart());
         graphsList.getChildren().addAll(stack,graphBox);
