@@ -67,6 +67,8 @@ public class FilterSet extends VBox {
 
         // ---------- Context filter ----------
         renderFilter("Context:", contextOptions, "context");
+
+        //todo: Controller.filterUpdated();
     }
 
     public void renderFilter(String filterTitle, String[] optionsText, String filterType) {
@@ -91,6 +93,6 @@ public class FilterSet extends VBox {
     public void updatedFilter(String filterType, String newValue) {
         logger.info("Changed filter " + filterType + " to value: " + newValue);
 
-
+        //todo: Controller.filterUpdated();
     }
 }

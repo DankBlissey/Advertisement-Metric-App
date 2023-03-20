@@ -298,6 +298,7 @@ public class GraphView extends BaseView {
         deleteButton.setOnAction(e -> {
             filterSetPane.getChildren().remove(newFilterSet);
             filters.remove(newFilter);
+            //todo: Controller.deleteLine();
             logger.info("Deleted filter at index " + index);
         });
 
