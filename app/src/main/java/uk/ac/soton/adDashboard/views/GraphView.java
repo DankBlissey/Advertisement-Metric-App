@@ -10,6 +10,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import uk.ac.soton.adDashboard.App;
 import uk.ac.soton.adDashboard.components.FilterSet;
 import uk.ac.soton.adDashboard.controller.Controller;
 import uk.ac.soton.adDashboard.enums.Stat;
@@ -248,7 +249,7 @@ public class GraphView extends BaseView {
         defaultFilter.setId(0);
         filters = new ArrayList<Filter>();
         filters.add(defaultFilter);
-        FilterSet defaultFilterSet = new FilterSet("Filter set 1", defaultFilter, null);
+        FilterSet defaultFilterSet = new FilterSet("Filter set 1", defaultFilter, null, appWindow);
         filterSetPane.getChildren().add(defaultFilterSet);
 
         ScrollPane filtersScroll = new ScrollPane();
@@ -293,12 +294,12 @@ public class GraphView extends BaseView {
 
         Button deleteButton = new Button("x");
 
-        FilterSet newFilterSet = new FilterSet("Filter set " + (index + 1), newFilter, deleteButton);
+        FilterSet newFilterSet = new FilterSet("Filter set " + (index + 1), newFilter, deleteButton, appWindow);
 
         deleteButton.setOnAction(e -> {
             filterSetPane.getChildren().remove(newFilterSet);
             filters.remove(newFilter);
-            //todo: Controller.deleteLine();
+            //todo: appWindow.getController().deleteLine(newFilter);
             logger.info("Deleted filter at index " + index);
         });
 
@@ -317,6 +318,14 @@ public class GraphView extends BaseView {
             output.append(filename).append("\n");
         }
         return output.toString();
+    }
+
+    /**
+     * Getter for filter ArrayList
+     * @return filters
+     */
+    public ArrayList<Filter> getFilters() {
+        return this.filters;
     }
 
     /**
