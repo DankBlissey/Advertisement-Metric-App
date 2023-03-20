@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import uk.ac.soton.adDashboard.components.FilterSet;
 import uk.ac.soton.adDashboard.controller.Controller;
 import uk.ac.soton.adDashboard.enums.Stat;
+import uk.ac.soton.adDashboard.filter.Filter;
 import uk.ac.soton.adDashboard.records.DataSet;
 import uk.ac.soton.adDashboard.ui.AppPane;
 import uk.ac.soton.adDashboard.ui.AppWindow;
@@ -29,6 +30,16 @@ public class GraphView extends BaseView {
     protected DataSet dataSet;
     protected ArrayList<String> filenames;
     protected Graph graph;
+
+    /**
+     * VBox which contains multiple FilterSets that are displayed in a scrollable view
+     */
+    private VBox filterSetPane;
+
+    /**
+     * List which contains a copy of each Filter object which is also included in it's representing FilterSet
+     */
+    private ArrayList<Filter> filters;
 
     public GraphView(AppWindow appWindow, ArrayList<String> filenames) {
         super(appWindow);
@@ -216,22 +227,83 @@ public class GraphView extends BaseView {
         graphBox.getChildren().addAll(cmb, graph.getChart());
         graphsList.getChildren().addAll(stack,graphBox);
 
-        // This is the right side of the borderPane
-        Pane filterPane = new VBox(15);
+        // This is the right side of the borderPane which includes a "filterPane"
+        VBox filterPane = new VBox(15);
         filterPane.getStyleClass().add("filter-pane");
 
         Text filterTitle = new Text("Filters");
         filterTitle.getStyleClass().add("mediumWhiteText");
-        FilterSet set1 = new FilterSet("Filter set 1");
 
-        filterPane.getChildren().addAll(filterTitle, set1);
+        Button addFilterButton = new Button("+ Add filter set");
+        addFilterButton.getStyleClass().add("simple-button");
+        addFilterButton.setOnAction(e -> {
+            addNewFilter();
+        });
+
+        // The filterPane includes a scrollable FilterSetPane which includes multiple filterSets
+        filterSetPane = new VBox(15);
+        filterSetPane.getStyleClass().add("filter-set-pane");
+
+        Filter defaultFilter = new Filter();
+        defaultFilter.setId(0);
+        filters = new ArrayList<Filter>();
+        filters.add(defaultFilter);
+        FilterSet defaultFilterSet = new FilterSet("Filter set 1", defaultFilter, null);
+        filterSetPane.getChildren().add(defaultFilterSet);
 
         ScrollPane filtersScroll = new ScrollPane();
-        filtersScroll.setContent(filterPane);
-        filtersScroll.setPrefWidth(filterPane.USE_COMPUTED_SIZE);
+        filtersScroll.setContent(filterSetPane);
+        filtersScroll.setPrefWidth(filterSetPane.USE_COMPUTED_SIZE);
+        filtersScroll.getStyleClass().add("filter-scroll");
+        filtersScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        filtersScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
-        borderPane.setRight(filtersScroll);
-        BorderPane.setMargin(filtersScroll, new Insets(0, 35, 0, 0));
+        filterPane.getChildren().addAll(filterTitle, filtersScroll, addFilterButton);
+
+        borderPane.setRight(filterPane);
+        BorderPane.setMargin(filterPane, new Insets(0, 35, 0, 0));
+    }
+
+    /**
+     * Function calculates the next index that can be used for a new filter
+     * @return index
+     */
+    private int getValidIndex() {
+        int max = filters.get(0).getId();
+
+        for(Filter currentFilter : filters) {
+            if (currentFilter.getId() > max) {
+                max = currentFilter.getId();
+            }
+        }
+
+        return max + 1;
+    }
+
+    /**
+     * Function which creates a new Filter with the next available index,
+     * then creates a new FilterSet to display in the FilterSetPane.
+     */
+    private void addNewFilter() {
+        int index = getValidIndex();
+
+        Filter newFilter = new Filter();
+        newFilter.setId(index);
+        filters.add(newFilter);
+
+        Button deleteButton = new Button("x");
+
+        FilterSet newFilterSet = new FilterSet("Filter set " + (index + 1), newFilter, deleteButton);
+
+        deleteButton.setOnAction(e -> {
+            filterSetPane.getChildren().remove(newFilterSet);
+            filters.remove(newFilter);
+            //todo: Controller.deleteLine();
+            logger.info("Deleted filter at index " + index);
+        });
+
+        filterSetPane.getChildren().add(newFilterSet);
+        logger.info("Created a new filter with index " + index);
     }
 
     /**

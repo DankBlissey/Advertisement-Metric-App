@@ -166,3 +166,36 @@
 .scroll-pane {
     -fx-background-color:transparent;
 }
+
+.filter-set-pane {
+    -fx-background-color: #555BFF;
+}
+
+.simple-button {
+    -fx-font-family: 'Google Sans Bold';
+    -fx-font-size: 15px;
+    -fx-background-color: transparent;
+    -fx-background-insets: 0, 0;
+    -fx-background-radius: 0;
+    -fx-border-color: transparent;
+    -fx-border-radius: 0;
+    -fx-text-fill: white !important;
+    -fx-text-box-border: transparent;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-padding: 0;
+    -fx-effect: none;
+}
+
+.simple-button:hover {
+    -fx-text-fill: #DEDEDE !important;
+}
+
+.delete-filter-button {
+    -fx-font-family: 'Google Sans Bold';
+    -fx-font-size: 10px;
+    -fx-background-color: #202680;
+    -fx-background-radius: 100%;
+    -fx-border-color: transparent;
+    -fx-text-fill: #FFFFFF !important;
+}
