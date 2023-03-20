@@ -192,5 +192,10 @@
 }
 
 .delete-filter-button {
-
+    -fx-font-family: 'Google Sans Bold';
+    -fx-font-size: 10px;
+    -fx-background-color: #202680;
+    -fx-background-radius: 100%;
+    -fx-border-color: transparent;
+    -fx-text-fill: #FFFFFF !important;
 }

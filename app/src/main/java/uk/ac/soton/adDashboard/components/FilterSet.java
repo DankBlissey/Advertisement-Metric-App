@@ -5,6 +5,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import org.apache.logging.log4j.LogManager;
@@ -31,9 +33,25 @@ public class FilterSet extends VBox {
         setPrefWidth(300);
         getStyleClass().add("filter-set");
 
+        // ---------- Filter Title ----------
         Text filterSetTitle = new Text(title);
         filterSetTitle.getStyleClass().add("smallWhiteText");
-        getChildren().add(filterSetTitle);
+
+        // ---------- Delete button ----------
+        if(deleteButton != null) {
+            deleteButton.getStyleClass().add("delete-filter-button");
+            getChildren().add(deleteButton);
+
+            HBox top = new HBox();
+            Region spacer = new Region();
+            top.getChildren().addAll(filterSetTitle, spacer, deleteButton);
+
+            HBox.setHgrow(spacer, Priority.ALWAYS);
+
+            getChildren().add(top);
+        } else {
+            getChildren().add(filterSetTitle);
+        }
 
         // ---------- Date range filter ----------
         renderFilter("Date range:", dateRangeOptions, "dateRange");
@@ -49,12 +67,6 @@ public class FilterSet extends VBox {
 
         // ---------- Context filter ----------
         renderFilter("Context:", contextOptions, "context");
-
-        // ---------- Delete button ----------
-        if(deleteButton != null) {
-            deleteButton.getStyleClass().add("delete-filter-button");
-            getChildren().add(deleteButton);
-        }
     }
 
     public void renderFilter(String filterTitle, String[] optionsText, String filterType) {
@@ -78,5 +90,7 @@ public class FilterSet extends VBox {
 
     public void updatedFilter(String filterType, String newValue) {
         logger.info("Changed filter " + filterType + " to value: " + newValue);
+
+
     }
 }
