@@ -31,6 +31,9 @@ public class Impression extends LogRow {
     super(id);
     this.date = parseDateTime(date);
     this.cost = Float.parseFloat(cost);
+    if (this.cost < 0) {
+      throw new Exception("negative cost");
+    }
     this.context = contextSetup(context);
 
   }
