@@ -83,3 +83,119 @@
     -fx-fill: White;
     -fx-font-size: 10px;
 }
+
+.error-text {
+    -fx-font-family: 'Google Sans Bold';
+    -fx-fill: #000000;
+    -fx-font-size: 25px;
+}
+
+.alert {
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 17px;
+    -fx-border-color: Red;
+    -fx-border-width: 2px;
+    -fx-border-style: solid;
+    -fx-border-radius: 23px;
+    -fx-background-radius: 23px;
+    -fx-effect: dropshadow(gaussian, rgba(255,0,0,0.3), 20, 0, 0, 0);
+    -fx-margin-top: 20px;
+}
+
+.filter-pane {
+    -fx-background-color: #555BFF;
+    -fx-padding: 20px;
+    -fx-background-radius: 23px;
+}
+
+.filter-set {
+    -fx-background-color: #313ABC;
+    -fx-padding: 15px;
+    -fx-background-radius: 10px;
+}
+
+.mediumWhiteText {
+    -fx-font-family: 'Google Sans Bold';
+    -fx-fill: #FFFFFF;
+    -fx-font-size: 18px;
+}
+
+.extraSmallWhiteText {
+    -fx-font-family: 'Google Sans Bold';
+    -fx-fill: #FFFFFF;
+    -fx-font-size: 10px;
+}
+
+.graph-box {
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 15px;
+    -fx-background-radius: 23px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 0);
+}
+
+.filter-dropdown {
+    -fx-font-family: 'Google Sans Bold';
+    -fx-font-size: 10px;
+    -fx-text-fill: #FFFFFF;
+    -fx-fill: #FFFFFF;
+    -fx-background-color: #202680;
+    -fx-background-radius: 20px;
+}
+
+.filter-dropdown .list-view {
+    -fx-background-color: #202680;
+}
+
+.filter-dropdown .list-view .list-cell {
+    -fx-background-color: #202680;
+    -fx-text-fill: #777CFF;
+}
+
+.filter-dropdown .list-view .list-cell:hover {
+    -fx-text-fill: #FFFFFF;
+}
+
+.filter-dropdown .list-view .list-cell:selected {
+    -fx-text-fill: #FFFFFF;
+}
+
+.filter-dropdown .list-cell {
+    -fx-text-fill: #FFFFFF;
+}
+
+.scroll-pane {
+    -fx-background-color:transparent;
+}
+
+.filter-set-pane {
+    -fx-background-color: #555BFF;
+}
+
+.simple-button {
+    -fx-font-family: 'Google Sans Bold';
+    -fx-font-size: 15px;
+    -fx-background-color: transparent;
+    -fx-background-insets: 0, 0;
+    -fx-background-radius: 0;
+    -fx-border-color: transparent;
+    -fx-border-radius: 0;
+    -fx-text-fill: white !important;
+    -fx-text-box-border: transparent;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-padding: 0;
+    -fx-effect: none;
+}
+
+.simple-button:hover {
+    -fx-text-fill: #DEDEDE !important;
+}
+
+.delete-filter-button {
+    -fx-font-family: 'Google Sans Bold';
+    -fx-font-size: 10px;
+    -fx-background-color: #202680;
+    -fx-background-radius: 100%;
+    -fx-border-color: transparent;
+    -fx-text-fill: #FFFFFF !important;
+}

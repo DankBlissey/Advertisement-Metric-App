@@ -75,11 +75,11 @@ public class GraphView extends BaseView {
         theme.getItems().addAll(light, dark);
         light.setOnAction(e -> {
             appWindow.setDarkMode(false);
-            appWindow.listViewWindow(filenames);
+            appWindow.graphViewWindow(filenames);
         });
         dark.setOnAction(e -> {
             appWindow.setDarkMode(true);
-            appWindow.listViewWindow(filenames);
+            appWindow.graphViewWindow(filenames);
         });
 
 
