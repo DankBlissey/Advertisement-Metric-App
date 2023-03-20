@@ -8,4 +8,14 @@ public enum Income {
   MEDIUM,
   HIGH,
   ANY;
+
+
+  public static Income parseIncome(String income) {
+    return switch (income) {
+      case "Low" -> LOW;
+      case "Medium" -> MEDIUM;
+      case "High" -> HIGH;
+      default -> ANY;
+    };
+  }
 }
