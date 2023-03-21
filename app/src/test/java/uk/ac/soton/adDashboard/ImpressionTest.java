@@ -33,12 +33,12 @@ class ImpressionTest {
             () -> new Impression("2015-01-01 23:00:02", id, "12.5", "Shopping"));
   }
 
-  // Cost -- needs fixing as it allows negative right now
+  // Cost
   @ParameterizedTest
   @ValueSource(strings = {"-14", "-1", " ", "abc"})
   void impressionsCostThrows(String cost) {
     assertThrows(Exception.class,
-            () -> new Impression("2015-01-01 24:00:02", "25", cost, "Shopping"));
+            () -> new Impression("2015-01-01 23:00:02", "25", cost, "Shopping"));
   }
 
   // Context
