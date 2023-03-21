@@ -30,7 +30,6 @@ public class Graph implements GraphFeatures {
         chart = new LineChart<>(xAxis, yAxis);
 
         //Set the axis and graph titles.
-        chart.setTitle("Graph");
         chart.setCreateSymbols(false);
         chart.setLegendVisible(false);
         chart.setAnimated(false);
