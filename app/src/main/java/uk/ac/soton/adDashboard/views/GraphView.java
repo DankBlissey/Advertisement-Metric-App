@@ -89,11 +89,13 @@ public class GraphView extends BaseView {
         bigger.getStyleClass().add("blueButton");
 
         HBox sizeButtons = new HBox(smaller,bigger);
+        sizeButtons.setAlignment(Pos.CENTER);
 
         HBox topButtons = new HBox(startAgain, theme, sizeButtons);
 
         //topButtons.getStyleClass().add("smallText");
         topButtons.setSpacing(10);
+        topButtons.setAlignment(Pos.CENTER);
 
         HBox hbox = new HBox(title, region, topButtons);
 

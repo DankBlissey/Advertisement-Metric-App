@@ -86,15 +86,19 @@ public class ListView extends BaseView {
         bigger.getStyleClass().add("blueButton");
 
         HBox sizeButtons = new HBox(smaller,bigger);
+        sizeButtons.setAlignment(Pos.CENTER);
 
         HBox topButtons = new HBox(startAgain, theme, sizeButtons);
 
         //topButtons.getStyleClass().add("smallText");
         topButtons.setSpacing(10);
+        topButtons.setAlignment(Pos.CENTER);
 
         HBox hbox = new HBox(title, region, topButtons);
 
         HBox.setHgrow(region, Priority.ALWAYS);
+        hbox.getStyleClass().add("top-buttons-fill");
+        hbox.setEffect(new DropShadow(10.0,Color.GREY));
 
         hbox.setAlignment(Pos.CENTER);
 

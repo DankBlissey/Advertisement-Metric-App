@@ -127,7 +127,7 @@
 }
 
 .graph-box {
-    -fx-background-color: #FFFFFF;
+    -fx-background-color: #181A1B;
     -fx-padding: 15px;
     -fx-background-radius: 23px;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 0);
@@ -198,4 +198,8 @@
     -fx-background-radius: 100%;
     -fx-border-color: transparent;
     -fx-text-fill: #FFFFFF !important;
+}
+
+.top-buttons-fill {
+    -fx-background-color: #232627;
 }
