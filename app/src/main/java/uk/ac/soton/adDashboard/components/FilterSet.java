@@ -94,11 +94,13 @@ public class FilterSet extends VBox {
         from.getStyleClass().add("extraSmallWhiteText");
 
         DatePicker startDate = new DatePicker();
+        startDate.getStyleClass().add("custom-date-picker");
 
         Text to = new Text("to");
         to.getStyleClass().add("extraSmallWhiteText");
 
         DatePicker endDate = new DatePicker();
+        endDate.getStyleClass().add("custom-date-picker");
 
         LocalDate today = LocalDate.now();
         LocalDate oneWeekAgo = today.minusWeeks(1);
