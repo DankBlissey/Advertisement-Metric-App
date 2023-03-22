@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
+import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -18,6 +19,7 @@ import uk.ac.soton.adDashboard.records.DataSet;
 import uk.ac.soton.adDashboard.records.User;
 import uk.ac.soton.adDashboard.ui.AppPane;
 import uk.ac.soton.adDashboard.ui.AppWindow;
+import javafx.scene.effect.BlurType;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -58,7 +60,7 @@ public class ListView extends BaseView {
         Region region = new Region();
 
         //button for going back to the input screen
-        Button startAgain = new Button("Start Again");
+        Button startAgain = new Button("Go Back");
         startAgain.getStyleClass().add("blueButton");
         startAgain.setOnAction(e -> {
             appWindow.bounceRateWindow(filenames);
@@ -66,7 +68,7 @@ public class ListView extends BaseView {
 
         //drop down button for dark and light theme
         MenuButton theme = new MenuButton("Theme");
-        theme.getStyleClass().add("blueButton");
+        theme.getStyleClass().add("menu-item");
         MenuItem light = new MenuItem("Light");
         MenuItem dark = new MenuItem("Dark");
         theme.getItems().addAll(light, dark);
@@ -86,21 +88,28 @@ public class ListView extends BaseView {
         bigger.getStyleClass().add("blueButton");
 
         HBox sizeButtons = new HBox(smaller,bigger);
+        sizeButtons.setAlignment(Pos.CENTER);
 
         HBox topButtons = new HBox(startAgain, theme, sizeButtons);
 
         //topButtons.getStyleClass().add("smallText");
         topButtons.setSpacing(10);
+        topButtons.setAlignment(Pos.CENTER);
+        topButtons.getStyleClass().add("topButtons");
+        Rectangle upBar = new Rectangle(1280,50);
+        upBar.getStyleClass().add("backBar");
 
         HBox hbox = new HBox(title, region, topButtons);
-
         HBox.setHgrow(region, Priority.ALWAYS);
+        hbox.getStyleClass().add("top-buttons-fill");
+        hbox.setEffect(new DropShadow(10.0,Color.GREY));
 
         hbox.setAlignment(Pos.CENTER);
 
+        StackPane topBar = new StackPane(upBar,hbox);
+
         Rectangle backBar = new Rectangle(1280,150);
         backBar.getStyleClass().add("backBar");
-        backBar.setEffect(new DropShadow(5,Color.GREY));
 
         Rectangle loadedRectangle = new Rectangle(200,130, Color.valueOf("#4B51FF"));
         loadedRectangle.setArcWidth(30);
@@ -117,7 +126,7 @@ public class ListView extends BaseView {
 
         StackPane longBar = new StackPane(backBar,longBarContent);
 
-        VBox vbox = new VBox(hbox, longBar);
+        VBox vbox = new VBox(topBar, longBar);
 
         //Design for the switch button - changes the scene between list and graph view
         Color switchBack = Color.web("#4B51FF"); // create a Color object with the hex value for purple for the back portion of switch button

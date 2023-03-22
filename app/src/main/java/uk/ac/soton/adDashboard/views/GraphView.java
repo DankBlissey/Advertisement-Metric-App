@@ -68,21 +68,24 @@ public class GraphView extends BaseView implements FilterWindow {
         //empty space so that dashboard is on top left and
         Region region = new Region();
 
-        Button startAgain = new Button("Start Again");
+        Button startAgain = new Button("Go Back");
+        startAgain.setOnAction(e -> {
+            appWindow.bounceRateWindow(filenames);
+        });
         startAgain.getStyleClass().add("blueButton");
 
         MenuButton theme = new MenuButton("Theme");
-        theme.getStyleClass().add("blueButton");
+        theme.getStyleClass().add("menu-item");
         MenuItem light = new MenuItem("Light");
         MenuItem dark = new MenuItem("Dark");
         theme.getItems().addAll(light, dark);
         light.setOnAction(e -> {
             appWindow.setDarkMode(false);
-            appWindow.listViewWindow(filenames);
+            appWindow.graphViewWindow(filenames);
         });
         dark.setOnAction(e -> {
             appWindow.setDarkMode(true);
-            appWindow.listViewWindow(filenames);
+            appWindow.graphViewWindow(filenames);
         });
 
 
@@ -92,11 +95,13 @@ public class GraphView extends BaseView implements FilterWindow {
         bigger.getStyleClass().add("blueButton");
 
         HBox sizeButtons = new HBox(smaller,bigger);
+        sizeButtons.setAlignment(Pos.CENTER);
 
         HBox topButtons = new HBox(startAgain, theme, sizeButtons);
 
         //topButtons.getStyleClass().add("smallText");
         topButtons.setSpacing(10);
+        topButtons.setAlignment(Pos.CENTER);
 
         HBox hbox = new HBox(title, region, topButtons);
 
@@ -176,10 +181,13 @@ public class GraphView extends BaseView implements FilterWindow {
             appWindow.loadView(new ListView(appWindow,filenames));
         });
 
+        borderPane.setLeft(toggleButton);
+
         VBox graphBox = new VBox(20);
         graphBox.getStyleClass().add("graph-box");
 
         ComboBox<String> cmb = new ComboBox<>();
+        cmb.getStyleClass().add("bounce-dropdown");
         cmb.getItems().addAll("total Impressions", "total Clicks", "total Uniques", "total Bounces", "total Conversions", "total Cost", "CTR", "CPA", "CPC", "CPM", "bounce Rate");
 
         cmb.setOnAction((e) -> {
@@ -211,6 +219,7 @@ public class GraphView extends BaseView implements FilterWindow {
         controller.setGraph(graph);
 
         ComboBox<String> granularity = new ComboBox<>();
+        granularity.getStyleClass().add("bounce-dropdown");
         granularity.getItems().addAll("day","week","month","year");
         granularity.setValue("day");
 
@@ -235,7 +244,7 @@ public class GraphView extends BaseView implements FilterWindow {
         granularity.setTranslateX(350);
 
         graphBox.getChildren().addAll(itemMenus, graph.getChart());
-        graphsList.getChildren().addAll(stack,graphBox);
+        graphsList.getChildren().addAll(graphBox);
 
         // This is the right side of the borderPane which includes a "filterPane"
         VBox filterPane = new VBox(15);

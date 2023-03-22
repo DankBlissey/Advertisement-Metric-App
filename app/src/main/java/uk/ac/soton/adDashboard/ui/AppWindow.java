@@ -11,10 +11,7 @@ import org.apache.logging.log4j.Logger;
 import uk.ac.soton.adDashboard.App;
 import uk.ac.soton.adDashboard.controller.Controller;
 import uk.ac.soton.adDashboard.records.DataSet;
-import uk.ac.soton.adDashboard.views.BaseView;
-import uk.ac.soton.adDashboard.views.BounceRateView;
-import uk.ac.soton.adDashboard.views.LandingView;
-import uk.ac.soton.adDashboard.views.ListView;
+import uk.ac.soton.adDashboard.views.*;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -139,7 +136,7 @@ public class AppWindow {
      * Display the graph view of the data
      */
     public void graphViewWindow( ArrayList<String> filenames) {
-        loadView(new ListView(this, filenames));
+        loadView(new GraphView(this, filenames));
     }
 
     /**
