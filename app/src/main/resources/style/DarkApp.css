@@ -54,6 +54,7 @@
 
 .backBar {
     -fx-fill: #333333;
+    -fx-effect: dropshadow(three-pass-box, GREY, 5, 0, 0.0, 0);
 }
 
 .smallWhiteText {

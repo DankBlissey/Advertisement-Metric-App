@@ -96,14 +96,17 @@ public class ListView extends BaseView {
         topButtons.setSpacing(10);
         topButtons.setAlignment(Pos.CENTER);
         topButtons.getStyleClass().add("topButtons");
+        Rectangle upBar = new Rectangle(1280,50);
+        upBar.getStyleClass().add("backBar");
 
         HBox hbox = new HBox(title, region, topButtons);
-
         HBox.setHgrow(region, Priority.ALWAYS);
         hbox.getStyleClass().add("top-buttons-fill");
         hbox.setEffect(new DropShadow(10.0,Color.GREY));
 
         hbox.setAlignment(Pos.CENTER);
+
+        StackPane topBar = new StackPane(upBar,hbox);
 
         Rectangle backBar = new Rectangle(1280,150);
         backBar.getStyleClass().add("backBar");
@@ -123,7 +126,7 @@ public class ListView extends BaseView {
 
         StackPane longBar = new StackPane(backBar,longBarContent);
 
-        VBox vbox = new VBox(hbox, longBar);
+        VBox vbox = new VBox(topBar, longBar);
 
         //Design for the switch button - changes the scene between list and graph view
         Color switchBack = Color.web("#4B51FF"); // create a Color object with the hex value for purple for the back portion of switch button
