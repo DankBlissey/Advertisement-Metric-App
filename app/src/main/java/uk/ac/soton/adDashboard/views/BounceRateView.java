@@ -90,10 +90,12 @@ public class BounceRateView extends BaseView {
         error.getStyleClass().add("smallText");
 
         CheckBox customCheckBox = new CheckBox();
+        customCheckBox.getStyleClass().add("check-box");
         customCheckBox.setTranslateX(-98);
         customCheckBox.setTranslateY(-80);
 
         CheckBox pageCheckBox = new CheckBox();
+        pageCheckBox.getStyleClass().add("check-box");
         pageCheckBox.setTranslateX(-98);
         pageCheckBox.setTranslateY(-75);
 

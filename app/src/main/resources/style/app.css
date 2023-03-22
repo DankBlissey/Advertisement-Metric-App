@@ -231,3 +231,24 @@
     -fx-background-radius: 13px;
     -fx-background-color: #555BFF;
 }
+
+.check-box {
+    -fx-background-radius: 50px;
+}
+.check-box .box {
+
+    -fx-background-color: white;
+    -fx-border-color:grey;
+    -fx-border-radius:50px;
+
+}
+
+.check-box:selected .mark {
+    -fx-background-color: white;
+    -fx-background-radius: 50px;
+}
+
+.check-box:selected .box {
+    -fx-background-color: #555BFF;
+    -fx-background-radius: 50px;
+}
