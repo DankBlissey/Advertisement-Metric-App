@@ -6,6 +6,7 @@ import java.time.temporal.TemporalAmount;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import javafx.util.Pair;
 import uk.ac.soton.adDashboard.Interfaces.Function;
 import uk.ac.soton.adDashboard.enums.Context;
@@ -680,9 +681,9 @@ public class DataSet {
    * @param unit      The granularity of the increment.
    * @return Returns an ArrayList of coordinates on a relative axis.
    */
-  public ArrayList<Pair<Integer, Double>> generateY(LocalDateTime startTime,
+  public List<Pair<Integer, Double>> generateY(LocalDateTime startTime,
       LocalDateTime endTime, Granularity unit, Stat stat) {
-    ArrayList<Pair<Integer, Double>> points;
+    List<Pair<Integer, Double>> points;
 
     setEfficiency(true);
     resetAllAccess();
@@ -723,7 +724,7 @@ public class DataSet {
    * @param f         The function to calculate the y point, which is passed a range of dates.
    * @return Returns an arraylist of pairs of points.
    */
-  public ArrayList<Pair<Integer, Double>> genPoints(LocalDateTime startTime,
+  public List<Pair<Integer, Double>> genPoints(LocalDateTime startTime,
       LocalDateTime endTime, Granularity unit, Function f) {
     ArrayList<Pair<Integer, Double>> points = new ArrayList<>();
     TemporalAmount amount = unit.generateStep();
