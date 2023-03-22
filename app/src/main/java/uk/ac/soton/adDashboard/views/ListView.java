@@ -58,7 +58,7 @@ public class ListView extends BaseView {
         Region region = new Region();
 
         //button for going back to the input screen
-        Button startAgain = new Button("Start Again");
+        Button startAgain = new Button("Go Back");
         startAgain.getStyleClass().add("blueButton");
         startAgain.setOnAction(e -> {
             appWindow.bounceRateWindow(filenames);
@@ -66,7 +66,7 @@ public class ListView extends BaseView {
 
         //drop down button for dark and light theme
         MenuButton theme = new MenuButton("Theme");
-        theme.getStyleClass().add("blueButton");
+        theme.getStyleClass().add("menu-item");
         MenuItem light = new MenuItem("Light");
         MenuItem dark = new MenuItem("Dark");
         theme.getItems().addAll(light, dark);

@@ -68,11 +68,14 @@ public class GraphView extends BaseView implements FilterWindow {
         //empty space so that dashboard is on top left and
         Region region = new Region();
 
-        Button startAgain = new Button("Start Again");
+        Button startAgain = new Button("Go Back");
+        startAgain.setOnAction(e -> {
+            appWindow.bounceRateWindow(filenames);
+        });
         startAgain.getStyleClass().add("blueButton");
 
         MenuButton theme = new MenuButton("Theme");
-        theme.getStyleClass().add("blueButton");
+        theme.getStyleClass().add("menu-item");
         MenuItem light = new MenuItem("Light");
         MenuItem dark = new MenuItem("Dark");
         theme.getItems().addAll(light, dark);

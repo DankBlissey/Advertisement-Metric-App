@@ -48,6 +48,10 @@
     -fx-font-size: 15px;
 }
 
+.blueButton:hover {
+    -fx-background-color: #202680;
+}
+
 .backBar {
     -fx-fill: #FFFFFF;
 }
@@ -202,4 +206,28 @@
 
 .top-buttons-fill {
     -fx-background-color: #F5F6F9;
+}
+.menu-item {
+    -fx-background-color: #555BFF;
+    -fx-background-radius: 13px;
+    -fx-text-fill: white;
+    -fx-font-family: 'Google Sans Bold';
+    -fx-font-size: 15px;
+}
+
+.menu-item .label {
+    -fx-text-fill: white;
+}
+
+.menu-item:focused {
+    -fx-background-color: #202680;
+}
+
+.menu-item:focused .label {
+    -fx-text-fill: #FFFFFF;
+}
+
+.context-menu {
+    -fx-background-radius: 13px;
+    -fx-background-color: #555BFF;
 }
