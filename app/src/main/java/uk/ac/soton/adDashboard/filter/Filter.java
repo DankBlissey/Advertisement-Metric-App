@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import uk.ac.soton.adDashboard.enums.Context;
 import uk.ac.soton.adDashboard.enums.Gender;
 import uk.ac.soton.adDashboard.enums.Income;
-import uk.ac.soton.adDashboard.enums.Stat;
 
 /**
  * Represents a set of filters.
@@ -45,8 +44,16 @@ public class Filter {
 
   }
 
+  /**
+   * Sets the age. "Any" as an input sets the age to any age allowed.
+   * @param age Age to filter by.
+   */
   public void setAge(String age) {
-    this.age = age;
+    if (age.equals("Any")) {
+      this.age= "";
+    } else {
+      this.age = age;
+    }
   }
 
   public Income getIncome() {

@@ -11,8 +11,10 @@ import javafx.scene.text.Text;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.soton.adDashboard.App;
+import uk.ac.soton.adDashboard.Interfaces.FilterWindow;
 import uk.ac.soton.adDashboard.components.FilterSet;
 import uk.ac.soton.adDashboard.controller.Controller;
+import uk.ac.soton.adDashboard.enums.Granularity;
 import uk.ac.soton.adDashboard.enums.Stat;
 import uk.ac.soton.adDashboard.filter.Filter;
 import uk.ac.soton.adDashboard.records.DataSet;
@@ -21,7 +23,7 @@ import uk.ac.soton.adDashboard.ui.AppWindow;
 
 import java.util.ArrayList;
 
-public class GraphView extends BaseView {
+public class GraphView extends BaseView implements FilterWindow {
     private static final Logger logger = LogManager.getLogger(GraphView.class);
     private boolean switchedOn = false;
     /**
@@ -46,6 +48,7 @@ public class GraphView extends BaseView {
         super(appWindow);
         this.dataSet = controller.getModel();
         this.filenames = filenames;
+        controller.setFilterWindow(this);
         logger.info("Creating the graph view View");
     }
 
@@ -186,51 +189,57 @@ public class GraphView extends BaseView {
         cmb.setOnAction((e) -> {
             String selectedOption = cmb.getValue();
             Stat selectedStat = null;
-            switch(selectedOption) {
-                case "total Impressions":
-                    selectedStat = Stat.totalImpressions;
-                    break;
-                case "total Clicks":
-                    selectedStat = Stat.totalClicks;
-                    break;
-                case "total Uniques":
-                    selectedStat = Stat.totalUniques;
-                    break;
-                case "total Bounces":
-                    selectedStat = Stat.totalBounces;
-                    break;
-                case "total Conversions":
-                    selectedStat = Stat.totalConversions;
-                    break;
-                case "total Cost":
-                    selectedStat = Stat.totalCost;
-                    break;
-                case "CTR":
-                    selectedStat = Stat.CTR;
-                    break;
-                case "CPA":
-                    selectedStat = Stat.CPA;
-                    break;
-                case "CPC":
-                    selectedStat = Stat.CPC;
-                    break;
-                case "CPM":
-                    selectedStat = Stat.CPM;
-                    break;
-                case "bounce Rate":
-                    selectedStat = Stat.bounceRate;
-                    break;
-                default:
-                    break;
+            switch (selectedOption) {
+                case "total Impressions" -> selectedStat = Stat.totalImpressions;
+                case "total Clicks" -> selectedStat = Stat.totalClicks;
+                case "total Uniques" -> selectedStat = Stat.totalUniques;
+                case "total Bounces" -> selectedStat = Stat.totalBounces;
+                case "total Conversions" -> selectedStat = Stat.totalConversions;
+                case "total Cost" -> selectedStat = Stat.totalCost;
+                case "CTR" -> selectedStat = Stat.CTR;
+                case "CPA" -> selectedStat = Stat.CPA;
+                case "CPC" -> selectedStat = Stat.CPC;
+                case "CPM" -> selectedStat = Stat.CPM;
+                case "bounce Rate" -> selectedStat = Stat.bounceRate;
+                default -> {
+                }
             }
+            logger.info("Selected stat: " + selectedStat);
             if(selectedStat != null) {
-                appWindow.getController().setStatType(selectedStat);
+                AppWindow.getController().setStatType(selectedStat);
+            }
+        });
+        cmb.setValue("total Impressions");
+
+        graph = new Graph();
+        controller.setGraph(graph);
+
+        ComboBox<String> granularity = new ComboBox<>();
+        granularity.getItems().addAll("day","week","month","year");
+        granularity.setValue("day");
+
+        granularity.setOnAction((e) -> {
+            String selectedGranularityOption = granularity.getValue();
+            Granularity selectedGranularity = null;
+            switch (selectedGranularityOption) {
+                case "day" -> selectedGranularity = Granularity.DAY;
+                case "week" -> selectedGranularity = Granularity.WEEK;
+                case "month" -> selectedGranularity = Granularity.MONTH;
+                case "year" -> selectedGranularity = Granularity.YEAR;
+                default -> {
+                }
+            }
+            logger.info("selected Granularity: " + selectedGranularity);
+            if(selectedGranularity != null){
+                AppWindow.getController().setGranularity(selectedGranularity);
             }
         });
 
-        graph = new Graph();
-        graphBox.getChildren().addAll(cmb, graph.getChart());
-        graphsList.getChildren().addAll(graphBox);
+        HBox itemMenus = new HBox(cmb, granularity);
+        granularity.setTranslateX(350);
+
+        graphBox.getChildren().addAll(itemMenus, graph.getChart());
+        graphsList.getChildren().addAll(stack,graphBox);
 
         // This is the right side of the borderPane which includes a "filterPane"
         VBox filterPane = new VBox(15);
@@ -249,8 +258,8 @@ public class GraphView extends BaseView {
         filterSetPane = new VBox(15);
         filterSetPane.getStyleClass().add("filter-set-pane");
 
-        Filter defaultFilter = new Filter();
-        defaultFilter.setId(0);
+        Filter defaultFilter = defaultFilter();
+        logger.info("creating the filter");
         filters = new ArrayList<Filter>();
         filters.add(defaultFilter);
         FilterSet defaultFilterSet = new FilterSet("Filter set 1", defaultFilter, null, appWindow);
@@ -267,6 +276,14 @@ public class GraphView extends BaseView {
 
         borderPane.setRight(filterPane);
         BorderPane.setMargin(filterPane, new Insets(0, 35, 0, 0));
+    }
+
+    private Filter defaultFilter() {
+        var defaultFilter = new Filter();
+        defaultFilter.setStartDate(controller.getModel().earliestDate());
+        defaultFilter.setEndDate(controller.getModel().latestDate());
+        defaultFilter.setId(0);
+        return defaultFilter;
     }
 
     /**
@@ -292,7 +309,7 @@ public class GraphView extends BaseView {
     private void addNewFilter() {
         int index = getValidIndex();
 
-        Filter newFilter = new Filter();
+        Filter newFilter = defaultFilter();
         newFilter.setId(index);
         filters.add(newFilter);
 
@@ -303,7 +320,7 @@ public class GraphView extends BaseView {
         deleteButton.setOnAction(e -> {
             filterSetPane.getChildren().remove(newFilterSet);
             filters.remove(newFilter);
-            //todo: appWindow.getController().deleteLine(newFilter);
+            AppWindow.getController().deleteLine(newFilter);
             logger.info("Deleted filter at index " + index);
         });
 

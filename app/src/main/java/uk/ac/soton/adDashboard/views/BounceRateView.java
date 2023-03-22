@@ -52,9 +52,6 @@ public class BounceRateView extends BaseView {
         Text subtext1 = new Text("Please define how a bounce is registered");
         subtext1.getStyleClass().add("subtitle");
 
-        Text subtext2 = new Text("This cannot be changed later.");
-        subtext2.getStyleClass().add("subtitle");
-
         //Text input for the custom range.
         TextField custom = new TextField();
         custom.setPromptText("Enter value");
@@ -115,7 +112,7 @@ public class BounceRateView extends BaseView {
         back.setTranslateY(-390);
         back.getStyleClass().add("blueButton");
 
-        VBox vbox1 = new VBox(title, subtext1, subtext2, back);
+        VBox vbox1 = new VBox(title, subtext1, back);
 
         VBox vbox3 = new VBox(text2, pages, finished, pageCheckBox, text1, custom, itemBox, customCheckBox,error);
 
