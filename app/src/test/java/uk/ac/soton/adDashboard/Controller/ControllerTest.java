@@ -3,7 +3,7 @@ package uk.ac.soton.adDashboard.Controller;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +28,7 @@ import uk.ac.soton.adDashboard.records.DataSet;
 import uk.ac.soton.adDashboard.records.Impression;
 import uk.ac.soton.adDashboard.records.ServerAccess;
 import uk.ac.soton.adDashboard.records.User;
-import uk.ac.soton.adDashboard.views.GraphView;
+
 
 public class ControllerTest {
 
@@ -184,6 +184,7 @@ public class ControllerTest {
 
   /**
    * Tests granularity change causes correct call in data set and graph.
+   * @param granularity The granularity to change to.
    */
   @ParameterizedTest(name= "value {0}")
   @EnumSource(value = Granularity.class, names = {"DAY","WEEK","MONTH","YEAR"})
@@ -220,8 +221,45 @@ public class ControllerTest {
 
 
 
-  //filterUpdate
-  //stat changed
+
+
+  /**
+   * Tests stat change causes correct call in data set and graph.
+   * @param stat The stat to change to.
+   */
+  @ParameterizedTest(name= "value {0}")
+  @EnumSource(value = Stat.class, names = { "totalImpressions",  "totalClicks","totalUniques","totalBounces","totalConversions","totalCost","CTR","CPA","CPC","CPM","bounceRate"})
+  void statChange(Stat stat) {
+
+    var f1 = new Filter();
+    f1.setId(0);
+    f1.setStartDate(LocalDateTime.now());
+    f1.setEndDate(LocalDateTime.now().plusDays(1));
+    var f2 = new Filter();
+    f2.setId(1);
+    f2.setStartDate(LocalDateTime.now());
+    f2.setEndDate(LocalDateTime.now().plusDays(1));
+    controller.setFilterWindow(new FilterStub(List.of(f1,f2)));
+    GraphFeatures graph = niceMock(GraphFeatures.class);
+    var d1 = dataSet.generateY(f1.getStartDate(),f1.getEndDate(),Granularity.DAY,stat);
+    graph.plot(0,d1);
+    var d2 = dataSet.generateY(f2.getStartDate(),f2.getEndDate(),Granularity.DAY,stat);
+    graph.plot(1,d2);
+    replay(graph);
+    controller.setGraph(graph);
+
+    DataSet dataSet1 = niceMock(DataSet.class);
+    expect(dataSet1.generateY(f1.getStartDate(),f1.getEndDate(),Granularity.DAY,stat)).andReturn(d1);
+    expect(dataSet1.generateY(f2.getStartDate(),f2.getEndDate(),Granularity.DAY,stat)).andReturn(d2);
+    replay(dataSet1);
+    controller.setModel(dataSet1);
+    controller.setStatType(stat);
+    verify(graph);
+    verify(dataSet1);
+
+
+  }
+
 
 
 
