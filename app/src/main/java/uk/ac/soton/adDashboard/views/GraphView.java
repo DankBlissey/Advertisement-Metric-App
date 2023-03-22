@@ -187,6 +187,7 @@ public class GraphView extends BaseView implements FilterWindow {
         graphBox.getStyleClass().add("graph-box");
 
         ComboBox<String> cmb = new ComboBox<>();
+        cmb.getStyleClass().add("bounce-dropdown");
         cmb.getItems().addAll("total Impressions", "total Clicks", "total Uniques", "total Bounces", "total Conversions", "total Cost", "CTR", "CPA", "CPC", "CPM", "bounce Rate");
 
         cmb.setOnAction((e) -> {
@@ -218,6 +219,7 @@ public class GraphView extends BaseView implements FilterWindow {
         controller.setGraph(graph);
 
         ComboBox<String> granularity = new ComboBox<>();
+        granularity.getStyleClass().add("bounce-dropdown");
         granularity.getItems().addAll("day","week","month","year");
         granularity.setValue("day");
 
@@ -242,7 +244,7 @@ public class GraphView extends BaseView implements FilterWindow {
         granularity.setTranslateX(350);
 
         graphBox.getChildren().addAll(itemMenus, graph.getChart());
-        graphsList.getChildren().addAll(stack,graphBox);
+        graphsList.getChildren().addAll(graphBox);
 
         // This is the right side of the borderPane which includes a "filterPane"
         VBox filterPane = new VBox(15);

@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
+import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -18,6 +19,7 @@ import uk.ac.soton.adDashboard.records.DataSet;
 import uk.ac.soton.adDashboard.records.User;
 import uk.ac.soton.adDashboard.ui.AppPane;
 import uk.ac.soton.adDashboard.ui.AppWindow;
+import javafx.scene.effect.BlurType;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -93,6 +95,7 @@ public class ListView extends BaseView {
         //topButtons.getStyleClass().add("smallText");
         topButtons.setSpacing(10);
         topButtons.setAlignment(Pos.CENTER);
+        topButtons.getStyleClass().add("topButtons");
 
         HBox hbox = new HBox(title, region, topButtons);
 
@@ -104,7 +107,6 @@ public class ListView extends BaseView {
 
         Rectangle backBar = new Rectangle(1280,150);
         backBar.getStyleClass().add("backBar");
-        backBar.setEffect(new DropShadow(5,Color.GREY));
 
         Rectangle loadedRectangle = new Rectangle(200,130, Color.valueOf("#4B51FF"));
         loadedRectangle.setArcWidth(30);

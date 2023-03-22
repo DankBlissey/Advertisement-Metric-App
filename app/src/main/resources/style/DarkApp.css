@@ -232,3 +232,58 @@
     -fx-background-radius: 13px;
     -fx-background-color: #555BFF;
 }
+
+.check-box {
+    -fx-background-radius: 50px;
+}
+.check-box .box {
+
+    -fx-background-color: #333333;
+    -fx-border-color:grey;
+    -fx-border-radius:50px;
+
+}
+
+.check-box:selected .mark {
+    -fx-background-color: #555BFF;
+    -fx-background-radius: 50px;
+}
+
+.check-box:selected .box {
+    -fx-background-color: #555BFF;
+    -fx-background-radius: 30px;
+}
+
+.bounce-dropdown {
+    -fx-font-family: 'Google Sans Bold';
+    -fx-font-size: 12px;
+    -fx-text-fill: #FFFFFF;
+    -fx-fill: #FFFFFF;
+    -fx-background-color: #555BFF;
+    -fx-background-radius: 20px;
+}
+
+.bounce-dropdown .list-view {
+    -fx-background-color: #555BFF;
+    -fx-background-radius: 20px;
+}
+
+.bounce-dropdown .list-view .list-cell {
+    -fx-background-color: #555BFF;
+    -fx-text-fill: #777CFF;
+    -fx-background-radius: 20px;
+}
+
+.bounce-dropdown .list-view .list-cell:hover {
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #202680;
+}
+
+.bounce-dropdown .list-view .list-cell:selected {
+    -fx-text-fill: #FFFFFF;
+}
+
+.bounce-dropdown .list-cell {
+    -fx-text-fill: #FFFFFF;
+    -fx-background-radius: 20px;
+}

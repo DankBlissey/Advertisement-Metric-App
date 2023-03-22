@@ -79,9 +79,10 @@ public class BounceRateView extends BaseView {
 
         itemBox.getItems().addAll("Seconds", "Minutes");
         itemBox.setPromptText("Select Units");
+        itemBox.getStyleClass().add("bounce-dropdown");
 
         // text
-        Text text2 = new Text("Number of pages visited");
+        Text text2 = new Text("  Number of pages visited");
         text2.getStyleClass().add("smallText");
 
         Text error = new Text("Invalid input!!");
@@ -110,8 +111,8 @@ public class BounceRateView extends BaseView {
         back.setText("Back");
         back.getStyleClass().add("card");
         back.setEffect(new DropShadow(5, Color.valueOf("555BFF")));
-        back.setTranslateX(-615);
-        back.setTranslateY(-390);
+        back.setTranslateX(-600);
+        back.setTranslateY(-375);
         back.getStyleClass().add("blueButton");
 
         VBox vbox1 = new VBox(title, subtext1, back);
