@@ -205,6 +205,35 @@
     -fx-text-fill: #FFFFFF !important;
 }
 
+.custom-date-picker {
+    -fx-font-family: "Google Sans Bold";
+    -fx-font-size: 10px;
+    -fx-background-color: #202680;
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+    -fx-border-color: transparent;
+}
+
+.custom-date-picker > .arrow-button {
+    -fx-background-color: #1b206b;
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+}
+
+.custom-date-picker > .arrow-button > .arrow {
+    -fx-background-color: #FFFFFF;
+}
+
+.custom-date-picker > .text-field {
+    -fx-background-color: transparent;
+    -fx-text-fill: #FFFFFF;
+}
+
+.custom-date-picker > .popup > .content > .calendar-grid {
+    -fx-background-color: #202680;
+    -fx-background-radius: 20px;
+}
+
 .top-buttons-fill {
     -fx-background-color: #F5F6F9;
 }
