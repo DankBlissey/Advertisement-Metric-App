@@ -318,3 +318,90 @@
     -fx-text-fill: #A9A9A9;
     -fx-background-radius: 13px;
 }
+
+/* ---------- Graph Styling ----------- */
+
+.chart-legend {
+    -fx-font-family: "Google Sans Bold";
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 10px;
+}
+
+.default-color0.chart-legend-item-symbol {
+    -fx-background-color: #F2612D;
+    -fx-background-radius: 50%;
+    -fx-padding: 8px;
+}
+
+.default-color1.chart-legend-item-symbol {
+    -fx-background-color: #FCA71B;
+    -fx-background-radius: 50%;
+    -fx-padding: 8px;
+}
+
+.default-color2.chart-legend-item-symbol {
+    -fx-background-color: #57B757;
+    -fx-background-radius: 50%;
+    -fx-padding: 8px;
+}
+
+.default-color3.chart-legend-item-symbol {
+    -fx-background-color: #41A9C9;
+    -fx-background-radius: 50%;
+    -fx-padding: 8px;
+}
+
+.default-color4.chart-legend-item-symbol {
+    -fx-background-color: #4258C9;
+    -fx-background-radius: 50%;
+    -fx-padding: 8px;
+}
+
+.default-color5.chart-legend-item-symbol {
+    -fx-background-color: #953FC0;
+    -fx-background-radius: 50%;
+    -fx-padding: 8px;
+}
+
+.default-color5.chart-legend-item-symbol {
+    -fx-background-color: #C54063;
+    -fx-background-radius: 50%;
+    -fx-padding: 8px;
+}
+
+.default-color5.chart-legend-item-symbol {
+    -fx-background-color: #868686;
+    -fx-background-radius: 50%;
+    -fx-padding: 8px;
+}
+
+.chart-legend-item > .text {
+    -fx-font-size: 15px;
+}
+
+.axis {
+    -fx-font-family: 'Google Sans';
+    -fx-tick-label-fill: #A9A9A9;
+}
+
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+
+.chart-vertical-grid-lines {
+    -fx-stroke: transparent;
+}
+
+.chart-horizontal-grid-lines {
+    -fx-stroke: #EBEBEB;
+    -fx-stroke-dash-array: none;
+}
+
+.axis-tick-mark {
+    -fx-max-height: 3px;
+}
+
+.axis-minor-tick-mark {
+    -fx-stroke-width: 0;
+}
