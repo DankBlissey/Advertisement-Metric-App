@@ -54,7 +54,7 @@
 
 .backBar {
     -fx-fill: #FFFFFF;
-    -fx-effect: dropshadow(three-pass-box, GREY, 5.0, 0.0, 0.0,  0.0);
+    -fx-effect: dropshadow(gaussian, GREY, 5.0, 0.0, 0.0,  0.0);
 }
 
 .smallWhiteText {
@@ -270,50 +270,53 @@
     -fx-background-color: white;
     -fx-border-color:grey;
     -fx-border-radius:50px;
+    -fx-background-radius: 50px;
 
 }
 
 .check-box:selected .mark {
     -fx-background-color: #555BFF;
+    -fx-background-radius: 50px;
 }
 
 .check-box:selected .box {
     -fx-background-color: #555BFF;
-    -fx-background-radius: 30px;
+    -fx-background-radius: 50px;
 }
 
 .bounce-dropdown {
     -fx-font-family: 'Google Sans Bold';
     -fx-font-size: 12px;
-    -fx-text-fill: #FFFFFF;
-    -fx-fill: #FFFFFF;
-    -fx-background-color: #555BFF;
-    -fx-background-radius: 20px;
+    -fx-text-fill: #A9A9A9;
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 13px;
+    -fx-effect: dropshadow(gaussian, #00000029, 2.0, 0.0, 1.0, 2.0);
 }
 
 .bounce-dropdown .list-view {
-    -fx-background-color: #555BFF;
-    -fx-background-radius: 20px;
+    -fx-text-fill: #A9A9A9;
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 13px;
 }
 
 .bounce-dropdown .list-view .list-cell {
-    -fx-background-color: #555BFF;
-    -fx-text-fill: #777CFF;
-    -fx-background-radius: 20px;
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #A9A9A9;
+    -fx-background-radius: 13px;
 }
 
 .bounce-dropdown .list-view .list-cell:hover {
-    -fx-text-fill: #FFFFFF;
-    -fx-background-color: #202680;
+    -fx-text-fill: #A9A9A9;
+    -fx-background-color: #00000029;
 }
 
 .bounce-dropdown .list-view .list-cell:selected {
-    -fx-text-fill: #FFFFFF;
+    -fx-text-fill: #A9A9A9;
 }
 
 .bounce-dropdown .list-cell {
-    -fx-text-fill: #FFFFFF;
-    -fx-background-radius: 20px;
+    -fx-text-fill: #A9A9A9;
+    -fx-background-radius: 13px;
 }
 
 /* ---------- Graph Styling ----------- */
