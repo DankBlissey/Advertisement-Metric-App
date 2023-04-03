@@ -31,6 +31,8 @@ public class Filter {
 
   private int id;
 
+  private int dataSetId=0;
+
   public Context getContext() {
     return context;
   }
@@ -88,8 +90,14 @@ public class Filter {
     this.endDate = endDate;
   }
 
+  public int getDataSetId() {
+    return dataSetId;
+  }
 
+  public void setDataSetId(int dataSetId) {
+    this.dataSetId = dataSetId;
 
+  }
 
   public int getId() {
     return id;

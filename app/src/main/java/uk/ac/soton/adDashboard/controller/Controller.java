@@ -1,7 +1,11 @@
 package uk.ac.soton.adDashboard.controller;
 
 
+import java.util.HashMap;
 import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableMap;
+
 import javafx.util.Pair;
 import uk.ac.soton.adDashboard.Interfaces.FilterWindow;
 import uk.ac.soton.adDashboard.Interfaces.GraphFeatures;
@@ -18,7 +22,15 @@ import uk.ac.soton.adDashboard.records.DataSet;
 public class Controller {
 
   private GraphFeatures graph;
-  private DataSet model;
+  /**
+   * Tracks all of the models. The key is the id of the model.
+   */
+  private ObservableMap<Integer,DataSet> models = FXCollections.observableMap(new HashMap<>());
+
+  /**
+   * A counter to assign an id to a model.
+   */
+  private int modelId=0;
 
   private FilterWindow filterWindow;
 
@@ -36,14 +48,48 @@ public class Controller {
     this.graph = graph;
   }
 
+
+  /**
+   *
+   * @return Returns an observable map of all the models.
+   */
+  public ObservableMap<Integer, DataSet> getModels() {
+    return models;
+  }
+
+  /**
+   * Gets the first model in the list.
+   * @return Returns the first model in the list.
+   */
   public DataSet getModel() {
-    return model;
+    if (models.keySet().size()>0) {
+      return models.get(0);
+    } else {
+      return null;
+    }
   }
 
-  public void setModel(DataSet model) {
-    this.model = model;
+  /**
+   * Gets a model by its id.
+   * @param id The id of the model to get.
+   * @return Returns the model with the provided id.
+   */
+  public DataSet getModel(int id) {
+    return models.get(id);
   }
 
+  /**
+   * Adds a model and increments the id afterwards.
+   * @param model The model to add.
+   */
+  public void addModel(DataSet model) {
+    this.models.put(modelId++,model);
+  }
+
+
+  public int getModelId() {
+    return modelId;
+  }
 
 
   public Stat getStatType() {
@@ -93,7 +139,7 @@ public class Controller {
    * @param filter The Filter object which changed.
    */
   public void filterUpdated(Filter filter) {
-
+    DataSet model =getModels().get(filter.getDataSetId());
     model.setFilter(filter);
 
     List<Pair<Integer, Double>> points = model.generateY(filter.getStartDate(),
