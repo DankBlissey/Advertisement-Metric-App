@@ -248,7 +248,7 @@ public class LandingView extends BaseView {
         filenames.add(serverFileName.getValue());
 
 
-        appWindow.getController().setModel(dataSet);
+        appWindow.getController().addModel(dataSet);
         appWindow.bounceRateWindow( filenames);
     }
 

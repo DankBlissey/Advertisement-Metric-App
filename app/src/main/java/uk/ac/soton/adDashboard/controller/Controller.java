@@ -1,7 +1,12 @@
 package uk.ac.soton.adDashboard.controller;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.chart.PieChart.Data;
 import javafx.util.Pair;
 import uk.ac.soton.adDashboard.Interfaces.FilterWindow;
 import uk.ac.soton.adDashboard.Interfaces.GraphFeatures;
@@ -18,7 +23,13 @@ import uk.ac.soton.adDashboard.records.DataSet;
 public class Controller {
 
   private GraphFeatures graph;
-  private DataSet model;
+  private HashMap<Integer,DataSet> models = new HashMap<>();
+  private ObservableList<Integer> modelIds = FXCollections.observableArrayList();
+
+  /**
+   * a counter to assign an id to a model
+   */
+  private int modelId=0;
 
   private FilterWindow filterWindow;
 
@@ -36,14 +47,34 @@ public class Controller {
     this.graph = graph;
   }
 
+  public HashMap<Integer, DataSet> getModels() {
+    return models;
+  }
+
   public DataSet getModel() {
-    return model;
+    if (models.keySet().size()>0) {
+      return models.get(0);
+    } else {
+      return null;
+    }
   }
 
-  public void setModel(DataSet model) {
-    this.model = model;
+  public DataSet getModel(int id) {
+    return models.get(id);
   }
 
+  public void addModel(DataSet model) {
+    this.models.put(modelId++,model);
+    modelIds.add(modelId-1);
+  }
+
+  public ObservableList<Integer> getModelIds() {
+    return modelIds;
+  }
+
+  public int getModelId() {
+    return modelId;
+  }
 
 
   public Stat getStatType() {
@@ -93,7 +124,7 @@ public class Controller {
    * @param filter The Filter object which changed.
    */
   public void filterUpdated(Filter filter) {
-
+    DataSet model =getModels().get(filter.getDataSetId());
     model.setFilter(filter);
 
     List<Pair<Integer, Double>> points = model.generateY(filter.getStartDate(),

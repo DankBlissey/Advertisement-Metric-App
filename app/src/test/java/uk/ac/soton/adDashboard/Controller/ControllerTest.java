@@ -49,7 +49,7 @@ public class ControllerTest {
     dataSet.setClicks(generateClicks());
     cost = 42.5;
     controller = new Controller();
-    controller.setModel(dataSet);
+    controller.addModel(dataSet);
     filter = defaultFilter();
 
 
@@ -66,7 +66,7 @@ public class ControllerTest {
     dataSet.setPagesForBounce(2);
     dataSet.setPagesViewedBounceMetric(true);
     controller= new Controller();
-    controller.setModel(dataSet);
+    controller.addModel(dataSet);
     data.clear();
     Collections.addAll(data,new Pair<>(0,0.0),new Pair<>(1,0.0));
 
@@ -211,7 +211,7 @@ public class ControllerTest {
     expect(dataSet1.generateY(f1.getStartDate(),f1.getEndDate(),granularity,controller.getStatType())).andReturn(d1);
     expect(dataSet1.generateY(f2.getStartDate(),f2.getEndDate(),granularity,controller.getStatType())).andReturn(d2);
     replay(dataSet1);
-    controller.setModel(dataSet1);
+    controller.addModel(dataSet1);
     controller.setGranularity(granularity);
     verify(graph);
     verify(dataSet1);
@@ -252,7 +252,7 @@ public class ControllerTest {
     expect(dataSet1.generateY(f1.getStartDate(),f1.getEndDate(),Granularity.DAY,stat)).andReturn(d1);
     expect(dataSet1.generateY(f2.getStartDate(),f2.getEndDate(),Granularity.DAY,stat)).andReturn(d2);
     replay(dataSet1);
-    controller.setModel(dataSet1);
+    controller.addModel(dataSet1);
     controller.setStatType(stat);
     verify(graph);
     verify(dataSet1);

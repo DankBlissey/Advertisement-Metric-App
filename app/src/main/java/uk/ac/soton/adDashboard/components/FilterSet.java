@@ -18,6 +18,7 @@ import uk.ac.soton.adDashboard.controller.Controller;
 import uk.ac.soton.adDashboard.enums.Context;
 import uk.ac.soton.adDashboard.enums.Gender;
 import uk.ac.soton.adDashboard.enums.Income;
+import uk.ac.soton.adDashboard.records.DataSet;
 import uk.ac.soton.adDashboard.ui.AppWindow;
 
 import uk.ac.soton.adDashboard.filter.Filter;
@@ -85,8 +86,23 @@ public class FilterSet extends VBox {
 
         // ---------- Context filter ----------
         renderFilter("Context:", contextOptions, "context");
-
+        // ---------- Campaign filter ----------
+        renderCampaignFilter();
         AppWindow.getController().filterUpdated(filter);
+    }
+
+    public void renderCampaignFilter() {
+        Text title = new Text("Campaign:");
+        title.getStyleClass().add("extraSmallWhiteText");
+
+        ComboBox options = new ComboBox(controller.getModelIds());
+        options.getSelectionModel().selectFirst();
+        options.getStyleClass().add("filter-dropdown");
+        HBox filterBox = new HBox(10);
+        filterBox.setAlignment(Pos.CENTER_LEFT);
+        filterBox.getChildren().addAll(title, options);
+        getChildren().add(filterBox);
+
     }
 
     public void renderDatePicker(HBox filterBox) {
@@ -187,6 +203,7 @@ public class FilterSet extends VBox {
             } else if(newValue.equals("Custom")) {
                 filter.setStartDate(oneWeekAgo);
                 datePickerVisible(true);
+                controller.addModel(new DataSet());
             }
         }
         logger.info("Changed filter " + filterType + " to value: " + newValue);

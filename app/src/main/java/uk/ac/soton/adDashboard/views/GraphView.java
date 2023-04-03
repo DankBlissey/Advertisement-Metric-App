@@ -288,6 +288,7 @@ public class GraphView extends BaseView implements FilterWindow {
         defaultFilter.setStartDate(controller.getModel().earliestDate());
         defaultFilter.setEndDate(controller.getModel().latestDate());
         defaultFilter.setId(0);
+        defaultFilter.setDataSetId(0);
         return defaultFilter;
     }
 
