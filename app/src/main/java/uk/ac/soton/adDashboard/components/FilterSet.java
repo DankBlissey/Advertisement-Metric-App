@@ -1,6 +1,8 @@
 package uk.ac.soton.adDashboard.components;
 
+import java.util.Arrays;
 import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -95,13 +97,33 @@ public class FilterSet extends VBox {
         Text title = new Text("Campaign:");
         title.getStyleClass().add("extraSmallWhiteText");
 
-        ComboBox options = new ComboBox(controller.getModelIds());
+        ComboBox<String> options = new ComboBox<>(FXCollections.observableArrayList(controller.getModels().keySet().stream().map(i->Integer.toString(i)).toArray(String[]::new)));
+        //If the models change update the options.
+        controller.getModels().addListener((InvalidationListener) change -> Platform.runLater(()->{
+            String value = options.getValue();
+            options.setItems(FXCollections.observableArrayList(controller.getModels().keySet().stream().map(i->Integer.toString(i)).toArray(String[]::new)));
+            if (options.getItems().contains(value)) { //todo: needs further testing after linking up.
+                options.setValue(value);
+                System.out.println("old value selected");
+            } else {
+                options.getSelectionModel().selectFirst();
+            }
+
+        }));
         options.getSelectionModel().selectFirst();
         options.getStyleClass().add("filter-dropdown");
         HBox filterBox = new HBox(10);
         filterBox.setAlignment(Pos.CENTER_LEFT);
         filterBox.getChildren().addAll(title, options);
         getChildren().add(filterBox);
+
+        //If options changes update the filter.
+        options.valueProperty().addListener((observable, oldValue, newValue) -> {
+            System.out.println("oldValue = " + oldValue+ " newValue = " + newValue);
+            if (newValue != null) {
+                updatedFilter("campaign", newValue);
+            }
+        });
 
     }
 
@@ -181,15 +203,20 @@ public class FilterSet extends VBox {
             filter.setIncome(Income.parseIncome(newValue));
         }  else if (filterType.equals("context")) {
             filter.setContext(Context.parseContext(newValue));
+        } else if (filterType.equals("campaign")) {
+            filter.setDataSetId(Integer.parseInt(newValue));
+            //TODO: should this call updatedFilter("dateRange", "Custom") to auto match the date range of the new campaign?
         } else if (filterType.equals("dateRange")) {
             LocalDateTime today = LocalDateTime.now();
             LocalDateTime oneWeekAgo = today.minusWeeks(1);
             LocalDateTime oneMonthAgo = today.minusMonths(1);
             LocalDateTime twoMonthsAgo = today.minusMonths(2);
             LocalDateTime oneYearAgo = today.minusYears(1);
-
-            filter.setEndDate(today);
-
+            if (!newValue.equals("Custom")) {
+                filter.setEndDate(today);
+            } else {
+                filter.setEndDate(controller.getModel(filter.getDataSetId()).latestDate()); //auto date matching.
+            }
             datePickerVisible(false);
 
             if(newValue.equals("Last week")) {
@@ -203,7 +230,7 @@ public class FilterSet extends VBox {
             } else if(newValue.equals("Custom")) {
                 filter.setStartDate(oneWeekAgo);
                 datePickerVisible(true);
-                controller.addModel(new DataSet());
+                filter.setStartDate(controller.getModel(filter.getDataSetId()).earliestDate());
             }
         }
         logger.info("Changed filter " + filterType + " to value: " + newValue);

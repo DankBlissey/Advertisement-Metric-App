@@ -31,7 +31,7 @@ public class Filter {
 
   private int id;
 
-  private int dataSetId;
+  private int dataSetId=0;
 
   public Context getContext() {
     return context;
@@ -96,6 +96,7 @@ public class Filter {
 
   public void setDataSetId(int dataSetId) {
     this.dataSetId = dataSetId;
+
   }
 
   public int getId() {

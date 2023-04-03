@@ -24,7 +24,7 @@ public class AppPane extends StackPane {
     private final int width;
     private final int height;
     private double scalar = 1;
-    private final boolean autoScale = true;
+    private final boolean autoScale = false;
 
     /**
      * Create a new scalable AppPane with the given drawing width and height.
