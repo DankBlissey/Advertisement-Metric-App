@@ -86,7 +86,9 @@ public class Controller {
     this.models.put(modelId++,model);
   }
 
-
+  public DataSet removeModel(int id) {
+    return models.remove(id);
+  }
   public int getModelId() {
     return modelId;
   }
