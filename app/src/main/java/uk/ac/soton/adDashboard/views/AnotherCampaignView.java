@@ -60,11 +60,11 @@ public class AnotherCampaignView extends BaseView {
      */
     public AnotherCampaignView(AppWindow appWindow) {
         super(appWindow);
-        logger.info("Creating the Landing View");
+        logger.info("Creating the more campaigns View");
     }
 
     /**
-     * Build the Landing layout
+     * Build the more campaigns layout
      */
     @Override
     public void build() {

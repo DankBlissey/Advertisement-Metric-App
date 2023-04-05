@@ -33,11 +33,16 @@ public class ListView extends BaseView {
     private GridPane gridPane;
     private double[] data;
 
+    private int noCampains;
+    HBox longBarContent;
+
     public ListView(AppWindow appWindow, ArrayList<String> filenames) {
         super(appWindow);
         this.dataSet = controller.getModel();
         this.filenames = filenames;
+        noCampains = controller.getModels().size();
         logger.info("Creating the list view View");
+        logger.info("number of campaigns:" + noCampains);
     }
 
     /**
@@ -108,15 +113,7 @@ public class ListView extends BaseView {
         Rectangle backBar = new Rectangle(1280,150);
         backBar.getStyleClass().add("backBar");
 
-        //Box containing first set of loaded files
-        Rectangle loadedRectangle = new Rectangle(200,130, Color.valueOf("#4B51FF"));
-        loadedRectangle.setArcWidth(30);
-        loadedRectangle.setArcHeight(30);
 
-        Text loadedText = new Text(getFileNames(filenames));
-        loadedText.getStyleClass().add("smallWhiteText");
-
-        StackPane loadedFiles = new StackPane(loadedRectangle,loadedText);
         /////////////////////////////////////////////////////////////////////////// code we want to replicate for each
         //Box containing another set of loaded files
         //Rectangle loadedRectangle2 = new Rectangle(200,130, Color.valueOf("#4B51FF"));
@@ -132,11 +129,14 @@ public class ListView extends BaseView {
         Button anotherCampaign = new Button("+ Compare campaigns");
         anotherCampaign.setOnAction(e -> appWindow.loadView(new AnotherCampaignView(appWindow)));
 
-        HBox longBarContent = new HBox(loadedFiles, anotherCampaign);
+        longBarContent = new HBox();
+        generateCampaigns();
+        longBarContent.getChildren().add(anotherCampaign);
 
         longBarContent.setAlignment(Pos.CENTER);
 
         StackPane longBar = new StackPane(backBar,longBarContent);
+        longBarContent.setSpacing(10);
 
         VBox vbox = new VBox(topBar, longBar);
 
@@ -201,7 +201,6 @@ public class ListView extends BaseView {
         borderPane.setLeft(toggleButton);
 
         BorderPane.setMargin(vbox, new Insets(0, 0, 25, 0));
-        data = dataSet.allStats(dataSet.earliestDate(),dataSet.latestDate());
         createListBlock("Total clicks", 2, 0, 1 );
         createListBlock("Total uniques", 3, 1,1 );
         createListBlock("Total impressions", 1, 2,1 );
@@ -249,27 +248,30 @@ public class ListView extends BaseView {
     private void createListBlock(String text, int dataIndex, int xGrid, int yGrid){
         Text title = new Text(text);
         title.getStyleClass().add("listTitle");
-
-        double value = data[dataIndex];
-        Text valueText;
-
-        if(text.equals("CTR")){
-            value = value * 100;
-            DecimalFormat df = new DecimalFormat("#.##");
-            String formattedNumber = df.format(value);
-            valueText = new Text(formattedNumber + "%");
-        } else if (text.equals("CPA")|| text.equals("CPC") || text.equals("Bounce rate")) {
-            DecimalFormat df = new DecimalFormat("#,###.##");
-            String formattedNumber = df.format(value);
-            valueText = new Text(formattedNumber);
-        } else {
-            DecimalFormat df = new DecimalFormat("#,###");
-            String formattedNumber = df.format(value);
-            valueText = new Text(formattedNumber);
+        VBox vBox = new VBox(title);
+        for(int i = 0; i < noCampains; i ++){
+            DataSet dataset = controller.getModel(i);
+            data = dataset.allStats(dataSet.earliestDate(),dataSet.latestDate());
+            double value = data[dataIndex];
+            Text valueText;
+            if(text.equals("CTR")){
+                value = value * 100;
+                DecimalFormat df = new DecimalFormat("#.##");
+                String formattedNumber = df.format(value);
+                valueText = new Text(formattedNumber + "%");
+            } else if (text.equals("CPA")|| text.equals("CPC") || text.equals("Bounce rate")) {
+                DecimalFormat df = new DecimalFormat("#,###.##");
+                String formattedNumber = df.format(value);
+                valueText = new Text(formattedNumber);
+            } else {
+                DecimalFormat df = new DecimalFormat("#,###");
+                String formattedNumber = df.format(value);
+                valueText = new Text(formattedNumber);
+            }
+            valueText.getStyleClass().add("listNumbers");
+            vBox.getChildren().add(valueText);
         }
-        valueText.getStyleClass().add("listNumbers");
 
-        VBox vBox = new VBox(title,valueText);
        // vBox.setMaxWidth(Region.USE_PREF_SIZE);
         vBox.setPadding(new Insets(10));
         vBox.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(17), null)));
@@ -281,6 +283,36 @@ public class ListView extends BaseView {
 
         gridPane.add(vBox, xGrid, yGrid);
     }
+
+
+    private void generateCampaigns(){
+        for(int i =0; i < noCampains; i ++){
+            //Box containing first set of loaded files
+            Rectangle loadedRectangle = new Rectangle(200,130, Color.valueOf("#4B51FF"));
+            loadedRectangle.setArcWidth(30);
+            loadedRectangle.setArcHeight(30);
+            Text title = new Text("Campaign" + noCampains + 1);
+            Text loadedText = new Text(getFileNames(filenames));
+            loadedText.getStyleClass().add("smallWhiteText");
+            Button close = new Button("X");
+            int finalI = i;
+            close.setOnAction(e -> removeset(finalI));
+            VBox vbox;
+            if(i >= 1) {
+                vbox = new VBox(close, title, loadedText);
+            } else {vbox = new VBox(title, loadedText);}
+            vbox.setStyle("-fx-background-color: transparent;");
+            vbox.setAlignment(Pos.CENTER);
+            StackPane loadedFiles = new StackPane(loadedRectangle,vbox);
+            longBarContent.getChildren().add(loadedFiles);
+        }
+        }
+        private void removeset(int i){
+        controller.removeModel(i);
+        appWindow.loadView(new ListView(appWindow,filenames));
+
+        }
+
 }
 
 

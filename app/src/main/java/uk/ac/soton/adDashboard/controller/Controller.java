@@ -75,7 +75,7 @@ public class Controller {
    * @return Returns the model with the provided id.
    */
   public DataSet getModel(int id) {
-    return models.get(id);
+      return models.get(id);
   }
 
   /**
