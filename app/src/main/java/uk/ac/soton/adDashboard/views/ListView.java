@@ -113,18 +113,6 @@ public class ListView extends BaseView {
         Rectangle backBar = new Rectangle(1280,150);
         backBar.getStyleClass().add("backBar");
 
-
-        /////////////////////////////////////////////////////////////////////////// code we want to replicate for each
-        //Box containing another set of loaded files
-        //Rectangle loadedRectangle2 = new Rectangle(200,130, Color.valueOf("#4B51FF"));
-        //loadedRectangle2.setArcWidth(30);
-        //loadedRectangle2.setArcHeight(30);
-
-        //Text loadedText2 = new Text(getFileNames(filenames));
-        //loadedText2.getStyleClass().add("smallWhiteText");
-
-        //StackPane loadedFiles2 = new StackPane(loadedRectangle2,loadedText2);
-        ///////////////////////////////////////////////////////////////////////////
         //Button to add more campaigns
         Button anotherCampaign = new Button("+ Compare campaigns");
         anotherCampaign.setOnAction(e -> appWindow.loadView(new AnotherCampaignView(appWindow)));
@@ -272,19 +260,20 @@ public class ListView extends BaseView {
             vBox.getChildren().add(valueText);
         }
 
-       // vBox.setMaxWidth(Region.USE_PREF_SIZE);
+
         vBox.setPadding(new Insets(10));
         vBox.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(17), null)));
         vBox.getStyleClass().add("card");
         vBox.setEffect(dropShadow);
         vBox.setAlignment(Pos.CENTER_LEFT);
         gridPane.setAlignment(Pos.CENTER);
-        // Set the width of the column that contains the VBox to USE_COMPUTED_SIZE
 
         gridPane.add(vBox, xGrid, yGrid);
     }
 
-
+    /**
+     * Method for generating the objects listing the loaded files and for which campaign
+     */
     private void generateCampaigns(){
         for(int i =0; i < noCampains; i ++){
             //Box containing first set of loaded files
@@ -307,7 +296,12 @@ public class ListView extends BaseView {
             longBarContent.getChildren().add(loadedFiles);
         }
         }
-        private void removeset(int i){
+
+    /**
+     * Method to remove a campaign from UI and from the list of models
+     * @param i the particular campaign to remove
+     */
+    private void removeset(int i){
         controller.removeModel(i);
         appWindow.loadView(new ListView(appWindow,filenames));
 
