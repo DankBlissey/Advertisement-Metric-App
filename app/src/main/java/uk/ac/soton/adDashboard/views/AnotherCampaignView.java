@@ -78,8 +78,8 @@ public class AnotherCampaignView extends BaseView {
         root.getChildren().add(mainPane);
 
         // Headings
-        var title = new Text("Dashboard");
-        var subtitle = new Text("In order to begin, please upload\nthe relevant CSV files below.");
+        var title = new Text("Add another campaign");
+        var subtitle = new Text("In order to add another campaign, please upload\nthe relevant CSV files below.");
 
         title.getStyleClass().add("title");
         subtitle.getStyleClass().add("subtitle");

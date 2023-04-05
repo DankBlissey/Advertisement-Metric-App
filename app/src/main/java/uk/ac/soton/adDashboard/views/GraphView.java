@@ -33,6 +33,8 @@ public class GraphView extends BaseView implements FilterWindow {
     protected DataSet dataSet;
     protected ArrayList<String> filenames;
     protected Graph graph;
+    private int noCampains;
+    private HBox longBarContent;
 
     /**
      * VBox which contains multiple FilterSets that are displayed in a scrollable view
@@ -49,7 +51,9 @@ public class GraphView extends BaseView implements FilterWindow {
         this.dataSet = controller.getModel();
         this.filenames = filenames;
         controller.setFilterWindow(this);
+        noCampains = controller.getModels().size();
         logger.info("Creating the graph view View");
+        logger.info("number of campaigns:" + noCampains);
     }
 
     /**
@@ -113,6 +117,10 @@ public class GraphView extends BaseView implements FilterWindow {
         backBar.getStyleClass().add("backBar");
         backBar.setEffect(new DropShadow(5,Color.GREY));
 
+        //Button to add more campaigns
+        Button anotherCampaign = new Button("+ Compare campaigns");
+        anotherCampaign.setOnAction(e -> appWindow.loadView(new AnotherCampaignView(appWindow)));
+
         Rectangle loadedRectangle = new Rectangle(200,130, Color.valueOf("#4B51FF"));
         loadedRectangle.setArcWidth(30);
         loadedRectangle.setArcHeight(30);
@@ -120,11 +128,13 @@ public class GraphView extends BaseView implements FilterWindow {
         Text loadedText = new Text(getFileNames(filenames));
         loadedText.getStyleClass().add("smallWhiteText");
 
-        StackPane loadedFiles = new StackPane(loadedRectangle,loadedText);
+       // StackPane loadedFiles = new StackPane(loadedRectangle,loadedText);
 
-        HBox longBarContent = new HBox(loadedFiles);
-
+        longBarContent = new HBox();
+        generateCampaigns();
+        longBarContent.getChildren().add(anotherCampaign);
         longBarContent.setAlignment(Pos.CENTER);
+        longBarContent.setSpacing(10);
 
         StackPane longBar = new StackPane(backBar,longBarContent);
 
@@ -363,4 +373,42 @@ public class GraphView extends BaseView implements FilterWindow {
         logger.info("Initialising");
         //Initial stuff such as keyboard listeners
     }
+
+    /**
+     * Method for generating the objects listing the loaded files and for which campaign
+     */
+    private void generateCampaigns(){
+        for(int i =0; i < noCampains; i ++){
+            //Box containing first set of loaded files
+            Rectangle loadedRectangle = new Rectangle(200,130, Color.valueOf("#4B51FF"));
+            loadedRectangle.setArcWidth(30);
+            loadedRectangle.setArcHeight(30);
+            int campaignNum = i + 1;
+            Text title = new Text("Campaign" + campaignNum);
+            Text loadedText = new Text(getFileNames(filenames));
+            loadedText.getStyleClass().add("smallWhiteText");
+            Button close = new Button("X");
+            int finalI = i;
+            close.setOnAction(e -> removeset(finalI));
+            VBox vbox;
+            if(i >= 1) {
+                vbox = new VBox(close, title, loadedText);
+            } else {vbox = new VBox(title, loadedText);}
+            vbox.setStyle("-fx-background-color: transparent;");
+            vbox.setAlignment(Pos.CENTER);
+            StackPane loadedFiles = new StackPane(loadedRectangle,vbox);
+            longBarContent.getChildren().add(loadedFiles);
+        }
+    }
+
+    /**
+     * Method to remove a campaign from UI and from the list of models
+     * @param i the particular campaign to remove
+     */
+    private void removeset(int i){
+        controller.removeModel(i);
+        appWindow.loadView(new ListView(appWindow,filenames));
+
+    }
+
 }

@@ -112,6 +112,7 @@ public class ListView extends BaseView {
 
         Rectangle backBar = new Rectangle(1280,150);
         backBar.getStyleClass().add("backBar");
+        backBar.setEffect(new DropShadow(5,Color.GREY));
 
         //Button to add more campaigns
         Button anotherCampaign = new Button("+ Compare campaigns");
@@ -120,11 +121,11 @@ public class ListView extends BaseView {
         longBarContent = new HBox();
         generateCampaigns();
         longBarContent.getChildren().add(anotherCampaign);
-
         longBarContent.setAlignment(Pos.CENTER);
+        longBarContent.setSpacing(10);
 
         StackPane longBar = new StackPane(backBar,longBarContent);
-        longBarContent.setSpacing(10);
+
 
         VBox vbox = new VBox(topBar, longBar);
 
@@ -280,7 +281,8 @@ public class ListView extends BaseView {
             Rectangle loadedRectangle = new Rectangle(200,130, Color.valueOf("#4B51FF"));
             loadedRectangle.setArcWidth(30);
             loadedRectangle.setArcHeight(30);
-            Text title = new Text("Campaign" + noCampains + 1);
+            int campaignNum = i + 1;
+            Text title = new Text("Campaign" + campaignNum);
             Text loadedText = new Text(getFileNames(filenames));
             loadedText.getStyleClass().add("smallWhiteText");
             Button close = new Button("X");
