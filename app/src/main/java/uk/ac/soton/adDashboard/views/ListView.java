@@ -27,14 +27,11 @@ import java.util.ListIterator;
 
 public class ListView extends BaseView {
     private static final Logger logger = LogManager.getLogger(ListView.class);
-
     protected DataSet dataSet;
     protected ArrayList<String> filenames;
     private DropShadow dropShadow;
     private GridPane gridPane;
     private double[] data;
-
-
 
     public ListView(AppWindow appWindow, ArrayList<String> filenames) {
         super(appWindow);
@@ -111,6 +108,7 @@ public class ListView extends BaseView {
         Rectangle backBar = new Rectangle(1280,150);
         backBar.getStyleClass().add("backBar");
 
+        //Box containing first set of loaded files
         Rectangle loadedRectangle = new Rectangle(200,130, Color.valueOf("#4B51FF"));
         loadedRectangle.setArcWidth(30);
         loadedRectangle.setArcHeight(30);
@@ -119,8 +117,22 @@ public class ListView extends BaseView {
         loadedText.getStyleClass().add("smallWhiteText");
 
         StackPane loadedFiles = new StackPane(loadedRectangle,loadedText);
+        /////////////////////////////////////////////////////////////////////////// code we want to replicate for each
+        //Box containing another set of loaded files
+        //Rectangle loadedRectangle2 = new Rectangle(200,130, Color.valueOf("#4B51FF"));
+        //loadedRectangle2.setArcWidth(30);
+        //loadedRectangle2.setArcHeight(30);
 
-        HBox longBarContent = new HBox(loadedFiles);
+        //Text loadedText2 = new Text(getFileNames(filenames));
+        //loadedText2.getStyleClass().add("smallWhiteText");
+
+        //StackPane loadedFiles2 = new StackPane(loadedRectangle2,loadedText2);
+        ///////////////////////////////////////////////////////////////////////////
+        //Button to add more campaigns
+        Button anotherCampaign = new Button("+ Compare campaigns");
+        anotherCampaign.setOnAction(e -> appWindow.loadView(new AnotherCampaignView(appWindow)));
+
+        HBox longBarContent = new HBox(loadedFiles, anotherCampaign);
 
         longBarContent.setAlignment(Pos.CENTER);
 
@@ -148,7 +160,6 @@ public class ListView extends BaseView {
 
         //Using the gridpane component to organise the list view objects
         gridPane = new GridPane();
-
 
         //vbox so that button is not part of the list objects
         VBox centerVbox = new VBox(20);
@@ -190,10 +201,7 @@ public class ListView extends BaseView {
         borderPane.setLeft(toggleButton);
 
         BorderPane.setMargin(vbox, new Insets(0, 0, 25, 0));
-        //adding switch button to the top left of the grid pane
-       // gridPane.add(stack,0,0);
         data = dataSet.allStats(dataSet.earliestDate(),dataSet.latestDate());
-        //private void createListBlock(GridPane gridPane, double[] data, DropShadow dropShadow,  String text, int dataIndex, int xGrid, int yGrid){
         createListBlock("Total clicks", 2, 0, 1 );
         createListBlock("Total uniques", 3, 1,1 );
         createListBlock("Total impressions", 1, 2,1 );
@@ -205,7 +213,6 @@ public class ListView extends BaseView {
         createListBlock("CPC", 9, 1,3 );
         createListBlock("CPM", 10, 2,3 );
         createListBlock("Bounce rate", 11, 3,3 );
-
 
         root.getChildren().addAll(borderPane);
     }

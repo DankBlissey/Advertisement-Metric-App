@@ -126,6 +126,13 @@ public class AppWindow {
     }
 
     /**
+     * Display the  menu(scene/view) where you upload another set of three CSV files
+     */
+    public void anotherCampaignWindow() {
+        loadView(new LandingView(this));
+    }
+
+    /**
      * Display the list view of the data
      */
     public void listViewWindow(ArrayList<String> filenames) {
