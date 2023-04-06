@@ -10,10 +10,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import uk.ac.soton.adDashboard.App;
 import uk.ac.soton.adDashboard.Interfaces.FilterWindow;
 import uk.ac.soton.adDashboard.components.FilterSet;
-import uk.ac.soton.adDashboard.controller.Controller;
 import uk.ac.soton.adDashboard.enums.Granularity;
 import uk.ac.soton.adDashboard.enums.Stat;
 import uk.ac.soton.adDashboard.filter.Filter;
@@ -74,7 +72,7 @@ public class GraphView extends BaseView implements FilterWindow {
 
         Button startAgain = new Button("Go Back");
         startAgain.setOnAction(e -> {
-            appWindow.bounceRateWindow(filenames);
+            appWindow.bounceRateWindow(filenames, false);
         });
         startAgain.getStyleClass().add("blueButton");
 
@@ -119,7 +117,7 @@ public class GraphView extends BaseView implements FilterWindow {
 
         //Button to add more campaigns
         Button anotherCampaign = new Button("+ Compare campaigns");
-        anotherCampaign.setOnAction(e -> appWindow.loadView(new AnotherCampaignView(appWindow)));
+        anotherCampaign.setOnAction(e -> appWindow.loadView(new AnotherCampaignView(appWindow,this)));
 
         Rectangle loadedRectangle = new Rectangle(200,130, Color.valueOf("#4B51FF"));
         loadedRectangle.setArcWidth(30);
@@ -298,7 +296,7 @@ public class GraphView extends BaseView implements FilterWindow {
         defaultFilter.setStartDate(controller.getModel().earliestDate());
         defaultFilter.setEndDate(controller.getModel().latestDate());
         defaultFilter.setId(0);
-        defaultFilter.setDataSetId(0);
+        defaultFilter.setDataSetId(controller.getModelIds().get(0));
         return defaultFilter;
     }
 
@@ -378,25 +376,29 @@ public class GraphView extends BaseView implements FilterWindow {
      * Method for generating the objects listing the loaded files and for which campaign
      */
     private void generateCampaigns(){
-        for(int i =0; i < noCampains; i ++){
+        ArrayList<Integer> ids = controller.getModelIds();
+        for (int idIndex = 0; idIndex < ids.size(); idIndex++) {
+            int modelId = ids.get(idIndex);
             //Box containing first set of loaded files
-            Rectangle loadedRectangle = new Rectangle(200,130, Color.valueOf("#4B51FF"));
+            Rectangle loadedRectangle = new Rectangle(200, 130, Color.valueOf("#4B51FF"));
             loadedRectangle.setArcWidth(30);
             loadedRectangle.setArcHeight(30);
-            int campaignNum = i + 1;
+            int campaignNum = idIndex + 1;
             Text title = new Text("Campaign" + campaignNum);
             Text loadedText = new Text(getFileNames(filenames));
             loadedText.getStyleClass().add("smallWhiteText");
             Button close = new Button("X");
-            int finalI = i;
+            int finalI = modelId;
             close.setOnAction(e -> removeset(finalI));
             VBox vbox;
-            if(i >= 1) {
+            if (ids.size() > 1) {
                 vbox = new VBox(close, title, loadedText);
-            } else {vbox = new VBox(title, loadedText);}
+            } else {
+                vbox = new VBox(title, loadedText);
+            }
             vbox.setStyle("-fx-background-color: transparent;");
             vbox.setAlignment(Pos.CENTER);
-            StackPane loadedFiles = new StackPane(loadedRectangle,vbox);
+            StackPane loadedFiles = new StackPane(loadedRectangle, vbox);
             longBarContent.getChildren().add(loadedFiles);
         }
     }
@@ -407,8 +409,11 @@ public class GraphView extends BaseView implements FilterWindow {
      */
     private void removeset(int i){
         controller.removeModel(i);
-        appWindow.loadView(new ListView(appWindow,filenames));
-
+        noCampains = controller.getModels().size();
+        appWindow.loadView(new GraphView(appWindow,filenames));
+        logger.info("button " + i + " was pressed, dataset " + i + " was removed");
+        logger.info("removeSet:number of campaigns:" + noCampains);
+        defaultFilter();
     }
 
 }

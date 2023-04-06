@@ -1,25 +1,16 @@
 package uk.ac.soton.adDashboard.views;
 
-import java.lang.reflect.Array;
-import java.util.HashSet;
-
-import javafx.beans.Observable;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
-import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.soton.adDashboard.records.*;
@@ -29,8 +20,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -249,7 +238,7 @@ public class LandingView extends BaseView {
 
 
         appWindow.getController().addModel(dataSet);
-        appWindow.bounceRateWindow( filenames);
+        appWindow.bounceRateWindow( filenames, true);
     }
 
     public ArrayList<Impression> getImpressionsFromCSV(String filePath) {
