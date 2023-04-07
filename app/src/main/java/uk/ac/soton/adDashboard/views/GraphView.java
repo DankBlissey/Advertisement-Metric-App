@@ -10,10 +10,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import uk.ac.soton.adDashboard.App;
 import uk.ac.soton.adDashboard.Interfaces.FilterWindow;
 import uk.ac.soton.adDashboard.components.FilterSet;
-import uk.ac.soton.adDashboard.controller.Controller;
 import uk.ac.soton.adDashboard.enums.Granularity;
 import uk.ac.soton.adDashboard.enums.Stat;
 import uk.ac.soton.adDashboard.filter.Filter;
@@ -33,6 +31,8 @@ public class GraphView extends BaseView implements FilterWindow {
     protected DataSet dataSet;
     protected ArrayList<String> filenames;
     protected Graph graph;
+    private int noCampains;
+    private HBox longBarContent;
 
     /**
      * VBox which contains multiple FilterSets that are displayed in a scrollable view
@@ -49,7 +49,9 @@ public class GraphView extends BaseView implements FilterWindow {
         this.dataSet = controller.getModel();
         this.filenames = filenames;
         controller.setFilterWindow(this);
+        noCampains = controller.getModels().size();
         logger.info("Creating the graph view View");
+        logger.info("number of campaigns:" + noCampains);
     }
 
     /**
@@ -70,7 +72,7 @@ public class GraphView extends BaseView implements FilterWindow {
 
         Button startAgain = new Button("Go Back");
         startAgain.setOnAction(e -> {
-            appWindow.bounceRateWindow(filenames);
+            appWindow.bounceRateWindow(filenames, false);
         });
         startAgain.getStyleClass().add("blueButton");
 
@@ -113,6 +115,10 @@ public class GraphView extends BaseView implements FilterWindow {
         backBar.getStyleClass().add("backBar");
         backBar.setEffect(new DropShadow(5,Color.GREY));
 
+        //Button to add more campaigns
+        Button anotherCampaign = new Button("+ Compare campaigns");
+        anotherCampaign.setOnAction(e -> appWindow.loadView(new AnotherCampaignView(appWindow,this)));
+
         Rectangle loadedRectangle = new Rectangle(200,130, Color.valueOf("#4B51FF"));
         loadedRectangle.setArcWidth(30);
         loadedRectangle.setArcHeight(30);
@@ -120,11 +126,13 @@ public class GraphView extends BaseView implements FilterWindow {
         Text loadedText = new Text(getFileNames(filenames));
         loadedText.getStyleClass().add("smallWhiteText");
 
-        StackPane loadedFiles = new StackPane(loadedRectangle,loadedText);
+       // StackPane loadedFiles = new StackPane(loadedRectangle,loadedText);
 
-        HBox longBarContent = new HBox(loadedFiles);
-
+        longBarContent = new HBox();
+        generateCampaigns();
+        longBarContent.getChildren().add(anotherCampaign);
         longBarContent.setAlignment(Pos.CENTER);
+        longBarContent.setSpacing(10);
 
         StackPane longBar = new StackPane(backBar,longBarContent);
 
@@ -288,7 +296,7 @@ public class GraphView extends BaseView implements FilterWindow {
         defaultFilter.setStartDate(controller.getModel().earliestDate());
         defaultFilter.setEndDate(controller.getModel().latestDate());
         defaultFilter.setId(0);
-        defaultFilter.setDataSetId(0);
+        defaultFilter.setDataSetId(controller.getModelIds().get(0));
         return defaultFilter;
     }
 
@@ -363,4 +371,49 @@ public class GraphView extends BaseView implements FilterWindow {
         logger.info("Initialising");
         //Initial stuff such as keyboard listeners
     }
+
+    /**
+     * Method for generating the objects listing the loaded files and for which campaign
+     */
+    private void generateCampaigns(){
+        ArrayList<Integer> ids = controller.getModelIds();
+        for (int idIndex = 0; idIndex < ids.size(); idIndex++) {
+            int modelId = ids.get(idIndex);
+            //Box containing first set of loaded files
+            Rectangle loadedRectangle = new Rectangle(200, 130, Color.valueOf("#4B51FF"));
+            loadedRectangle.setArcWidth(30);
+            loadedRectangle.setArcHeight(30);
+            int campaignNum = idIndex + 1;
+            Text title = new Text("Campaign" + campaignNum);
+            Text loadedText = new Text(getFileNames(filenames));
+            loadedText.getStyleClass().add("smallWhiteText");
+            Button close = new Button("X");
+            int finalI = modelId;
+            close.setOnAction(e -> removeset(finalI));
+            VBox vbox;
+            if (ids.size() > 1) {
+                vbox = new VBox(close, title, loadedText);
+            } else {
+                vbox = new VBox(title, loadedText);
+            }
+            vbox.setStyle("-fx-background-color: transparent;");
+            vbox.setAlignment(Pos.CENTER);
+            StackPane loadedFiles = new StackPane(loadedRectangle, vbox);
+            longBarContent.getChildren().add(loadedFiles);
+        }
+    }
+
+    /**
+     * Method to remove a campaign from UI and from the list of models
+     * @param i the particular campaign to remove
+     */
+    private void removeset(int i){
+        controller.removeModel(i);
+        noCampains = controller.getModels().size();
+        appWindow.loadView(new GraphView(appWindow,filenames));
+        logger.info("button " + i + " was pressed, dataset " + i + " was removed");
+        logger.info("removeSet:number of campaigns:" + noCampains);
+        defaultFilter();
+    }
+
 }

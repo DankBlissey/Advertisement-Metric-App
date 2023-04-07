@@ -1,8 +1,8 @@
 package uk.ac.soton.adDashboard.controller;
 
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 
@@ -32,6 +32,7 @@ public class Controller {
    */
   private int modelId=0;
 
+
   private FilterWindow filterWindow;
 
   private Stat statType=Stat.totalImpressions;
@@ -57,13 +58,18 @@ public class Controller {
     return models;
   }
 
+  public ArrayList<Integer> getModelIds(){
+    ArrayList<Integer> ids = new ArrayList<Integer>();
+    models.forEach((id, dataSet) -> ids.add(id));
+    return ids;
+  }
   /**
    * Gets the first model in the list.
    * @return Returns the first model in the list.
    */
   public DataSet getModel() {
     if (models.keySet().size()>0) {
-      return models.get(0);
+      return models.get(getModelIds().get(0));
     } else {
       return null;
     }
@@ -75,7 +81,7 @@ public class Controller {
    * @return Returns the model with the provided id.
    */
   public DataSet getModel(int id) {
-    return models.get(id);
+      return models.get(id);
   }
 
   /**
@@ -89,6 +95,7 @@ public class Controller {
   public DataSet removeModel(int id) {
     return models.remove(id);
   }
+
   public int getModelId() {
     return modelId;
   }

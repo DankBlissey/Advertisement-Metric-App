@@ -4,8 +4,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
-import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -14,33 +12,31 @@ import javafx.scene.text.Text;
 import javafx.scene.control.Button;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import uk.ac.soton.adDashboard.controller.Controller;
 import uk.ac.soton.adDashboard.records.DataSet;
-import uk.ac.soton.adDashboard.records.User;
 import uk.ac.soton.adDashboard.ui.AppPane;
 import uk.ac.soton.adDashboard.ui.AppWindow;
-import javafx.scene.effect.BlurType;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.ListIterator;
 
 public class ListView extends BaseView {
     private static final Logger logger = LogManager.getLogger(ListView.class);
-
     protected DataSet dataSet;
     protected ArrayList<String> filenames;
     private DropShadow dropShadow;
     private GridPane gridPane;
     private double[] data;
 
-
+    private int noCampains;
+    HBox longBarContent;
 
     public ListView(AppWindow appWindow, ArrayList<String> filenames) {
         super(appWindow);
         this.dataSet = controller.getModel();
         this.filenames = filenames;
+        noCampains = controller.getModels().size();
         logger.info("Creating the list view View");
+        logger.info("Constructor:number of campaigns:" + noCampains);
     }
 
     /**
@@ -63,7 +59,7 @@ public class ListView extends BaseView {
         Button startAgain = new Button("Go Back");
         startAgain.getStyleClass().add("blueButton");
         startAgain.setOnAction(e -> {
-            appWindow.bounceRateWindow(filenames);
+            appWindow.bounceRateWindow(filenames, true);
         });
 
         //drop down button for dark and light theme
@@ -110,21 +106,20 @@ public class ListView extends BaseView {
 
         Rectangle backBar = new Rectangle(1280,150);
         backBar.getStyleClass().add("backBar");
+        backBar.setEffect(new DropShadow(5,Color.GREY));
 
-        Rectangle loadedRectangle = new Rectangle(200,130, Color.valueOf("#4B51FF"));
-        loadedRectangle.setArcWidth(30);
-        loadedRectangle.setArcHeight(30);
+        //Button to add more campaigns
+        Button anotherCampaign = new Button("+ Compare campaigns");
+        anotherCampaign.setOnAction(e -> appWindow.loadView(new AnotherCampaignView(appWindow, this)));
 
-        Text loadedText = new Text(getFileNames(filenames));
-        loadedText.getStyleClass().add("smallWhiteText");
-
-        StackPane loadedFiles = new StackPane(loadedRectangle,loadedText);
-
-        HBox longBarContent = new HBox(loadedFiles);
-
+        longBarContent = new HBox();
+        generateCampaigns();
+        longBarContent.getChildren().add(anotherCampaign);
         longBarContent.setAlignment(Pos.CENTER);
+        longBarContent.setSpacing(10);
 
         StackPane longBar = new StackPane(backBar,longBarContent);
+
 
         VBox vbox = new VBox(topBar, longBar);
 
@@ -148,7 +143,6 @@ public class ListView extends BaseView {
 
         //Using the gridpane component to organise the list view objects
         gridPane = new GridPane();
-
 
         //vbox so that button is not part of the list objects
         VBox centerVbox = new VBox(20);
@@ -190,10 +184,6 @@ public class ListView extends BaseView {
         borderPane.setLeft(toggleButton);
 
         BorderPane.setMargin(vbox, new Insets(0, 0, 25, 0));
-        //adding switch button to the top left of the grid pane
-       // gridPane.add(stack,0,0);
-        data = dataSet.allStats(dataSet.earliestDate(),dataSet.latestDate());
-        //private void createListBlock(GridPane gridPane, double[] data, DropShadow dropShadow,  String text, int dataIndex, int xGrid, int yGrid){
         createListBlock("Total clicks", 2, 0, 1 );
         createListBlock("Total uniques", 3, 1,1 );
         createListBlock("Total impressions", 1, 2,1 );
@@ -205,7 +195,6 @@ public class ListView extends BaseView {
         createListBlock("CPC", 9, 1,3 );
         createListBlock("CPM", 10, 2,3 );
         createListBlock("Bounce rate", 11, 3,3 );
-
 
         root.getChildren().addAll(borderPane);
     }
@@ -239,41 +228,90 @@ public class ListView extends BaseView {
      * @param xGrid x position of grid pane
      * @param yGrid y position of grid pane
      */
-    private void createListBlock(String text, int dataIndex, int xGrid, int yGrid){
+    private void createListBlock(String text, int dataIndex, int xGrid, int yGrid) {
         Text title = new Text(text);
         title.getStyleClass().add("listTitle");
-
-        double value = data[dataIndex];
-        Text valueText;
-
-        if(text.equals("CTR")){
-            value = value * 100;
-            DecimalFormat df = new DecimalFormat("#.##");
-            String formattedNumber = df.format(value);
-            valueText = new Text(formattedNumber + "%");
-        } else if (text.equals("CPA")|| text.equals("CPC") || text.equals("Bounce rate")) {
-            DecimalFormat df = new DecimalFormat("#,###.##");
-            String formattedNumber = df.format(value);
-            valueText = new Text(formattedNumber);
-        } else {
-            DecimalFormat df = new DecimalFormat("#,###");
-            String formattedNumber = df.format(value);
-            valueText = new Text(formattedNumber);
+        VBox vBox = new VBox(title);
+        ArrayList<Integer> ids = controller.getModelIds();
+        for (int idIndex = 0; idIndex < ids.size(); idIndex++) {
+            int modelId = ids.get(idIndex);
+                DataSet dataset = controller.getModel(modelId);
+                data = dataset.allStats(dataset.earliestDate(), dataset.latestDate());
+                double value = data[dataIndex];
+                Text valueText;
+                if (text.equals("CTR")) {
+                    value = value * 100;
+                    DecimalFormat df = new DecimalFormat("#.##");
+                    String formattedNumber = df.format(value);
+                    valueText = new Text(formattedNumber + "%");
+                } else if (text.equals("CPA") || text.equals("CPC") || text.equals("Bounce rate")) {
+                    DecimalFormat df = new DecimalFormat("#,###.##");
+                    String formattedNumber = df.format(value);
+                    valueText = new Text(formattedNumber);
+                } else {
+                    DecimalFormat df = new DecimalFormat("#,###");
+                    String formattedNumber = df.format(value);
+                    valueText = new Text(formattedNumber);
+                }
+                valueText.getStyleClass().add("listNumbers");
+                vBox.getChildren().add(valueText);
         }
-        valueText.getStyleClass().add("listNumbers");
 
-        VBox vBox = new VBox(title,valueText);
-       // vBox.setMaxWidth(Region.USE_PREF_SIZE);
+
         vBox.setPadding(new Insets(10));
         vBox.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(17), null)));
         vBox.getStyleClass().add("card");
         vBox.setEffect(dropShadow);
         vBox.setAlignment(Pos.CENTER_LEFT);
         gridPane.setAlignment(Pos.CENTER);
-        // Set the width of the column that contains the VBox to USE_COMPUTED_SIZE
 
         gridPane.add(vBox, xGrid, yGrid);
     }
+
+    /**
+     * Method for generating the objects listing the loaded files and for which campaign
+     */
+    private void generateCampaigns(){
+        ArrayList<Integer> ids = controller.getModelIds();
+        for (int idIndex = 0; idIndex < ids.size(); idIndex++) {
+            int modelId = ids.get(idIndex);
+                //Box containing first set of loaded files
+                Rectangle loadedRectangle = new Rectangle(200, 130, Color.valueOf("#4B51FF"));
+                loadedRectangle.setArcWidth(30);
+                loadedRectangle.setArcHeight(30);
+                int campaignNum = idIndex + 1;
+                Text title = new Text("Campaign" + campaignNum);
+                Text loadedText = new Text(getFileNames(filenames));
+                loadedText.getStyleClass().add("smallWhiteText");
+                Button close = new Button("X");
+                int finalI = modelId;
+                close.setOnAction(e -> removeset(finalI));
+                VBox vbox;
+                if (ids.size() > 1) {
+                    vbox = new VBox(close, title, loadedText);
+                } else {
+                    vbox = new VBox(title, loadedText);
+                }
+                vbox.setStyle("-fx-background-color: transparent;");
+                vbox.setAlignment(Pos.CENTER);
+                StackPane loadedFiles = new StackPane(loadedRectangle, vbox);
+                longBarContent.getChildren().add(loadedFiles);
+            }
+        }
+
+
+    /**
+     * Method to remove a campaign from UI and from the list of models
+     * @param i the particular campaign to remove
+     */
+    private void removeset(int i){
+        controller.removeModel(i);
+        noCampains = controller.getModels().size();
+        appWindow.loadView(new ListView(appWindow,filenames));
+        logger.info("button " + i + " was pressed, dataset " + i + " was removed");
+        logger.info("removeSet:number of campaigns:" + noCampains);
+        }
+
 }
 
 
