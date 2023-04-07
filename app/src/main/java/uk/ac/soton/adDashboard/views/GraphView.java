@@ -1,5 +1,6 @@
 package uk.ac.soton.adDashboard.views;
 
+import javafx.animation.TranslateTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -8,6 +9,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.soton.adDashboard.App;
@@ -247,6 +249,11 @@ public class GraphView extends BaseView implements FilterWindow {
         graphsList.getChildren().addAll(graphBox);
 
         // This is the right side of the borderPane which includes a "filterPane"
+        HBox filterSide = new HBox(30);
+        filterSide.setAlignment(Pos.CENTER);
+        Button showPaneButton = new Button("<");
+        showPaneButton.setVisible(false);
+
         VBox filterPane = new VBox(15);
         filterPane.getStyleClass().add("filter-pane");
 
@@ -255,9 +262,18 @@ public class GraphView extends BaseView implements FilterWindow {
         filterTitle.getStyleClass().add("mediumWhiteText");
         hidePaneButton.getStyleClass().add("mediumGreyText-button");
 
+        hidePaneButton.setOnAction(e -> {
+            toggleFilterPane(false, filterPane, showPaneButton);
+        });
+        showPaneButton.setOnAction(e -> {
+            toggleFilterPane(true, filterPane, showPaneButton);
+        });
+
         HBox filterPaneTop = new HBox();
         filterPaneTop.setAlignment(Pos.CENTER);
-        filterPaneTop.getChildren().addAll(filterTitle, region, hidePaneButton);
+        Region region2 = new Region();
+        HBox.setHgrow(region2, Priority.ALWAYS);
+        filterPaneTop.getChildren().addAll(filterTitle, region2, hidePaneButton);
 
         Button addFilterButton = new Button("+ Add filter set");
         addFilterButton.getStyleClass().add("simple-button");
@@ -284,9 +300,38 @@ public class GraphView extends BaseView implements FilterWindow {
         filtersScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
         filterPane.getChildren().addAll(filterPaneTop, filtersScroll, addFilterButton);
+        filterSide.getChildren().addAll(showPaneButton, filterPane);
 
-        borderPane.setRight(filterPane);
-        BorderPane.setMargin(filterPane, new Insets(0, 35, 0, 0));
+        //borderPane.setRight(filterPane);
+        //BorderPane.setMargin(filterPane, new Insets(0, 35, 0, 0));
+        borderPane.setRight(filterSide);
+        BorderPane.setMargin(filterSide, new Insets(0, 35, 0, 0));
+    }
+
+    private void toggleFilterPane(Boolean option, VBox filterPane, Button showPaneButton) {
+
+        if(!option) {
+            TranslateTransition slideOut = new TranslateTransition(Duration.seconds(1), filterPane);
+            slideOut.setByX(400); // slide to the right by 100 pixels
+            slideOut.play();
+
+            TranslateTransition slideOut2 = new TranslateTransition(Duration.seconds(1), showPaneButton);
+            slideOut2.setByX(400); // slide to the right by 100 pixels
+            slideOut2.play();
+
+            showPaneButton.setVisible(true);
+        } else {
+            TranslateTransition slideIn = new TranslateTransition(Duration.seconds(1), filterPane);
+            slideIn.setByX(-400); // slide to the right by 100 pixels
+            slideIn.play();
+
+            TranslateTransition slideIn2 = new TranslateTransition(Duration.seconds(1), showPaneButton);
+            slideIn2.setByX(-400); // slide to the right by 100 pixels
+            slideIn2.play();
+
+            showPaneButton.setVisible(false);
+        }
+        //filterPane.setVisible(option);
     }
 
     private Filter defaultFilter() {
