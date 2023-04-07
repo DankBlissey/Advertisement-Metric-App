@@ -251,7 +251,13 @@ public class GraphView extends BaseView implements FilterWindow {
         filterPane.getStyleClass().add("filter-pane");
 
         Text filterTitle = new Text("Filters");
+        Button hidePaneButton = new Button("Hide");
         filterTitle.getStyleClass().add("mediumWhiteText");
+        hidePaneButton.getStyleClass().add("mediumGreyText-button");
+
+        HBox filterPaneTop = new HBox();
+        filterPaneTop.setAlignment(Pos.CENTER);
+        filterPaneTop.getChildren().addAll(filterTitle, region, hidePaneButton);
 
         Button addFilterButton = new Button("+ Add filter set");
         addFilterButton.getStyleClass().add("simple-button");
@@ -277,7 +283,7 @@ public class GraphView extends BaseView implements FilterWindow {
         filtersScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         filtersScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
-        filterPane.getChildren().addAll(filterTitle, filtersScroll, addFilterButton);
+        filterPane.getChildren().addAll(filterPaneTop, filtersScroll, addFilterButton);
 
         borderPane.setRight(filterPane);
         BorderPane.setMargin(filterPane, new Insets(0, 35, 0, 0));
