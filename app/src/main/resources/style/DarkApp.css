@@ -407,3 +407,31 @@
 .axis-minor-tick-mark {
     -fx-stroke-width: 0;
 }
+
+/* ---------- Filter Pane Styling ----------- */
+
+.mediumGreyText-button {
+    -fx-font-family: 'Google Sans Bold';
+    -fx-font-size: 14px;
+    -fx-text-fill: #7C81F7;
+    -fx-background-color: transparent;
+}
+
+.mediumGreyText-button:hover {
+    -fx-text-fill: #FFFFFF;
+}
+
+.mediumGreyText-button:focus {
+    -fx-text-fill: #E3E3E3;
+}
+
+.arrow {
+    -fx-font-family: 'Google Sans Bold';
+    -fx-font-size: 18px;
+    -fx-text-fill: #7C81F7;
+    -fx-background-color: transparent;
+}
+
+.arrow:hover {
+    -fx-text-fill: #202680;
+}
