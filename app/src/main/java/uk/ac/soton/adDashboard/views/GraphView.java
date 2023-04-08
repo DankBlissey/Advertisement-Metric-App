@@ -253,6 +253,7 @@ public class GraphView extends BaseView implements FilterWindow {
         filterSide.setAlignment(Pos.CENTER);
         Button showPaneButton = new Button("<");
         showPaneButton.setVisible(false);
+        showPaneButton.getStyleClass().add("arrow");
 
         VBox filterPane = new VBox(15);
         filterPane.getStyleClass().add("filter-pane");
