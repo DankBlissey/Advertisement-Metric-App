@@ -110,6 +110,7 @@ public class ListView extends BaseView {
 
         //Button to add more campaigns
         Button anotherCampaign = new Button("+ Compare campaigns");
+        anotherCampaign.getStyleClass().add("smallBlackText-button");
         anotherCampaign.setOnAction(e -> appWindow.loadView(new AnotherCampaignView(appWindow, this)));
 
         longBarContent = new HBox();
@@ -281,14 +282,23 @@ public class ListView extends BaseView {
                 loadedRectangle.setArcHeight(30);
                 int campaignNum = idIndex + 1;
                 Text title = new Text("Campaign" + campaignNum);
+                title.getStyleClass().add("smallBlueText");
                 Text loadedText = new Text(getFileNames(filenames));
                 loadedText.getStyleClass().add("smallWhiteText");
+
                 Button close = new Button("X");
+                close.getStyleClass().add("delete-filter-button");
+
+                HBox helperBox = new HBox();
+                helperBox.setAlignment(Pos.CENTER_RIGHT);
+                helperBox.getChildren().add(close);
+                helperBox.setPadding(new Insets(0, 5, 0, 0));
+
                 int finalI = modelId;
                 close.setOnAction(e -> removeset(finalI));
                 VBox vbox;
                 if (ids.size() > 1) {
-                    vbox = new VBox(close, title, loadedText);
+                    vbox = new VBox(helperBox, title, loadedText);
                 } else {
                     vbox = new VBox(title, loadedText);
                 }
