@@ -456,14 +456,14 @@
     -fx-text-fill: #E3E3E3;
 }
 
-.arrow {
+.show-button {
     -fx-font-family: 'Google Sans Bold';
     -fx-font-size: 18px;
     -fx-text-fill: #7C81F7;
     -fx-background-color: transparent;
 }
 
-.arrow:hover {
+.show-button:hover {
     -fx-text-fill: #202680;
 }
 
