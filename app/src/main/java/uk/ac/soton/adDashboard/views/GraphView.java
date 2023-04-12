@@ -230,7 +230,7 @@ public class GraphView extends BaseView implements FilterWindow {
         controller.setGraph(graph);
 
         ComboBox<String> granularity = new ComboBox<>();
-        granularity.getStyleClass().add("bounce-dropdown");
+        granularity.getStyleClass().add("bounce-dropdown-grey");
         granularity.getItems().addAll("day","week","month","year");
         granularity.setValue("day");
 
@@ -251,8 +251,9 @@ public class GraphView extends BaseView implements FilterWindow {
             }
         });
 
-        HBox itemMenus = new HBox(cmb, granularity);
-        granularity.setTranslateX(350);
+        Region region3 = new Region();
+        HBox itemMenus = new HBox(cmb, region3, granularity);
+        HBox.setHgrow(region3, Priority.ALWAYS);
 
         graphBox.getChildren().addAll(itemMenus, graph.getChart());
         graphsList.getChildren().addAll(graphBox);
