@@ -1,6 +1,7 @@
 package uk.ac.soton.adDashboard.views;
 
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -97,6 +98,17 @@ public class GraphView extends BaseView implements FilterWindow {
         smaller.getStyleClass().add("blueButton");
         Button bigger = new Button("A+");
         bigger.getStyleClass().add("blueButton");
+
+        smaller.setOnAction(e -> {
+            logger.info("Smaller");
+            title.getStyleClass().clear();
+            title.getStyleClass().add("mediumText-p-1");
+        });
+        bigger.setOnAction(e -> {
+            logger.info("Bigger");
+            title.getStyleClass().clear();
+            title.getStyleClass().add("mediumText-p1");
+        });
 
         HBox sizeButtons = new HBox(smaller,bigger);
         sizeButtons.setAlignment(Pos.CENTER);

@@ -433,3 +433,17 @@
 .show-button:hover {
     -fx-text-fill: #202680;
 }
+
+/* ---------- New Font Sizes ----------- */
+
+.mediumText-p1 {
+    -fx-font-family: 'Google Sans Bold';
+    -fx-fill: #555BFF;
+    -fx-font-size: 40px;
+}
+
+.mediumText-p-1 {
+    -fx-font-family: 'Google Sans Bold';
+    -fx-fill: #555BFF;
+    -fx-font-size: 30px;
+}
