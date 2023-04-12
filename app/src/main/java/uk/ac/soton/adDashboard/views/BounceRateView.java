@@ -59,6 +59,7 @@ public class BounceRateView extends BaseView {
         custom.setTranslateX(155);
         custom.setTranslateY(-34);
         custom.visibleProperty().setValue(false);
+        custom.getStyleClass().add("white-textbox");
 
         //Text input for the maximum amount of pages visited.
         TextField pages = new TextField();
@@ -67,6 +68,7 @@ public class BounceRateView extends BaseView {
         pages.setTranslateX(155);
         pages.setTranslateY(-22);
         pages.visibleProperty().setValue(false);
+        pages.getStyleClass().add("white-textbox");
 
         // text
         Text text1 = new Text("Time spent on website");

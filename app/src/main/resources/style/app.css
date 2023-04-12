@@ -299,6 +299,7 @@
 
 .bounce-dropdown .list-view .list-cell {
     -fx-text-fill: #000000;
+    -fx-background-color: transparent;
 }
 
 .bounce-dropdown .list-view .list-cell:hover {
@@ -474,4 +475,15 @@
     -fx-text-fill: #000000;
     -fx-font-size: 15px;
     -fx-background-color: transparent;
+}
+
+/* ---------- BounceRateView ---------- */
+
+.white-textbox {
+    -fx-font-family: 'Google Sans Bold';
+    -fx-font-size: 12px;
+    -fx-text-fill: #A9A9A9;
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 7px;
+    -fx-effect: dropshadow(gaussian, #00000029, 2.0, 0.0, 1.0, 2.0);
 }
