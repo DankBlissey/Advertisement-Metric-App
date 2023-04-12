@@ -131,6 +131,7 @@ public class GraphView extends BaseView implements FilterWindow {
 
         //Button to add more campaigns
         Button anotherCampaign = new Button("+ Compare campaigns");
+        anotherCampaign.getStyleClass().add("smallBlackText-button");
         anotherCampaign.setOnAction(e -> appWindow.loadView(new AnotherCampaignView(appWindow,this)));
 
         Rectangle loadedRectangle = new Rectangle(200,130, Color.valueOf("#4B51FF"));
@@ -241,7 +242,7 @@ public class GraphView extends BaseView implements FilterWindow {
         controller.setGraph(graph);
 
         ComboBox<String> granularity = new ComboBox<>();
-        granularity.getStyleClass().add("bounce-dropdown");
+        granularity.getStyleClass().add("bounce-dropdown-grey");
         granularity.getItems().addAll("day","week","month","year");
         granularity.setValue("day");
 
@@ -262,8 +263,9 @@ public class GraphView extends BaseView implements FilterWindow {
             }
         });
 
-        HBox itemMenus = new HBox(cmb, granularity);
-        granularity.setTranslateX(350);
+        Region region3 = new Region();
+        HBox itemMenus = new HBox(cmb, region3, granularity);
+        HBox.setHgrow(region3, Priority.ALWAYS);
 
         graphBox.getChildren().addAll(itemMenus, graph.getChart());
         graphsList.getChildren().addAll(graphBox);
@@ -449,14 +451,23 @@ public class GraphView extends BaseView implements FilterWindow {
             loadedRectangle.setArcHeight(30);
             int campaignNum = idIndex + 1;
             Text title = new Text("Campaign" + campaignNum);
+            title.getStyleClass().add("smallBlueText");
             Text loadedText = new Text(getFileNames(filenames));
             loadedText.getStyleClass().add("smallWhiteText");
+
             Button close = new Button("X");
+            close.getStyleClass().add("delete-filter-button");
+
+            HBox helperBox = new HBox();
+            helperBox.setAlignment(Pos.CENTER_RIGHT);
+            helperBox.getChildren().add(close);
+            helperBox.setPadding(new Insets(0, 5, 0, 0));
+
             int finalI = modelId;
             close.setOnAction(e -> removeset(finalI));
             VBox vbox;
             if (ids.size() > 1) {
-                vbox = new VBox(close, title, loadedText);
+                vbox = new VBox(helperBox, title, loadedText);
             } else {
                 vbox = new VBox(title, loadedText);
             }
