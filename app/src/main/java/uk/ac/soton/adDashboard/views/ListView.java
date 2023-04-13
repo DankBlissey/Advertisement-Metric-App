@@ -206,6 +206,13 @@ public class ListView extends BaseView {
         createListBlock("CPM", 10, 2,3 );
         createListBlock("Bounce rate", 11, 3,3 );
 
+        Button saveButton = new Button("Save results");
+        saveButton.getStyleClass().add("simple-button");
+        saveButton.setOnAction(e -> {
+            ScreenShot(centerVbox);
+        });
+
+        topButtons.getChildren().add(saveButton);
 
         root.getChildren().addAll(borderPane);
     }

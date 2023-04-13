@@ -3,6 +3,7 @@ module uk.ac.soton.adDashboard {
     requires java.scripting;
     requires org.apache.logging.log4j;
     requires javafx.graphics;
+    requires javafx.swing;
     exports uk.ac.soton.adDashboard;
     //remove the following lines if you don't want to use the test modules
     exports uk.ac.soton.adDashboard.controller;
