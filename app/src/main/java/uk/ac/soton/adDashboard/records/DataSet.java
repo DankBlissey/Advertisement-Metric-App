@@ -1,6 +1,7 @@
 package uk.ac.soton.adDashboard.records;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAmount;
 import java.util.ArrayList;
@@ -703,7 +704,7 @@ public class DataSet {
       case bounceRate -> f = this::calcBounceRate;
       default -> f = this::totalImpressions;
     }
-    points =genPoints(startTime, endTime, unit, f);
+    points = genPoints(startTime, endTime, unit, f);
 
     System.out.println(points);
 
@@ -711,7 +712,6 @@ public class DataSet {
     setEfficiency(false);
     return points;
   }
-
 
 
   /**
@@ -740,6 +740,65 @@ public class DataSet {
     return points;
   }
 
+  /**
+   * Generates a histogram plot points.
+   *
+   * @param startTime The start time for the histogram.
+   * @param endTime   The end time for the histogram.
+   * @param unit      The unit of the range.
+   * @param f         The function to apply.
+   * @return Returns a list of pairs, where the first item is a string of the range and the second
+   * is the point height to plot.
+   */
+  public List<Pair<String, Double>> genHistogram(LocalDateTime startTime, LocalDateTime endTime,
+      Granularity unit, Function f) {
+    ArrayList<Pair<String, Double>> points = new ArrayList<>();
+    TemporalAmount amount = unit.generateStep();
+    LocalDateTime next = startTime.plus(amount);
+    for (LocalDateTime day = startTime; !day.isAfter(endTime);
+        day = day.plus(amount)) {
+
+      points.add(new Pair<>(stringify(day, next, unit), f.run(day, next)));
+      next = next.plus(amount);
+    }
+    return points;
+  }
+
+
+  public String stringify(LocalDateTime start, LocalDateTime end, Granularity unit) {
+    DateTimeFormatter dateTimeFormatter;
+    String range;
+    switch (unit) {
+      case DAY, WEEK -> {
+        if (start.getMonth() == end.getMonth()) {
+          dateTimeFormatter = DateTimeFormatter.ofPattern("dd");
+        } else {
+          dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM");
+        }
+        range = start.format(dateTimeFormatter) + " - " + end.format(dateTimeFormatter);
+
+      }
+      case MONTH -> {
+        if (start.getYear() == end.getYear()) {
+          dateTimeFormatter = DateTimeFormatter.ofPattern("MM");
+        } else {
+          dateTimeFormatter = DateTimeFormatter.ofPattern("MM/yyyy");
+        }
+        range = start.format(dateTimeFormatter) + " - " + end.format(dateTimeFormatter);
+      }
+      case YEAR -> {
+        dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy");
+        range = start.format(dateTimeFormatter) + " - " + end.format(dateTimeFormatter);
+      }
+      default -> {
+        dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        range = start.format(dateTimeFormatter) + " - " + end.format(dateTimeFormatter);
+      }
+    }
+
+    System.out.println("Range: " + range);
+    return range;
+  }
 
   public LocalDateTime earliestDate() {
     return impressions.get(0).getDate();

@@ -1,5 +1,7 @@
 package uk.ac.soton.adDashboard.views;
 
+import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -8,12 +10,11 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import uk.ac.soton.adDashboard.App;
 import uk.ac.soton.adDashboard.Interfaces.FilterWindow;
 import uk.ac.soton.adDashboard.components.FilterSet;
-import uk.ac.soton.adDashboard.controller.Controller;
 import uk.ac.soton.adDashboard.enums.Granularity;
 import uk.ac.soton.adDashboard.enums.Stat;
 import uk.ac.soton.adDashboard.filter.Filter;
@@ -33,6 +34,8 @@ public class GraphView extends BaseView implements FilterWindow {
     protected DataSet dataSet;
     protected ArrayList<String> filenames;
     protected Graph graph;
+    private int noCampains;
+    private HBox longBarContent;
 
     /**
      * VBox which contains multiple FilterSets that are displayed in a scrollable view
@@ -49,7 +52,9 @@ public class GraphView extends BaseView implements FilterWindow {
         this.dataSet = controller.getModel();
         this.filenames = filenames;
         controller.setFilterWindow(this);
+        noCampains = controller.getModels().size();
         logger.info("Creating the graph view View");
+        logger.info("number of campaigns:" + noCampains);
     }
 
     /**
@@ -70,7 +75,7 @@ public class GraphView extends BaseView implements FilterWindow {
 
         Button startAgain = new Button("Go Back");
         startAgain.setOnAction(e -> {
-            appWindow.bounceRateWindow(filenames);
+            appWindow.bounceRateWindow(filenames, false);
         });
         startAgain.getStyleClass().add("blueButton");
 
@@ -94,6 +99,17 @@ public class GraphView extends BaseView implements FilterWindow {
         Button bigger = new Button("A+");
         bigger.getStyleClass().add("blueButton");
 
+        smaller.setOnAction(e -> {
+            logger.info("Smaller");
+            title.getStyleClass().clear();
+            title.getStyleClass().add("mediumText-p-1");
+        });
+        bigger.setOnAction(e -> {
+            logger.info("Bigger");
+            title.getStyleClass().clear();
+            title.getStyleClass().add("mediumText-p1");
+        });
+
         HBox sizeButtons = new HBox(smaller,bigger);
         sizeButtons.setAlignment(Pos.CENTER);
 
@@ -113,6 +129,11 @@ public class GraphView extends BaseView implements FilterWindow {
         backBar.getStyleClass().add("backBar");
         backBar.setEffect(new DropShadow(5,Color.GREY));
 
+        //Button to add more campaigns
+        Button anotherCampaign = new Button("+ Compare campaigns");
+        anotherCampaign.getStyleClass().add("smallBlackText-button");
+        anotherCampaign.setOnAction(e -> appWindow.loadView(new AnotherCampaignView(appWindow,this)));
+
         Rectangle loadedRectangle = new Rectangle(200,130, Color.valueOf("#4B51FF"));
         loadedRectangle.setArcWidth(30);
         loadedRectangle.setArcHeight(30);
@@ -120,11 +141,13 @@ public class GraphView extends BaseView implements FilterWindow {
         Text loadedText = new Text(getFileNames(filenames));
         loadedText.getStyleClass().add("smallWhiteText");
 
-        StackPane loadedFiles = new StackPane(loadedRectangle,loadedText);
+       // StackPane loadedFiles = new StackPane(loadedRectangle,loadedText);
 
-        HBox longBarContent = new HBox(loadedFiles);
-
+        longBarContent = new HBox();
+        generateCampaigns();
+        longBarContent.getChildren().add(anotherCampaign);
         longBarContent.setAlignment(Pos.CENTER);
+        longBarContent.setSpacing(10);
 
         StackPane longBar = new StackPane(backBar,longBarContent);
 
@@ -219,7 +242,7 @@ public class GraphView extends BaseView implements FilterWindow {
         controller.setGraph(graph);
 
         ComboBox<String> granularity = new ComboBox<>();
-        granularity.getStyleClass().add("bounce-dropdown");
+        granularity.getStyleClass().add("bounce-dropdown-grey");
         granularity.getItems().addAll("day","week","month","year");
         granularity.setValue("day");
 
@@ -240,18 +263,40 @@ public class GraphView extends BaseView implements FilterWindow {
             }
         });
 
-        HBox itemMenus = new HBox(cmb, granularity);
-        granularity.setTranslateX(350);
+        Region region3 = new Region();
+        HBox itemMenus = new HBox(cmb, region3, granularity);
+        HBox.setHgrow(region3, Priority.ALWAYS);
 
         graphBox.getChildren().addAll(itemMenus, graph.getChart());
         graphsList.getChildren().addAll(graphBox);
 
         // This is the right side of the borderPane which includes a "filterPane"
+        HBox filterSide = new HBox(30);
+        filterSide.setAlignment(Pos.CENTER);
+        Button showPaneButton = new Button("<");
+        showPaneButton.setVisible(false);
+        showPaneButton.getStyleClass().add("show-button");
+
         VBox filterPane = new VBox(15);
         filterPane.getStyleClass().add("filter-pane");
 
         Text filterTitle = new Text("Filters");
+        Button hidePaneButton = new Button("Hide");
         filterTitle.getStyleClass().add("mediumWhiteText");
+        hidePaneButton.getStyleClass().add("mediumGreyText-button");
+
+        hidePaneButton.setOnAction(e -> {
+            toggleFilterPane(false, filterPane, showPaneButton);
+        });
+        showPaneButton.setOnAction(e -> {
+            toggleFilterPane(true, filterPane, showPaneButton);
+        });
+
+        HBox filterPaneTop = new HBox();
+        filterPaneTop.setAlignment(Pos.CENTER);
+        Region region2 = new Region();
+        HBox.setHgrow(region2, Priority.ALWAYS);
+        filterPaneTop.getChildren().addAll(filterTitle, region2, hidePaneButton);
 
         Button addFilterButton = new Button("+ Add filter set");
         addFilterButton.getStyleClass().add("simple-button");
@@ -277,10 +322,13 @@ public class GraphView extends BaseView implements FilterWindow {
         filtersScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         filtersScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
-        filterPane.getChildren().addAll(filterTitle, filtersScroll, addFilterButton);
+        filterPane.getChildren().addAll(filterPaneTop, filtersScroll, addFilterButton);
+        filterSide.getChildren().addAll(showPaneButton, filterPane);
 
-        borderPane.setRight(filterPane);
-        BorderPane.setMargin(filterPane, new Insets(0, 35, 0, 0));
+        //borderPane.setRight(filterPane);
+        //BorderPane.setMargin(filterPane, new Insets(0, 35, 0, 0));
+        borderPane.setRight(filterSide);
+        BorderPane.setMargin(filterSide, new Insets(0, 35, 0, 0));
 
         Button saveButton = new Button("Save results");
         saveButton.getStyleClass().add("blueButton");
@@ -291,11 +339,38 @@ public class GraphView extends BaseView implements FilterWindow {
         topButtons.getChildren().add(saveButton);
     }
 
+    private void toggleFilterPane(Boolean option, VBox filterPane, Button showPaneButton) {
+
+        if(!option) {
+            TranslateTransition slideOut = new TranslateTransition(Duration.seconds(1), filterPane);
+            slideOut.setByX(400); // slide to the right by 100 pixels
+            slideOut.play();
+
+            TranslateTransition slideOut2 = new TranslateTransition(Duration.seconds(1), showPaneButton);
+            slideOut2.setByX(400); // slide to the right by 100 pixels
+            slideOut2.play();
+
+            showPaneButton.setVisible(true);
+        } else {
+            TranslateTransition slideIn = new TranslateTransition(Duration.seconds(1), filterPane);
+            slideIn.setByX(-400); // slide to the right by 100 pixels
+            slideIn.play();
+
+            TranslateTransition slideIn2 = new TranslateTransition(Duration.seconds(1), showPaneButton);
+            slideIn2.setByX(-400); // slide to the right by 100 pixels
+            slideIn2.play();
+
+            showPaneButton.setVisible(false);
+        }
+        //filterPane.setVisible(option);
+    }
+
     private Filter defaultFilter() {
         var defaultFilter = new Filter();
         defaultFilter.setStartDate(controller.getModel().earliestDate());
         defaultFilter.setEndDate(controller.getModel().latestDate());
         defaultFilter.setId(0);
+        defaultFilter.setDataSetId(controller.getModelIds().get(0));
         return defaultFilter;
     }
 
@@ -370,4 +445,58 @@ public class GraphView extends BaseView implements FilterWindow {
         logger.info("Initialising");
         //Initial stuff such as keyboard listeners
     }
+
+    /**
+     * Method for generating the objects listing the loaded files and for which campaign
+     */
+    private void generateCampaigns(){
+        ArrayList<Integer> ids = controller.getModelIds();
+        for (int idIndex = 0; idIndex < ids.size(); idIndex++) {
+            int modelId = ids.get(idIndex);
+            //Box containing first set of loaded files
+            Rectangle loadedRectangle = new Rectangle(200, 130, Color.valueOf("#4B51FF"));
+            loadedRectangle.setArcWidth(30);
+            loadedRectangle.setArcHeight(30);
+            int campaignNum = idIndex + 1;
+            Text title = new Text("Campaign" + campaignNum);
+            title.getStyleClass().add("smallBlueText");
+            Text loadedText = new Text(getFileNames(filenames));
+            loadedText.getStyleClass().add("smallWhiteText");
+
+            Button close = new Button("X");
+            close.getStyleClass().add("delete-filter-button");
+
+            HBox helperBox = new HBox();
+            helperBox.setAlignment(Pos.CENTER_RIGHT);
+            helperBox.getChildren().add(close);
+            helperBox.setPadding(new Insets(0, 5, 0, 0));
+
+            int finalI = modelId;
+            close.setOnAction(e -> removeset(finalI));
+            VBox vbox;
+            if (ids.size() > 1) {
+                vbox = new VBox(helperBox, title, loadedText);
+            } else {
+                vbox = new VBox(title, loadedText);
+            }
+            vbox.setStyle("-fx-background-color: transparent;");
+            vbox.setAlignment(Pos.CENTER);
+            StackPane loadedFiles = new StackPane(loadedRectangle, vbox);
+            longBarContent.getChildren().add(loadedFiles);
+        }
+    }
+
+    /**
+     * Method to remove a campaign from UI and from the list of models
+     * @param i the particular campaign to remove
+     */
+    private void removeset(int i){
+        controller.removeModel(i);
+        noCampains = controller.getModels().size();
+        appWindow.loadView(new GraphView(appWindow,filenames));
+        logger.info("button " + i + " was pressed, dataset " + i + " was removed");
+        logger.info("removeSet:number of campaigns:" + noCampains);
+        defaultFilter();
+    }
+
 }

@@ -13,12 +13,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import uk.ac.soton.adDashboard.controller.Controller;
 import uk.ac.soton.adDashboard.records.DataSet;
 import uk.ac.soton.adDashboard.ui.AppPane;
 import uk.ac.soton.adDashboard.ui.AppWindow;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -29,9 +27,11 @@ public class BounceRateView extends BaseView {
 
     protected DataSet dataSet;
     protected ArrayList<String> filenames;
+    private boolean isListView;
 
-    public BounceRateView(AppWindow appWindow,  ArrayList<String> filenames) {
+    public BounceRateView(AppWindow appWindow, ArrayList<String> filenames, boolean isListView) {
         super(appWindow);
+        this.isListView = isListView;
         this.dataSet = controller.getModel();
         this.filenames = filenames;
         logger.info("Creating the BounceRate View");
@@ -59,6 +59,7 @@ public class BounceRateView extends BaseView {
         custom.setTranslateX(155);
         custom.setTranslateY(-34);
         custom.visibleProperty().setValue(false);
+        custom.getStyleClass().add("white-textbox");
 
         //Text input for the maximum amount of pages visited.
         TextField pages = new TextField();
@@ -67,6 +68,7 @@ public class BounceRateView extends BaseView {
         pages.setTranslateX(155);
         pages.setTranslateY(-22);
         pages.visibleProperty().setValue(false);
+        pages.getStyleClass().add("white-textbox");
 
         // text
         Text text1 = new Text("Time spent on website");
@@ -182,7 +184,13 @@ public class BounceRateView extends BaseView {
                     logger.info("Maximum page number read");
                     dataSet.setPagesForBounce(Integer.parseInt(pages.getText()));
                     dataSet.setPagesViewedBounceMetric(true);
-                    appWindow.listViewWindow(filenames);
+                    if(isListView){
+                        appWindow.listViewWindow(filenames);
+                    }
+                    else{
+                        appWindow.graphViewWindow(filenames);
+                    }
+
                 } catch (NumberFormatException ignored) {}
                 TimerTask wait = new TimerTask() {
                     @Override
@@ -208,7 +216,12 @@ public class BounceRateView extends BaseView {
                             dataSet.setInterval(Integer.parseInt(custom.getText()) * 60);
                         }
                         dataSet.setPagesViewedBounceMetric(false);
-                        appWindow.listViewWindow(filenames);
+                        if(isListView){
+                            appWindow.listViewWindow(filenames);
+                        }
+                        else{
+                            appWindow.graphViewWindow(filenames);
+                        }
 
                     }
                 } catch (NumberFormatException ignored) {}

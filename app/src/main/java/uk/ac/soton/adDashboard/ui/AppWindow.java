@@ -10,10 +10,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.soton.adDashboard.App;
 import uk.ac.soton.adDashboard.controller.Controller;
-import uk.ac.soton.adDashboard.records.DataSet;
 import uk.ac.soton.adDashboard.views.*;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -126,6 +124,13 @@ public class AppWindow {
     }
 
     /**
+     * Display the  menu(scene/view) where you upload another set of three CSV files
+     */
+    public void anotherCampaignWindow() {
+        loadView(new LandingView(this));
+    }
+
+    /**
      * Display the list view of the data
      */
     public void listViewWindow(ArrayList<String> filenames) {
@@ -142,8 +147,8 @@ public class AppWindow {
     /**
      * Display the second menu(scene/view) where you select the bounce rate
      */
-    public void bounceRateWindow( ArrayList<String> filenames) {
-        loadView(new BounceRateView(this, filenames));
+    public void bounceRateWindow(ArrayList<String> filenames, boolean isListView) {
+        loadView(new BounceRateView(this, filenames, isListView));
     }
 
     /**

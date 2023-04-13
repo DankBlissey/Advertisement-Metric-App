@@ -26,7 +26,7 @@ import java.util.HashMap;
 /**
  * The first view where you have to upload 3 CSV files
  */
-public class LandingView extends BaseView {
+public class AnotherCampaignView extends BaseView {
 
     private static final Logger logger = LogManager.getLogger(LandingView.class);
 
@@ -40,20 +40,23 @@ public class LandingView extends BaseView {
     private String impressionsFilePath;
     private String clickFilePath;
     private String serverFilePath;
-
+    private BaseView baseView;
 
 
     /**
      * Create a landing view
+     *
      * @param appWindow the App Window this will be displayed in
+     * @param baseView
      */
-    public LandingView(AppWindow appWindow) {
+    public AnotherCampaignView(AppWindow appWindow, BaseView baseView) {
         super(appWindow);
-        logger.info("Creating the Landing View");
+        this.baseView = baseView;
+        logger.info("Creating the more campaigns View");
     }
 
     /**
-     * Build the Landing layout
+     * Build the more campaigns layout
      */
     @Override
     public void build() {
@@ -67,8 +70,8 @@ public class LandingView extends BaseView {
         root.getChildren().add(mainPane);
 
         // Headings
-        var title = new Text("Dashboard");
-        var subtitle = new Text("In order to begin, please upload\nthe relevant CSV files below.");
+        var title = new Text("Add another campaign");
+        var subtitle = new Text("In order to add another campaign, please upload\nthe relevant CSV files below.");
 
         title.getStyleClass().add("title");
         subtitle.getStyleClass().add("subtitle");
@@ -229,7 +232,7 @@ public class LandingView extends BaseView {
         dataSet.setServerAccess(serverAccesses);
 
 
-        
+
 
         ArrayList<String> filenames = new ArrayList<>();
         filenames.add(impressionsFileName.getValue());
@@ -238,7 +241,7 @@ public class LandingView extends BaseView {
 
 
         appWindow.getController().addModel(dataSet);
-        appWindow.bounceRateWindow( filenames, true);
+        appWindow.bounceRateWindow( filenames, baseView.getClass().getName().contains("ListView"));
     }
 
     public ArrayList<Impression> getImpressionsFromCSV(String filePath) {
