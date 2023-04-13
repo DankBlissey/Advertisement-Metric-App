@@ -281,6 +281,14 @@ public class GraphView extends BaseView implements FilterWindow {
 
         borderPane.setRight(filterPane);
         BorderPane.setMargin(filterPane, new Insets(0, 35, 0, 0));
+
+        Button saveButton = new Button("Save results");
+        saveButton.getStyleClass().add("blueButton");
+        saveButton.setOnAction(e -> {
+            ScreenShot(graphsList);
+        });
+
+        topButtons.getChildren().add(saveButton);
     }
 
     private Filter defaultFilter() {
