@@ -490,8 +490,8 @@ public class GraphView extends BaseView implements FilterWindow {
       noCampains = controller.getModels().size();
       logger.info("button " + i + " was pressed, dataset " + i + " was removed");
       logger.info("removeSet:number of campaigns:" + noCampains);
-//      switchView(new GraphView(appWindow, filenames),false); //todo:do we need to reload the view?
-      generateCampaigns();
+      switchView(new GraphView(appWindow, filenames),false); //todo:do we need to reload the view?
+//      generateCampaigns();
   }
 
 
