@@ -155,7 +155,6 @@ public class Controller {
   private void rePlot() {
     List<Filter> filters = filterWindow.getFilters();
     for (Filter filter : filters) {
-      System.out.println("REPLOTTING");
       filterUpdated(filter);
     }
   }
@@ -166,10 +165,10 @@ public class Controller {
    * @param filter The Filter object which changed.
    */
   public void filterUpdated(Filter filter) {
-    System.out.println(
-        "filter id " + filter.getId() + " model id" + filter.getDataSetId() + " filter itself"
-            + filter);
-    System.out.println(getFilterWindow().getFilters());
+//    System.out.println(
+//        "filter id " + filter.getId() + " model id" + filter.getDataSetId() + " filter itself"
+//            + filter);
+//    System.out.println(getFilterWindow().getFilters());
     DataSet model = getModels().get(filter.getDataSetId());
     model.setFilter(filter);
 
