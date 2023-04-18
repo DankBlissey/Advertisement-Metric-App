@@ -1,9 +1,12 @@
 package uk.ac.soton.adDashboard.components;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
+import javafx.collections.MapChangeListener;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -47,6 +50,7 @@ public class FilterSet extends VBox {
 
     public FilterSet(String title, Filter filter, Button deleteButton, AppWindow appWindow) {
         this.filter = filter;
+
         this.appWindow = appWindow;
 
         setSpacing(10);
@@ -97,19 +101,34 @@ public class FilterSet extends VBox {
         Text title = new Text("Campaign:");
         title.getStyleClass().add("extraSmallWhiteText");
 
-        ComboBox<String> options = new ComboBox<>(FXCollections.observableArrayList(controller.getModels().keySet().stream().map(i->Integer.toString(i)).toArray(String[]::new)));
-        //If the models change update the options.
-        controller.getModels().addListener((InvalidationListener) change -> Platform.runLater(()->{
-            String value = options.getValue();
-            options.setItems(FXCollections.observableArrayList(controller.getModels().keySet().stream().map(i->Integer.toString(i)).toArray(String[]::new)));
-            if (options.getItems().contains(value)) { //todo: needs further testing after linking up.
-                options.setValue(value);
-                System.out.println("old value selected");
-            } else {
-                options.getSelectionModel().selectFirst();
-            }
+        ComboBox<String> options = new ComboBox<>(FXCollections.observableArrayList(
+        controller.getModels().keySet().stream().map(i -> Integer.toString(i))
+            .toArray(String[]::new)));
+    //If the models change update the options.
+        MapChangeListener<? super Integer, ? super DataSet> listener =  new MapChangeListener<Integer, DataSet>() {
+            @Override
+            public void onChanged(Change<? extends Integer, ? extends DataSet> change) {
+                Platform.runLater(
+                    () -> {
+                        System.out.println("TRIGGER POINT - controller models changed "+ filter);
 
-        }));
+                        String value = options.getValue();
+                        options.setItems(FXCollections.observableArrayList(
+                            controller.getModels().keySet().stream().map(i -> Integer.toString(i))
+                                .toArray(String[]::new)));
+                        if (options.getItems()
+                            .contains(value)) { //todo: needs further testing after linking up.
+                            options.setValue(value);
+                        } else {
+                            options.getSelectionModel().selectFirst();
+                        }
+                    });
+            }
+        };
+
+        filter.setListener(listener); //vital for ensuring the listener is removed on scene cleanup.
+        controller.getModels().addListener(listener);
+
         options.getSelectionModel().selectFirst();
         options.getStyleClass().add("filter-dropdown");
         HBox filterBox = new HBox(10);
@@ -119,13 +138,14 @@ public class FilterSet extends VBox {
 
         //If options changes update the filter.
         options.valueProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println("oldValue = " + oldValue+ " newValue = " + newValue);
-            if (newValue != null) {
-                updatedFilter("campaign", newValue);
-            }
+//          System.out.println("options updated");
+//          System.out.println("oldValue = " + oldValue + " newValue = " + newValue);
+          if (newValue != null) {
+            updatedFilter("campaign", newValue);
+          }
         });
 
-    }
+  }
 
     public void renderDatePicker(HBox filterBox) {
         Text from = new Text("from");
