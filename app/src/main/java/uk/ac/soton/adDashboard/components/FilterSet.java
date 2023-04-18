@@ -4,6 +4,7 @@ import java.util.Arrays;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
+import javafx.collections.MapChangeListener;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -97,35 +98,45 @@ public class FilterSet extends VBox {
         Text title = new Text("Campaign:");
         title.getStyleClass().add("extraSmallWhiteText");
 
-        ComboBox<String> options = new ComboBox<>(FXCollections.observableArrayList(controller.getModels().keySet().stream().map(i->Integer.toString(i)).toArray(String[]::new)));
-        //If the models change update the options.
-        controller.getModels().addListener((InvalidationListener) change -> Platform.runLater(()->{
-            String value = options.getValue();
-            options.setItems(FXCollections.observableArrayList(controller.getModels().keySet().stream().map(i->Integer.toString(i)).toArray(String[]::new)));
-            if (options.getItems().contains(value)) { //todo: needs further testing after linking up.
+    ComboBox<String> options = new ComboBox<>(FXCollections.observableArrayList(
+        controller.getModels().keySet().stream().map(i -> Integer.toString(i))
+            .toArray(String[]::new)));
+    //If the models change update the options.
+    controller.getModels().addListener(
+        (MapChangeListener<? super Integer, ? super DataSet>) change -> Platform.runLater(
+            () -> {
+              System.out.println("controller models changed");
+
+              String value = options.getValue();
+              options.setItems(FXCollections.observableArrayList(
+                  controller.getModels().keySet().stream().map(i -> Integer.toString(i))
+                      .toArray(String[]::new)));
+              if (options.getItems()
+                  .contains(value)) { //todo: needs further testing after linking up.
                 options.setValue(value);
                 System.out.println("old value selected");
-            } else {
+              } else {
                 options.getSelectionModel().selectFirst();
-            }
+              }
 
-        }));
-        options.getSelectionModel().selectFirst();
-        options.getStyleClass().add("filter-dropdown");
-        HBox filterBox = new HBox(10);
-        filterBox.setAlignment(Pos.CENTER_LEFT);
-        filterBox.getChildren().addAll(title, options);
-        getChildren().add(filterBox);
+            }));
+    options.getSelectionModel().selectFirst();
+    options.getStyleClass().add("filter-dropdown");
+    HBox filterBox = new HBox(10);
+    filterBox.setAlignment(Pos.CENTER_LEFT);
+    filterBox.getChildren().addAll(title, options);
+    getChildren().add(filterBox);
 
-        //If options changes update the filter.
-        options.valueProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println("oldValue = " + oldValue+ " newValue = " + newValue);
-            if (newValue != null) {
-                updatedFilter("campaign", newValue);
-            }
-        });
+    //If options changes update the filter.
+    options.valueProperty().addListener((observable, oldValue, newValue) -> {
+      System.out.println("options updated");
+      System.out.println("oldValue = " + oldValue + " newValue = " + newValue);
+      if (newValue != null) {
+        updatedFilter("campaign", newValue);
+      }
+    });
 
-    }
+  }
 
     public void renderDatePicker(HBox filterBox) {
         Text from = new Text("from");

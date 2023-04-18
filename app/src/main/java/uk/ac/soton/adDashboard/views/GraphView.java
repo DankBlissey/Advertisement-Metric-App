@@ -450,7 +450,7 @@ public class GraphView extends BaseView implements FilterWindow {
             loadedRectangle.setArcWidth(30);
             loadedRectangle.setArcHeight(30);
             int campaignNum = idIndex + 1;
-            Text title = new Text("Campaign" + campaignNum);
+            Text title = new Text("Campaign" + modelId);
             title.getStyleClass().add("smallBlueText");
             Text loadedText = new Text(getFileNames(filenames));
             loadedText.getStyleClass().add("smallWhiteText");
@@ -478,17 +478,19 @@ public class GraphView extends BaseView implements FilterWindow {
         }
     }
 
-    /**
-     * Method to remove a campaign from UI and from the list of models
-     * @param i the particular campaign to remove
-     */
-    private void removeset(int i){
-        controller.removeModel(i);
-        noCampains = controller.getModels().size();
-        appWindow.loadView(new GraphView(appWindow,filenames));
-        logger.info("button " + i + " was pressed, dataset " + i + " was removed");
-        logger.info("removeSet:number of campaigns:" + noCampains);
-        defaultFilter();
-    }
+  /**
+   * Method to remove a campaign from UI and from the list of models
+   *
+   * @param i the particular campaign to remove
+   */
+  private void removeset(int i) {
+    //todo:unregister all listeners
+    controller.removeModel(i);
+    noCampains = controller.getModels().size();
+    logger.info("button " + i + " was pressed, dataset " + i + " was removed");
+    logger.info("removeSet:number of campaigns:" + noCampains);
+    appWindow.loadView(new GraphView(appWindow, filenames)); //todo:do we need to reload the view?
+
+  }
 
 }
