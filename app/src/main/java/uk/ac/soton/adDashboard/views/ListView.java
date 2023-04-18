@@ -281,7 +281,7 @@ public class ListView extends BaseView {
                 loadedRectangle.setArcWidth(30);
                 loadedRectangle.setArcHeight(30);
                 int campaignNum = idIndex + 1;
-                Text title = new Text("Campaign" + campaignNum);
+                Text title = new Text("Campaign " + modelId);
                 title.getStyleClass().add("smallBlueText");
                 Text loadedText = new Text(getFileNames(filenames));
                 loadedText.getStyleClass().add("smallWhiteText");
