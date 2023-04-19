@@ -1,9 +1,11 @@
 package uk.ac.soton.adDashboard.filter;
 
 import java.time.LocalDateTime;
+import javafx.collections.MapChangeListener;
 import uk.ac.soton.adDashboard.enums.Context;
 import uk.ac.soton.adDashboard.enums.Gender;
 import uk.ac.soton.adDashboard.enums.Income;
+import uk.ac.soton.adDashboard.records.DataSet;
 
 /**
  * Represents a set of filters.
@@ -32,6 +34,17 @@ public class Filter {
   private int id;
 
   private int dataSetId=0;
+
+  public MapChangeListener<? super Integer, ? super DataSet> getListener() {
+    return listener;
+  }
+
+  public void setListener(
+      MapChangeListener<? super Integer, ? super DataSet> listener) {
+    this.listener = listener;
+  }
+
+  private MapChangeListener<? super Integer, ? super DataSet> listener;
 
   public Context getContext() {
     return context;
