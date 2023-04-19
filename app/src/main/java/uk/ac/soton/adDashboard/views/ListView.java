@@ -104,7 +104,7 @@ public class ListView extends BaseView {
 
         StackPane topBar = new StackPane(upBar,hbox);
 
-        Rectangle backBar = new Rectangle(1280,150);
+        Rectangle backBar = new Rectangle(appWindow.getWidth(),150);
         backBar.getStyleClass().add("backBar");
         backBar.setEffect(new DropShadow(5,Color.GREY));
 
@@ -204,6 +204,8 @@ public class ListView extends BaseView {
         });
 
         topButtons.getChildren().add(saveButton);
+
+        backBar.widthProperty().bind(root.widthProperty());
 
         root.getChildren().addAll(borderPane);
     }

@@ -337,6 +337,8 @@ public class GraphView extends BaseView implements FilterWindow {
         });
 
         topButtons.getChildren().add(saveButton);
+
+        backBar.widthProperty().bind(root.widthProperty());
     }
 
     private void toggleFilterPane(Boolean option, VBox filterPane, Button showPaneButton) {
