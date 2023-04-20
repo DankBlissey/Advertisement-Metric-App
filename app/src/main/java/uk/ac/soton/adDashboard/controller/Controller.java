@@ -69,7 +69,7 @@ public class Controller {
    */
   public DataSet getModel() {
     if (models.keySet().size()>0) {
-      return models.get(getModelIds().get(0));
+      return models.get(Collections.max(getModelIds()));
     } else {
       return null;
     }

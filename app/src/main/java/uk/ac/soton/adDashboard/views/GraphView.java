@@ -96,7 +96,7 @@ public class GraphView extends BaseView implements FilterWindow {
         Button bigger = new Button("A+");
         bigger.getStyleClass().add("blueButton");
 
-        HBox sizeButtons = new HBox(smaller,bigger);
+        HBox sizeButtons = new HBox(smaller, bigger);
         sizeButtons.setAlignment(Pos.CENTER);
 
         HBox topButtons = new HBox(startAgain, theme, sizeButtons);
@@ -111,22 +111,22 @@ public class GraphView extends BaseView implements FilterWindow {
 
         hbox.setAlignment(Pos.CENTER);
 
-        Rectangle backBar = new Rectangle(1280,150);
+        Rectangle backBar = new Rectangle(1280, 150);
         backBar.getStyleClass().add("backBar");
-        backBar.setEffect(new DropShadow(5,Color.GREY));
+        backBar.setEffect(new DropShadow(5, Color.GREY));
 
         //Button to add more campaigns
         Button anotherCampaign = new Button("+ Compare campaigns");
-        anotherCampaign.setOnAction(e -> appWindow.loadView(new AnotherCampaignView(appWindow,this)));
+        anotherCampaign.setOnAction(e -> appWindow.loadView(new AnotherCampaignView(appWindow, this)));
 
-        Rectangle loadedRectangle = new Rectangle(200,130, Color.valueOf("#4B51FF"));
+        Rectangle loadedRectangle = new Rectangle(200, 130, Color.valueOf("#4B51FF"));
         loadedRectangle.setArcWidth(30);
         loadedRectangle.setArcHeight(30);
 
         Text loadedText = new Text(getFileNames(filenames));
         loadedText.getStyleClass().add("smallWhiteText");
 
-       // StackPane loadedFiles = new StackPane(loadedRectangle,loadedText);
+        // StackPane loadedFiles = new StackPane(loadedRectangle,loadedText);
 
         longBarContent = new HBox();
         generateCampaigns();
@@ -134,7 +134,7 @@ public class GraphView extends BaseView implements FilterWindow {
         longBarContent.setAlignment(Pos.CENTER);
         longBarContent.setSpacing(10);
 
-        StackPane longBar = new StackPane(backBar,longBarContent);
+        StackPane longBar = new StackPane(backBar, longBarContent);
 
         VBox vbox = new VBox(hbox, longBar);
 
@@ -184,9 +184,9 @@ public class GraphView extends BaseView implements FilterWindow {
         stack.setAlignment(Pos.CENTER_LEFT);
 
         stack.setOnMouseClicked(event -> {
-              switchedOn = !switchedOn;
-              toggle.setTranslateX(switchedOn ? -30 : 30);
-            appWindow.loadView(new ListView(appWindow,filenames));
+            switchedOn = !switchedOn;
+            toggle.setTranslateX(switchedOn ? -30 : 30);
+            appWindow.loadView(new ListView(appWindow, filenames));
         });
 
         borderPane.setLeft(toggleButton);
@@ -217,7 +217,7 @@ public class GraphView extends BaseView implements FilterWindow {
                 }
             }
             logger.info("Selected stat: " + selectedStat);
-            if(selectedStat != null) {
+            if (selectedStat != null) {
                 AppWindow.getController().setStatType(selectedStat);
             }
         });
@@ -228,7 +228,7 @@ public class GraphView extends BaseView implements FilterWindow {
 
         ComboBox<String> granularity = new ComboBox<>();
         granularity.getStyleClass().add("bounce-dropdown");
-        granularity.getItems().addAll("day","week","month","year");
+        granularity.getItems().addAll("day", "week", "month", "year");
         granularity.setValue("day");
 
         granularity.setOnAction((e) -> {
@@ -243,7 +243,7 @@ public class GraphView extends BaseView implements FilterWindow {
                 }
             }
             logger.info("selected Granularity: " + selectedGranularity);
-            if(selectedGranularity != null){
+            if (selectedGranularity != null) {
                 AppWindow.getController().setGranularity(selectedGranularity);
             }
         });
@@ -302,12 +302,13 @@ public class GraphView extends BaseView implements FilterWindow {
 
     /**
      * Function calculates the next index that can be used for a new filter
+     *
      * @return index
      */
     private int getValidIndex() {
         int max = filters.get(0).getId();
 
-        for(Filter currentFilter : filters) {
+        for (Filter currentFilter : filters) {
             if (currentFilter.getId() > max) {
                 max = currentFilter.getId();
             }
@@ -344,6 +345,7 @@ public class GraphView extends BaseView implements FilterWindow {
 
     /**
      * Takes the arraylist of filenames and outputs it as a string with line breaks
+     *
      * @param fileNames arraylist of filenames
      * @return string of the filenames with \n as linebreaks
      */
@@ -357,6 +359,7 @@ public class GraphView extends BaseView implements FilterWindow {
 
     /**
      * Getter for filter ArrayList
+     *
      * @return filters
      */
     public ArrayList<Filter> getFilters() {
@@ -375,7 +378,7 @@ public class GraphView extends BaseView implements FilterWindow {
     /**
      * Method for generating the objects listing the loaded files and for which campaign
      */
-    private void generateCampaigns(){
+    private void generateCampaigns() {
         ArrayList<Integer> ids = controller.getModelIds();
         for (int idIndex = 0; idIndex < ids.size(); idIndex++) {
             int modelId = ids.get(idIndex);
@@ -405,15 +408,15 @@ public class GraphView extends BaseView implements FilterWindow {
 
     /**
      * Method to remove a campaign from UI and from the list of models
+     *
      * @param i the particular campaign to remove
      */
-    private void removeset(int i){
+    private void removeset(int i) {
         controller.removeModel(i);
         noCampains = controller.getModels().size();
-        appWindow.loadView(new GraphView(appWindow,filenames));
+        appWindow.loadView(new GraphView(appWindow, filenames));
         logger.info("button " + i + " was pressed, dataset " + i + " was removed");
         logger.info("removeSet:number of campaigns:" + noCampains);
         defaultFilter();
     }
-
 }
