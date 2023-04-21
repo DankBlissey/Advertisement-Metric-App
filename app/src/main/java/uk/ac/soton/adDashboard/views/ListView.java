@@ -185,6 +185,9 @@ public class ListView extends BaseView {
         borderPane.setLeft(toggleButton);
 
         BorderPane.setMargin(vbox, new Insets(0, 0, 25, 0));
+        if (controller.getModels().size()>1) {
+            createListBlock("Key", -1, 3, 1);
+        }
         createListBlock("Total clicks", 2, 0, 1 );
         createListBlock("Total uniques", 3, 1,1 );
         createListBlock("Total impressions", 1, 2,1 );
@@ -231,11 +234,24 @@ public class ListView extends BaseView {
      */
     private void createListBlock(String text, int dataIndex, int xGrid, int yGrid) {
         Text title = new Text(text);
-        title.getStyleClass().add("listTitle");
         VBox vBox = new VBox(title);
-        ArrayList<Integer> ids = controller.getModelIds();
-        for (int idIndex = 0; idIndex < ids.size(); idIndex++) {
-            int modelId = ids.get(idIndex);
+        ArrayList<Integer> ids = controller.getModelIds(); //todo: will this be the same for each list block?
+        if (dataIndex==-1) {
+            title.getStyleClass().add("listKeyTitle");
+
+            for (int idIndex = 0; idIndex < ids.size(); idIndex++) {
+                int modelId = ids.get(idIndex);
+                Text valueText;
+                valueText= new Text("model id "+modelId);
+                valueText.getStyleClass().add("listNumbers");
+                vBox.getChildren().add(valueText);
+            }
+        } else {
+            title.getStyleClass().add("listTitle");
+
+
+            for (int idIndex = 0; idIndex < ids.size(); idIndex++) {
+                int modelId = ids.get(idIndex);
                 DataSet dataset = controller.getModel(modelId);
                 data = dataset.allStats(dataset.earliestDate(), dataset.latestDate());
                 double value = data[dataIndex];
@@ -254,19 +270,21 @@ public class ListView extends BaseView {
                     String formattedNumber = df.format(value);
                     valueText = new Text(formattedNumber);
                 }
+
                 valueText.getStyleClass().add("listNumbers");
                 vBox.getChildren().add(valueText);
+            }
         }
-
-
         vBox.setPadding(new Insets(10));
-        vBox.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(17), null)));
+        vBox.setBackground(
+            new Background(new BackgroundFill(Color.WHITE, new CornerRadii(17), null)));
         vBox.getStyleClass().add("card");
         vBox.setEffect(dropShadow);
         vBox.setAlignment(Pos.CENTER_LEFT);
         gridPane.setAlignment(Pos.CENTER);
 
         gridPane.add(vBox, xGrid, yGrid);
+
     }
 
     /**
@@ -317,10 +335,11 @@ public class ListView extends BaseView {
     private void removeset(int i){
         controller.removeModel(i);
         noCampains = controller.getModels().size();
-        appWindow.loadView(new ListView(appWindow,filenames));
         logger.info("button " + i + " was pressed, dataset " + i + " was removed");
         logger.info("removeSet:number of campaigns:" + noCampains);
-        }
+        appWindow.loadView(new ListView(appWindow,filenames));
+
+    }
 
 }
 

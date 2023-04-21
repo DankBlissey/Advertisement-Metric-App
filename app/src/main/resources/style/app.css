@@ -68,6 +68,11 @@
     -fx-fill: grey;
     -fx-font-size: 15px;
 }
+.list-key-title {
+    -fx-font-family: 'Google Sans Bold';
+    -fx-fill: #615665;
+    -fx-font-size: 17px;
+}
 
 .buttonTitle {
     -fx-font-family: 'Google Sans Bold';
@@ -82,6 +87,7 @@
     -fx-text-fill: black;
     -fx-font-family: 'Google Sans Bold'
 }
+
 
 .bounceRateText {
     -fx-font-family: 'Google Sans Bold';
