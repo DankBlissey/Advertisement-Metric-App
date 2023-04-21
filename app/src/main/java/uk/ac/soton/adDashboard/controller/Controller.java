@@ -39,16 +39,20 @@ public class Controller {
 
   private Granularity granularity = Granularity.DAY;
 
+  private DataSet latestDataset;
+  private int latestId;
 
   public GraphFeatures getGraph() {
     return graph;
   }
 
-
   public void setGraph(GraphFeatures graph) {
     this.graph = graph;
   }
 
+  public int getLatestId() {
+    return latestId;
+  }
 
   /**
    * @return Returns an observable map of all the models.
@@ -93,8 +97,17 @@ public class Controller {
    */
   public void addModel(DataSet model) {
     this.models.put(modelId++, model);
+    latestDataset=model;
+    latestId = modelId -1;
   }
 
+  /**
+   * Gets the most recently added dataset.
+   * @return Returns the most recently added dataSet.
+   */
+  public DataSet getLatestDataSet() {
+    return latestDataset;
+  }
   /**
    * removes a model.
    *

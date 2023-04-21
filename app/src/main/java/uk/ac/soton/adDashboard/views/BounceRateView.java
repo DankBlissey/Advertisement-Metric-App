@@ -32,7 +32,7 @@ public class BounceRateView extends BaseView {
     public BounceRateView(AppWindow appWindow, ArrayList<String> filenames, boolean isListView) {
         super(appWindow);
         this.isListView = isListView;
-        this.dataSet = controller.getModel();
+        this.dataSet = controller.getLatestDataSet();
         this.filenames = filenames;
         logger.info("Creating the BounceRate View");
     }
@@ -132,7 +132,7 @@ public class BounceRateView extends BaseView {
 
         StackPane stackPane = new StackPane(vbox1, vbox3);
 
-        customCheckBox.setOnAction((event) -> {
+        customCheckBox.setOnAction((event) -> { //time spent.
             logger.info("customCheckBox selected");
 
             //selecting the custom check box
@@ -178,7 +178,7 @@ public class BounceRateView extends BaseView {
 
         finished.setOnAction((event) -> {
             logger.info("finished button clicked");
-
+            logger.info("setting bounce rate for " + controller.getLatestId());
             if(pageCheckBox.selectedProperty().getValue()){
                 try{
                     logger.info("Maximum page number read");
