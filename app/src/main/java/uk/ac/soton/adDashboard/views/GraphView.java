@@ -329,6 +329,16 @@ public class GraphView extends BaseView implements FilterWindow {
         //BorderPane.setMargin(filterPane, new Insets(0, 35, 0, 0));
         borderPane.setRight(filterSide);
         BorderPane.setMargin(filterSide, new Insets(0, 35, 0, 0));
+
+        Button saveButton = new Button("Save results");
+        saveButton.getStyleClass().add("blueButton");
+        saveButton.setOnAction(e -> {
+            ScreenShot(graphsList);
+        });
+
+        topButtons.getChildren().add(saveButton);
+
+        backBar.widthProperty().bind(root.widthProperty());
     }
 
     private void toggleFilterPane(Boolean option, VBox filterPane, Button showPaneButton) {

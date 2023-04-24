@@ -104,7 +104,7 @@ public class ListView extends BaseView {
 
         StackPane topBar = new StackPane(upBar,hbox);
 
-        Rectangle backBar = new Rectangle(1280,150);
+        Rectangle backBar = new Rectangle(appWindow.getWidth(),150);
         backBar.getStyleClass().add("backBar");
         backBar.setEffect(new DropShadow(5,Color.GREY));
 
@@ -199,6 +199,16 @@ public class ListView extends BaseView {
         createListBlock("CPC", 9, 1,3 );
         createListBlock("CPM", 10, 2,3 );
         createListBlock("Bounce rate", 11, 3,3 );
+
+        Button saveButton = new Button("Save results");
+        saveButton.getStyleClass().add("blueButton");
+        saveButton.setOnAction(e -> {
+            ScreenShot(centerVbox);
+        });
+
+        topButtons.getChildren().add(saveButton);
+
+        backBar.widthProperty().bind(root.widthProperty());
 
         root.getChildren().addAll(borderPane);
     }
