@@ -163,6 +163,20 @@ public class FilterSet extends VBox {
           }
         });
 
+        AppWindow.getController().getFontSize().addListener((obs, oldVal, newVal) -> {
+            if(newVal.intValue() == -1) {
+                title.setStyle(title.getStyle() + "-fx-font-size: 8px;");
+                options.setStyle(options.getStyle() + "-fx-font-size: 8px;");
+            }
+            else if(newVal.intValue() == 0) {
+                title.setStyle(title.getStyle() + "-fx-font-size: 10px;");
+                options.setStyle(options.getStyle() + "-fx-font-size: 10px;");
+            }
+            else if(newVal.intValue() == 1) {
+                title.setStyle(title.getStyle() + "-fx-font-size: 12px;");
+                options.setStyle(options.getStyle() + "-fx-font-size: 12px;");
+            }
+        });
   }
 
     public void renderDatePicker(HBox filterBox) {
