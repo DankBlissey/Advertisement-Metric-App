@@ -261,6 +261,9 @@ public class ListView extends BaseView {
                 saveButton.setStyle(saveButton.getStyle() + "-fx-font-size: 17px;");
             }
         });
+
+        AppWindow.getController().setFontSize(AppWindow.getController().getFontSize().get() - 1);
+        AppWindow.getController().setFontSize(AppWindow.getController().getFontSize().get() + 1);
     }
 
     /**
