@@ -192,10 +192,12 @@ public class ControllerTest {
 
     var f1 = new Filter();
     f1.setId(0);
+    f1.setDataSetId(controller.getLatestId());
     f1.setStartDate(LocalDateTime.now());
     f1.setEndDate(LocalDateTime.now().plusDays(1));
     var f2 = new Filter();
     f2.setId(1);
+    f2.setDataSetId(controller.getLatestId());
     f2.setStartDate(LocalDateTime.now());
     f2.setEndDate(LocalDateTime.now().plusDays(1));
     controller.setFilterWindow(new FilterStub(List.of(f1,f2)));
@@ -212,6 +214,8 @@ public class ControllerTest {
     expect(dataSet1.generateY(f2.getStartDate(),f2.getEndDate(),granularity,controller.getStatType())).andReturn(d2);
     replay(dataSet1);
     controller.addModel(dataSet1);
+    f1.setDataSetId(controller.getLatestId());
+    f2.setDataSetId(controller.getLatestId());
     controller.setGranularity(granularity);
     verify(graph);
     verify(dataSet1);
@@ -235,10 +239,12 @@ public class ControllerTest {
     f1.setId(0);
     f1.setStartDate(LocalDateTime.now());
     f1.setEndDate(LocalDateTime.now().plusDays(1));
+    f1.setDataSetId(controller.getLatestId());
     var f2 = new Filter();
     f2.setId(1);
     f2.setStartDate(LocalDateTime.now());
     f2.setEndDate(LocalDateTime.now().plusDays(1));
+    f2.setDataSetId(controller.getLatestId());
     controller.setFilterWindow(new FilterStub(List.of(f1,f2)));
     GraphFeatures graph = niceMock(GraphFeatures.class);
     var d1 = dataSet.generateY(f1.getStartDate(),f1.getEndDate(),Granularity.DAY,stat);
@@ -253,6 +259,8 @@ public class ControllerTest {
     expect(dataSet1.generateY(f2.getStartDate(),f2.getEndDate(),Granularity.DAY,stat)).andReturn(d2);
     replay(dataSet1);
     controller.addModel(dataSet1);
+    f1.setDataSetId(controller.getLatestId());
+    f2.setDataSetId(controller.getLatestId());
     controller.setStatType(stat);
     verify(graph);
     verify(dataSet1);
