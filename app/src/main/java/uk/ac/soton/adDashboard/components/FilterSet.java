@@ -95,6 +95,24 @@ public class FilterSet extends VBox {
         // ---------- Campaign filter ----------
         renderCampaignFilter();
         AppWindow.getController().filterUpdated(filter);
+
+        AppWindow.getController().getFontSize().addListener((obs, oldVal, newVal) -> {
+            if(newVal.intValue() == -1) {
+                filterSetTitle.setStyle(filterSetTitle.getStyle() + "-fx-font-size: 13px;");
+                if(deleteButton != null)
+                    deleteButton.setStyle(deleteButton.getStyle() + "-fx-font-size: 8px;");
+            }
+            else if(newVal.intValue() == 0) {
+                filterSetTitle.setStyle(filterSetTitle.getStyle() + "-fx-font-size: 15px;");
+                if(deleteButton != null)
+                    deleteButton.setStyle(deleteButton.getStyle() + "-fx-font-size: 10px;");
+            }
+            else if(newVal.intValue() == 1) {
+                filterSetTitle.setStyle(filterSetTitle.getStyle() + "-fx-font-size: 17px;");
+                if(deleteButton != null)
+                    deleteButton.setStyle(deleteButton.getStyle() + "-fx-font-size: 12px;");
+            }
+        });
     }
 
     public void renderCampaignFilter() {
@@ -145,6 +163,20 @@ public class FilterSet extends VBox {
           }
         });
 
+        AppWindow.getController().getFontSize().addListener((obs, oldVal, newVal) -> {
+            if(newVal.intValue() == -1) {
+                title.setStyle(title.getStyle() + "-fx-font-size: 8px;");
+                options.setStyle(options.getStyle() + "-fx-font-size: 8px;");
+            }
+            else if(newVal.intValue() == 0) {
+                title.setStyle(title.getStyle() + "-fx-font-size: 10px;");
+                options.setStyle(options.getStyle() + "-fx-font-size: 10px;");
+            }
+            else if(newVal.intValue() == 1) {
+                title.setStyle(title.getStyle() + "-fx-font-size: 12px;");
+                options.setStyle(options.getStyle() + "-fx-font-size: 12px;");
+            }
+        });
   }
 
     public void renderDatePicker(HBox filterBox) {
@@ -188,6 +220,27 @@ public class FilterSet extends VBox {
         endDate.setVisible(false);
 
         filterBox.getChildren().addAll(from, startDate, to, endDate);
+
+        AppWindow.getController().getFontSize().addListener((obs, oldVal, newVal) -> {
+            if(newVal.intValue() == -1) {
+                from.setStyle(from.getStyle() + "-fx-font-size: 8px;");
+                startDate.setStyle(startDate.getStyle() + "-fx-font-size: 8px;");
+                to.setStyle(to.getStyle() + "-fx-font-size: 8px;");
+                endDate.setStyle(endDate.getStyle() + "-fx-font-size: 8px;");
+            }
+            else if(newVal.intValue() == 0) {
+                from.setStyle(from.getStyle() + "-fx-font-size: 10px;");
+                startDate.setStyle(startDate.getStyle() + "-fx-font-size: 10px;");
+                to.setStyle(to.getStyle() + "-fx-font-size: 10px;");
+                endDate.setStyle(endDate.getStyle() + "-fx-font-size: 10px;");
+            }
+            else if(newVal.intValue() == 1) {
+                from.setStyle(from.getStyle() + "-fx-font-size: 12px;");
+                startDate.setStyle(startDate.getStyle() + "-fx-font-size: 12px;");
+                to.setStyle(to.getStyle() + "-fx-font-size: 12px;");
+                endDate.setStyle(endDate.getStyle() + "-fx-font-size: 12px;");
+            }
+        });
     }
 
     public void renderFilter(String filterTitle, String[] optionsText, String filterType) {
@@ -211,6 +264,21 @@ public class FilterSet extends VBox {
         }
 
         getChildren().add(filterBox);
+
+        AppWindow.getController().getFontSize().addListener((obs, oldVal, newVal) -> {
+            if(newVal.intValue() == -1) {
+                title.setStyle(title.getStyle() + "-fx-font-size: 8px;");
+                options.setStyle(options.getStyle() + "-fx-font-size: 8px;");
+            }
+            else if(newVal.intValue() == 0) {
+                title.setStyle(title.getStyle() + "-fx-font-size: 10px;");
+                options.setStyle(options.getStyle() + "-fx-font-size: 10px;");
+            }
+            else if(newVal.intValue() == 1) {
+                title.setStyle(title.getStyle() + "-fx-font-size: 12px;");
+                options.setStyle(options.getStyle() + "-fx-font-size: 12px;");
+            }
+        });
     }
 
     public void updatedFilter(String filterType, String newValue) {

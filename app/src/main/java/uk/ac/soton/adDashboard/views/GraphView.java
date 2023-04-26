@@ -101,13 +101,17 @@ public class GraphView extends BaseView implements FilterWindow {
 
         smaller.setOnAction(e -> {
             logger.info("Smaller");
-            title.getStyleClass().clear();
-            title.getStyleClass().add("mediumText-p-1");
+            int currentSize = AppWindow.getController().getFontSize().get();
+            if(currentSize != -1) {
+                AppWindow.getController().setFontSize(currentSize - 1);
+            }
         });
         bigger.setOnAction(e -> {
             logger.info("Bigger");
-            title.getStyleClass().clear();
-            title.getStyleClass().add("mediumText-p1");
+            int currentSize = AppWindow.getController().getFontSize().get();
+            if(currentSize != 1) {
+                AppWindow.getController().setFontSize(currentSize + 1);
+            }
         });
 
         HBox sizeButtons = new HBox(smaller,bigger);
@@ -339,6 +343,66 @@ public class GraphView extends BaseView implements FilterWindow {
         topButtons.getChildren().add(saveButton);
 
         backBar.widthProperty().bind(root.widthProperty());
+
+        AppWindow.getController().getFontSize().addListener((obs, oldVal, newVal) -> {
+            logger.info("Font-size changed from " + oldVal + " to " + newVal);
+
+            if(newVal.intValue() == -1) {
+                title.setStyle(title.getStyle() + "-fx-font-size: 30px;");
+                startAgain.setStyle(startAgain.getStyle() + "-fx-font-size: 13px;");
+                theme.setStyle(theme.getStyle() + "-fx-font-size: 13px;");
+                smaller.setStyle(smaller.getStyle() + "-fx-font-size: 13px;");
+                bigger.setStyle(bigger.getStyle() + "-fx-font-size: 13px;");
+                saveButton.setStyle(saveButton.getStyle() + "-fx-font-size: 13px;");
+                anotherCampaign.setStyle(anotherCampaign.getStyle() + "-fx-font-size: 13px;");
+                loadedText.setStyle(loadedText.getStyle() + "-fx-font-size: 13px !important;");
+                //text.setStyle(text.getStyle() + "-fx-font-size: 10px;");
+                cmb.setStyle(cmb.getStyle() + "-fx-font-size: 12px;");
+                granularity.setStyle(granularity.getStyle() + "-fx-font-size: 12px;");
+                filterTitle.setStyle(filterTitle.getStyle() + "-fx-font-size: 16px;");
+                hidePaneButton.setStyle(hidePaneButton.getStyle() + "-fx-font-size: 12px;");
+                addFilterButton.setStyle(addFilterButton.getStyle() + "-fx-font-size: 13px;");
+                saveButton.setStyle(saveButton.getStyle() + "-fx-font-size: 13px;");
+            }
+            else if(newVal.intValue() == 0) {
+                title.setStyle(title.getStyle() + "-fx-font-size: 35px;");
+                startAgain.setStyle(startAgain.getStyle() + "-fx-font-size: 15px;");
+                theme.setStyle(theme.getStyle() + "-fx-font-size: 15px;");
+                smaller.setStyle(smaller.getStyle() + "-fx-font-size: 15px;");
+                bigger.setStyle(bigger.getStyle() + "-fx-font-size: 15px;");
+                saveButton.setStyle(saveButton.getStyle() + "-fx-font-size: 15px;");
+                anotherCampaign.setStyle(anotherCampaign.getStyle() + "-fx-font-size: 15px;");
+                //
+                loadedText.setStyle(loadedText.getStyle() + "-fx-font-size: 15px !important;");
+                //
+                //text.setStyle(text.getStyle() + "-fx-font-size: 12px;");
+                cmb.setStyle(cmb.getStyle() + "-fx-font-size: 14px;");
+                granularity.setStyle(granularity.getStyle() + "-fx-font-size: 14px;");
+                filterTitle.setStyle(filterTitle.getStyle() + "-fx-font-size: 18px;");
+                hidePaneButton.setStyle(hidePaneButton.getStyle() + "-fx-font-size: 14px;");
+                addFilterButton.setStyle(addFilterButton.getStyle() + "-fx-font-size: 15px;");
+                saveButton.setStyle(saveButton.getStyle() + "-fx-font-size: 15px;");
+            }
+            else if(newVal.intValue() == 1) {
+                title.setStyle(title.getStyle() + "-fx-font-size: 40px;");
+                startAgain.setStyle(startAgain.getStyle() + "-fx-font-size: 17px;");
+                theme.setStyle(theme.getStyle() + "-fx-font-size: 17px;");
+                smaller.setStyle(smaller.getStyle() + "-fx-font-size: 17px;");
+                bigger.setStyle(bigger.getStyle() + "-fx-font-size: 17px;");
+                saveButton.setStyle(saveButton.getStyle() + "-fx-font-size: 17px;");
+                anotherCampaign.setStyle(anotherCampaign.getStyle() + "-fx-font-size: 17px;");
+                loadedText.setStyle(loadedText.getStyle() + "-fx-font-size: 20px;");
+                //text.setStyle(text.getStyle() + "-fx-font-size: 14px;");
+                cmb.setStyle(cmb.getStyle() + "-fx-font-size: 16px;");
+                granularity.setStyle(granularity.getStyle() + "-fx-font-size: 16px;");
+                filterTitle.setStyle(filterTitle.getStyle() + "-fx-font-size: 20px;");
+                hidePaneButton.setStyle(hidePaneButton.getStyle() + "-fx-font-size: 16px;");
+                addFilterButton.setStyle(addFilterButton.getStyle() + "-fx-font-size: 17px;");
+                saveButton.setStyle(saveButton.getStyle() + "-fx-font-size: 17px;");
+            }
+        });
+        AppWindow.getController().setFontSize(AppWindow.getController().getFontSize().get() - 1);
+        AppWindow.getController().setFontSize(AppWindow.getController().getFontSize().get() + 1);
     }
 
     private void toggleFilterPane(Boolean option, VBox filterPane, Button showPaneButton) {

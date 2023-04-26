@@ -3,6 +3,8 @@ package uk.ac.soton.adDashboard.controller;
 
 import java.util.*;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 
@@ -41,6 +43,22 @@ public class Controller {
 
   private DataSet latestDataset;
   private int latestId;
+
+  /**
+   * Selected font size. When this value changes some listeners update the font-size
+   * -1: Smaller text
+   * 0: default text
+   * 1: bigger text
+   */
+  IntegerProperty fontSize = new SimpleIntegerProperty(0);
+
+  public IntegerProperty getFontSize() {
+    return fontSize;
+  }
+
+  public void setFontSize(int value) {
+    fontSize.set(value);
+  }
 
   public GraphFeatures getGraph() {
     return graph;

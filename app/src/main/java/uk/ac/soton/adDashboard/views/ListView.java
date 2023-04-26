@@ -83,6 +83,21 @@ public class ListView extends BaseView {
         Button bigger = new Button("A+");
         bigger.getStyleClass().add("blueButton");
 
+        smaller.setOnAction(e -> {
+            logger.info("Smaller");
+            int currentSize = AppWindow.getController().getFontSize().get();
+            if(currentSize != -1) {
+                AppWindow.getController().setFontSize(currentSize - 1);
+            }
+        });
+        bigger.setOnAction(e -> {
+            logger.info("Bigger");
+            int currentSize = AppWindow.getController().getFontSize().get();
+            if(currentSize != 1) {
+                AppWindow.getController().setFontSize(currentSize + 1);
+            }
+        });
+
         HBox sizeButtons = new HBox(smaller,bigger);
         sizeButtons.setAlignment(Pos.CENTER);
 
@@ -211,6 +226,44 @@ public class ListView extends BaseView {
         backBar.widthProperty().bind(root.widthProperty());
 
         root.getChildren().addAll(borderPane);
+
+        AppWindow.getController().getFontSize().addListener((obs, oldVal, newVal) -> {
+            logger.info("Font-size changed from " + oldVal + " to " + newVal);
+
+            if(newVal.intValue() == -1) {
+                title.setStyle(title.getStyle() + "-fx-font-size: 30px;");
+                startAgain.setStyle(startAgain.getStyle() + "-fx-font-size: 13px;");
+                theme.setStyle(theme.getStyle() + "-fx-font-size: 13px;");
+                smaller.setStyle(smaller.getStyle() + "-fx-font-size: 13px;");
+                bigger.setStyle(bigger.getStyle() + "-fx-font-size: 13px;");
+                saveButton.setStyle(saveButton.getStyle() + "-fx-font-size: 13px;");
+                anotherCampaign.setStyle(anotherCampaign.getStyle() + "-fx-font-size: 13px;");
+                saveButton.setStyle(saveButton.getStyle() + "-fx-font-size: 13px;");
+            }
+            else if(newVal.intValue() == 0) {
+                title.setStyle(title.getStyle() + "-fx-font-size: 35px;");
+                startAgain.setStyle(startAgain.getStyle() + "-fx-font-size: 15px;");
+                theme.setStyle(theme.getStyle() + "-fx-font-size: 15px;");
+                smaller.setStyle(smaller.getStyle() + "-fx-font-size: 15px;");
+                bigger.setStyle(bigger.getStyle() + "-fx-font-size: 15px;");
+                saveButton.setStyle(saveButton.getStyle() + "-fx-font-size: 15px;");
+                anotherCampaign.setStyle(anotherCampaign.getStyle() + "-fx-font-size: 15px;");
+                saveButton.setStyle(saveButton.getStyle() + "-fx-font-size: 15px;");
+            }
+            else if(newVal.intValue() == 1) {
+                title.setStyle(title.getStyle() + "-fx-font-size: 40px;");
+                startAgain.setStyle(startAgain.getStyle() + "-fx-font-size: 17px;");
+                theme.setStyle(theme.getStyle() + "-fx-font-size: 17px;");
+                smaller.setStyle(smaller.getStyle() + "-fx-font-size: 17px;");
+                bigger.setStyle(bigger.getStyle() + "-fx-font-size: 17px;");
+                saveButton.setStyle(saveButton.getStyle() + "-fx-font-size: 17px;");
+                anotherCampaign.setStyle(anotherCampaign.getStyle() + "-fx-font-size: 17px;");
+                saveButton.setStyle(saveButton.getStyle() + "-fx-font-size: 17px;");
+            }
+        });
+
+        AppWindow.getController().setFontSize(AppWindow.getController().getFontSize().get() - 1);
+        AppWindow.getController().setFontSize(AppWindow.getController().getFontSize().get() + 1);
     }
 
     /**
@@ -255,7 +308,22 @@ public class ListView extends BaseView {
                 valueText= new Text("model id "+modelId);
                 valueText.getStyleClass().add("listNumbers");
                 vBox.getChildren().add(valueText);
+
+                AppWindow.getController().getFontSize().addListener((obs, oldVal, newVal) -> {
+                    logger.info("Font-size changed from " + oldVal + " to " + newVal);
+
+                    if(newVal.intValue() == -1) {
+                        valueText.setStyle(title.getStyle() + "-fx-font-size: 22px;");
+                    }
+                    else if(newVal.intValue() == 0) {
+                        valueText.setStyle(title.getStyle() + "-fx-font-size: 25px;");
+                    }
+                    else if(newVal.intValue() == 1) {
+                        valueText.setStyle(title.getStyle() + "-fx-font-size: 28px;");
+                    }
+                });
             }
+
         } else {
             title.getStyleClass().add("listTitle");
 
@@ -283,6 +351,20 @@ public class ListView extends BaseView {
 
                 valueText.getStyleClass().add("listNumbers");
                 vBox.getChildren().add(valueText);
+
+                AppWindow.getController().getFontSize().addListener((obs, oldVal, newVal) -> {
+                    logger.info("Font-size changed from " + oldVal + " to " + newVal);
+
+                    if(newVal.intValue() == -1) {
+                        valueText.setStyle(title.getStyle() + "-fx-font-size: 22px;");
+                    }
+                    else if(newVal.intValue() == 0) {
+                        valueText.setStyle(title.getStyle() + "-fx-font-size: 25px;");
+                    }
+                    else if(newVal.intValue() == 1) {
+                        valueText.setStyle(title.getStyle() + "-fx-font-size: 28px;");
+                    }
+                });
             }
         }
         vBox.setPadding(new Insets(10));
@@ -295,6 +377,19 @@ public class ListView extends BaseView {
 
         gridPane.add(vBox, xGrid, yGrid);
 
+        AppWindow.getController().getFontSize().addListener((obs, oldVal, newVal) -> {
+            logger.info("Font-size changed from " + oldVal + " to " + newVal);
+
+            if(newVal.intValue() == -1) {
+                title.setStyle(title.getStyle() + "-fx-font-size: 13px;");
+            }
+            else if(newVal.intValue() == 0) {
+                title.setStyle(title.getStyle() + "-fx-font-size: 15px;");
+            }
+            else if(newVal.intValue() == 1) {
+                title.setStyle(title.getStyle() + "-fx-font-size: 17px;");
+            }
+        });
     }
 
     /**
