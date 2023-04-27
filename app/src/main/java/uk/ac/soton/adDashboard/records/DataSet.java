@@ -686,6 +686,45 @@ public class DataSet {
       LocalDateTime endTime, Granularity unit, Stat stat) {
     List<Pair<Integer, Double>> points;
 
+    Function f = pointGenerationSetup(stat);
+    points = genPoints(startTime, endTime, unit, f);
+
+    System.out.println(points);
+
+    resetAllAccess();
+    setEfficiency(false);
+    return points;
+  }
+
+  /**
+   * Generates a list of string ranges and the corresponding points.
+   * @param startTime The start of the time range.
+   * @param endTime The end of the time range.
+   * @param unit The granularity of the range.
+   * @param stat The stat type to display (currently, will just be clicks).
+   * @return Returns a list of histogram points.
+   */
+  public List<Pair<String,Double>> generateHistogramY(LocalDateTime startTime,
+      LocalDateTime endTime, Granularity unit, Stat stat) {
+    List<Pair<String, Double>> points;
+
+
+    Function f = pointGenerationSetup(stat);
+    points = genHistogramPoints(startTime, endTime, unit, f);
+
+    System.out.println(points);
+
+    resetAllAccess();
+    setEfficiency(false);
+    return points;
+  }
+
+  /**
+   * Sets up flags for point generation efficiency and returns a function to calculate.
+   * @param stat The stat to calculate the points for.
+   * @return Returns the function to call that matches the stat.
+   */
+  private Function pointGenerationSetup(Stat stat) {
     setEfficiency(true);
     resetAllAccess();
     filteringEnabled(true);
@@ -704,15 +743,8 @@ public class DataSet {
       case bounceRate -> f = this::calcBounceRate;
       default -> f = this::totalImpressions;
     }
-    points = genPoints(startTime, endTime, unit, f);
-
-    System.out.println(points);
-
-    resetAllAccess();
-    setEfficiency(false);
-    return points;
+    return f;
   }
-
 
   /**
    * Generates a set of points calculated by the passed function, between a given range, stepping by
@@ -724,7 +756,7 @@ public class DataSet {
    * @param f         The function to calculate the y point, which is passed a range of dates.
    * @return Returns an arraylist of pairs of points.
    */
-  public List<Pair<Integer, Double>> genPoints(LocalDateTime startTime,
+  private List<Pair<Integer, Double>> genPoints(LocalDateTime startTime,
       LocalDateTime endTime, Granularity unit, Function f) {
     ArrayList<Pair<Integer, Double>> points = new ArrayList<>();
     TemporalAmount amount = unit.generateStep();
@@ -750,7 +782,7 @@ public class DataSet {
    * @return Returns a list of pairs, where the first item is a string of the range and the second
    * is the point height to plot.
    */
-  public List<Pair<String, Double>> genHistogram(LocalDateTime startTime, LocalDateTime endTime,
+  private List<Pair<String, Double>> genHistogramPoints(LocalDateTime startTime, LocalDateTime endTime,
       Granularity unit, Function f) {
     ArrayList<Pair<String, Double>> points = new ArrayList<>();
     TemporalAmount amount = unit.generateStep();
@@ -765,13 +797,22 @@ public class DataSet {
   }
 
 
+  /**
+   *  Generates a string that matches the input dates.
+   * @param start The start of the date range.
+   * @param end The end of the date range.
+   * @param unit The granularity to tune the string to.
+   * @return Returns a string representing the range, tuned to the granularity.
+   */
   public String stringify(LocalDateTime start, LocalDateTime end, Granularity unit) {
     DateTimeFormatter dateTimeFormatter;
     String range;
     switch (unit) {
       case DAY, WEEK -> {
-        if (start.getMonth() == end.getMonth()) {
+        if (start.getMonth() == end.getMonth() && start.getYear()==end.getYear()) {
           dateTimeFormatter = DateTimeFormatter.ofPattern("dd");
+        } else if (start.getMonth()==end.getMonth()) {
+          dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         } else {
           dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM");
         }
