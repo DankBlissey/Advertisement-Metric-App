@@ -16,6 +16,7 @@ public enum Stat {
   CPC,
   CPM,
   bounceRate,
+  totalClickCost,
   ANY
 
 }

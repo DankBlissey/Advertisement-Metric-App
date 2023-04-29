@@ -697,19 +697,17 @@ public class DataSet {
   }
 
   /**
-   * Generates a list of string ranges and the corresponding points.
+   * Generates a list of string ranges and the corresponding total click cost between those ranges.
    * @param startTime The start of the time range.
    * @param endTime The end of the time range.
    * @param unit The granularity of the range.
-   * @param stat The stat type to display (currently, will just be clicks).
    * @return Returns a list of histogram points.
    */
   public List<Pair<String,Double>> generateHistogramY(LocalDateTime startTime,
-      LocalDateTime endTime, Granularity unit, Stat stat) {
+      LocalDateTime endTime, Granularity unit) {
     List<Pair<String, Double>> points;
 
-
-    Function f = pointGenerationSetup(stat);
+    Function f = pointGenerationSetup(Stat.totalClickCost);
     points = genHistogramPoints(startTime, endTime, unit, f);
 
     System.out.println(points);
@@ -718,6 +716,8 @@ public class DataSet {
     setEfficiency(false);
     return points;
   }
+
+
 
   /**
    * Sets up flags for point generation efficiency and returns a function to calculate.
@@ -741,6 +741,7 @@ public class DataSet {
       case CPC -> f = this::calcCostPerClick;
       case CPM -> f = this::costPerThousandImpre;
       case bounceRate -> f = this::calcBounceRate;
+      case totalClickCost -> f =this::calcClickCost;
       default -> f = this::totalImpressions;
     }
     return f;
@@ -850,7 +851,6 @@ public class DataSet {
     return impressions.get(impressions.size() - 1).getDate();
   }
 
-//TODO: reset stats on changes to filter.
 
   /**
    * Gets all the stats for the list view, only recalculating if there's been a change to any
