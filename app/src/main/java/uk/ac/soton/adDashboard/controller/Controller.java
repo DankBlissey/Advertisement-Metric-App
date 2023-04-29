@@ -12,10 +12,12 @@ import javafx.util.Pair;
 import uk.ac.soton.adDashboard.Interfaces.FilterWindow;
 import uk.ac.soton.adDashboard.Interfaces.GraphFeatures;
 
+import uk.ac.soton.adDashboard.Interfaces.HistogramFeatures;
 import uk.ac.soton.adDashboard.enums.Granularity;
 import uk.ac.soton.adDashboard.enums.Stat;
 import uk.ac.soton.adDashboard.filter.Filter;
 import uk.ac.soton.adDashboard.records.DataSet;
+import uk.ac.soton.adDashboard.views.Histogram;
 
 
 /**
@@ -24,6 +26,7 @@ import uk.ac.soton.adDashboard.records.DataSet;
 public class Controller {
 
   private GraphFeatures graph;
+  private HistogramFeatures histogram;
   /**
    * Tracks all of the models. The key is the id of the model.
    */
@@ -64,9 +67,15 @@ public class Controller {
     return graph;
   }
 
+  public HistogramFeatures getHistogram() {
+    return histogram;
+  }
+
   public void setGraph(GraphFeatures graph) {
     this.graph = graph;
   }
+
+  public void setHistogram(HistogramFeatures histogram) {this.histogram = histogram;}
 
   public int getLatestId() {
     return latestId;
@@ -203,11 +212,19 @@ public class Controller {
     DataSet model = getModels().get(filter.getDataSetId());
     model.setFilter(filter);
 
-    List<Pair<Integer, Double>> points = model.generateY(filter.getStartDate(),
-        filter.getEndDate(), getGranularity(),
-        statType); //todo: should the filter contain the unit?
-    graph.delete(filter.getId());
-    graph.plot(filter.getId(), points);
+    if(statType == Stat.CTR) {
+      List<Pair<String, Double>> points = model.generateHistogramY(filter.getStartDate(),filter.getEndDate(), getGranularity(), statType);
+      histogram.plot(points);
+    }
+
+    else{
+      List<Pair<Integer, Double>> points = model.generateY(filter.getStartDate(),
+              filter.getEndDate(), getGranularity(),
+              statType); //todo: should the filter contain the unit?
+      graph.delete(filter.getId());
+      graph.plot(filter.getId(), points);
+    }
+
   }
 
   /**
