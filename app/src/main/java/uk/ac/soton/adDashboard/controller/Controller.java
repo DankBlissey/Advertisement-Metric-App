@@ -139,7 +139,7 @@ public class Controller {
    * removes a model.
    *
    * @param id The dataSetId of the model to remove.
-   * @return
+   * @return Returns the DataSet that was removed.
    */
   public DataSet removeModel(int id) {
 //    for (Filter filter : getFilterWindow().getFilters()) {
@@ -213,8 +213,8 @@ public class Controller {
     model.setFilter(filter);
 
     if(statType == Stat.CTR) {
-      List<Pair<String, Double>> points = model.generateHistogramY(filter.getStartDate(),filter.getEndDate(), getGranularity(), statType);
-      histogram.plot(points);
+//      List<Pair<String, Double>> points = model.generateHistogramY(filter.getStartDate(),filter.getEndDate(), getGranularity(), statType);
+//      histogram.plot(points);
     }
 
     else{
