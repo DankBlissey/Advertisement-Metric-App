@@ -34,6 +34,7 @@ public class GraphView extends BaseView implements FilterWindow {
     protected DataSet dataSet;
     protected ArrayList<String> filenames;
     protected Graph graph;
+    protected Histogram histogram;
     private int noCampains;
     private HBox longBarContent;
 
@@ -145,7 +146,7 @@ public class GraphView extends BaseView implements FilterWindow {
         Text loadedText = new Text(getFileNames(filenames));
         loadedText.getStyleClass().add("smallWhiteText");
 
-       // StackPane loadedFiles = new StackPane(loadedRectangle,loadedText);
+        // StackPane loadedFiles = new StackPane(loadedRectangle,loadedText);
 
         longBarContent = new HBox();
         generateCampaigns();
@@ -203,8 +204,8 @@ public class GraphView extends BaseView implements FilterWindow {
         stack.setAlignment(Pos.CENTER_LEFT);
 
         stack.setOnMouseClicked(event -> {
-              switchedOn = !switchedOn;
-              toggle.setTranslateX(switchedOn ? -30 : 30);
+            switchedOn = !switchedOn;
+            toggle.setTranslateX(switchedOn ? -30 : 30);
             switchView(new ListView(appWindow,filenames));
         });
 
@@ -243,7 +244,10 @@ public class GraphView extends BaseView implements FilterWindow {
         cmb.setValue("total Impressions");
 
         graph = new Graph();
+        histogram = new Histogram();
+
         controller.setGraph(graph);
+        controller.setHistogram(histogram);
 
         ComboBox<String> granularity = new ComboBox<>();
         granularity.getStyleClass().add("bounce-dropdown-grey");
@@ -552,21 +556,20 @@ public class GraphView extends BaseView implements FilterWindow {
             longBarContent.getChildren().add(loadedFiles);
         }
     }
-
-  /**
-   * Method to remove a campaign from UI and from the list of models
-   *
-   * @param i the particular campaign to remove
-   */
-  private void removeset(int i) {
-      clearListeners();
-      controller.removeModel(i);
-      noCampains = controller.getModels().size();
-      logger.info("button " + i + " was pressed, dataset " + i + " was removed");
-      logger.info("removeSet:number of campaigns:" + noCampains);
-      switchView(new GraphView(appWindow, filenames),false); //todo:do we need to reload the view?
+    /**
+     * Method to remove a campaign from UI and from the list of models
+     *
+     * @param i the particular campaign to remove
+     */
+    private void removeset(int i) {
+        clearListeners();
+        controller.removeModel(i);
+        noCampains = controller.getModels().size();
+        logger.info("button " + i + " was pressed, dataset " + i + " was removed");
+        logger.info("removeSet:number of campaigns:" + noCampains);
+        switchView(new GraphView(appWindow, filenames),false); //todo:do we need to reload the view?
 //      generateCampaigns();
-  }
+    }
 
 
     /**
@@ -574,42 +577,42 @@ public class GraphView extends BaseView implements FilterWindow {
      * @param view The new view.
      * @param clearListeners A boolean, true if the listeners should be cleared.
      */
-  public void switchView(BaseView view, boolean clearListeners) {
-      if (clearListeners) {
-         clearListeners();
-      }
-      appWindow.loadView(view);
-  }
+    public void switchView(BaseView view, boolean clearListeners) {
+        if (clearListeners) {
+            clearListeners();
+        }
+        appWindow.loadView(view);
+    }
 
     /**
      * Switches to a new view, clearing all listeners.
      * @param view The new view.
      */
-  private void switchView(BaseView view) {
-      switchView(view,true);
+    private void switchView(BaseView view) {
+        switchView(view,true);
 
 
-  }
+    }
 
 
     /**
      * This deletes all the listeners on the models list that were created by this scene.
      */
-  public void clearListeners() {
-      logger.info("Clearing up filter listeners");
-      for (Filter filter : filters) {
-          System.out.println("Filter to remove " + filter);
-          System.out.println("listener to remove " + filter.getListener());
-          controller.getModels().removeListener(filter.getListener());
-      }
-  }
+    public void clearListeners() {
+        logger.info("Clearing up filter listeners");
+        for (Filter filter : filters) {
+            System.out.println("Filter to remove " + filter);
+            System.out.println("listener to remove " + filter.getListener());
+            controller.getModels().removeListener(filter.getListener());
+        }
+    }
 
     /**
      * Removes a passed filter from the filter list and as a listener to the models.
      * @param f The filter to remove, which contains the listener to remove from the models.
      */
-  public void removeFilter(Filter f) {
-      controller.getModels().removeListener(f.getListener());
-      filters.remove(f);
-  }
+    public void removeFilter(Filter f) {
+        controller.getModels().removeListener(f.getListener());
+        filters.remove(f);
+    }
 }
