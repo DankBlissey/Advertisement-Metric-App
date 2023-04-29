@@ -173,6 +173,7 @@ public class BounceRateView extends BaseView {
 
         back.setOnAction((event) -> {
             logger.info("back button clicked");
+            controller.removeModel(controller.getLatestId());
             appWindow.uploadCSVWindow();
         });
 
