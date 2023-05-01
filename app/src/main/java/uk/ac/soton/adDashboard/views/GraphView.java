@@ -216,31 +216,9 @@ public class GraphView extends BaseView implements FilterWindow {
 
         ComboBox<String> cmb = new ComboBox<>();
         cmb.getStyleClass().add("bounce-dropdown");
-        cmb.getItems().addAll("total Impressions", "total Clicks", "total Uniques", "total Bounces", "total Conversions", "total Cost", "CTR", "CPA", "CPC", "CPM", "bounce Rate");
+        cmb.getItems().addAll("total Impressions", "total Clicks", "total Uniques", "total Bounces", "total Conversions", "total Cost", "CTR", "CPA", "CPC", "CPM", "bounce Rate", "Click Cost");
 
-        cmb.setOnAction((e) -> {
-            String selectedOption = cmb.getValue();
-            Stat selectedStat = null;
-            switch (selectedOption) {
-                case "total Impressions" -> selectedStat = Stat.totalImpressions;
-                case "total Clicks" -> selectedStat = Stat.totalClicks;
-                case "total Uniques" -> selectedStat = Stat.totalUniques;
-                case "total Bounces" -> selectedStat = Stat.totalBounces;
-                case "total Conversions" -> selectedStat = Stat.totalConversions;
-                case "total Cost" -> selectedStat = Stat.totalCost;
-                case "CTR" -> selectedStat = Stat.CTR;
-                case "CPA" -> selectedStat = Stat.CPA;
-                case "CPC" -> selectedStat = Stat.CPC;
-                case "CPM" -> selectedStat = Stat.CPM;
-                case "bounce Rate" -> selectedStat = Stat.bounceRate;
-                default -> {
-                }
-            }
-            logger.info("Selected stat: " + selectedStat);
-            if(selectedStat != null) {
-                AppWindow.getController().setStatType(selectedStat);
-            }
-        });
+
         cmb.setValue("total Impressions");
 
         graph = new Graph();
@@ -275,8 +253,48 @@ public class GraphView extends BaseView implements FilterWindow {
         HBox itemMenus = new HBox(cmb, region3, granularity);
         HBox.setHgrow(region3, Priority.ALWAYS);
 
-        graphBox.getChildren().addAll(itemMenus, graph.getChart());
+        graphBox.getChildren().addAll(itemMenus, graph.getChart(), histogram.getChart());
+        graphBox.getChildren().get(2).setVisible(false);
+        graphBox.getChildren().get(2).setManaged(false);
         graphsList.getChildren().addAll(graphBox);
+
+        cmb.setOnAction((e) -> {
+            String selectedOption = cmb.getValue();
+            Stat selectedStat = null;
+            switch (selectedOption) {
+                case "total Impressions" -> selectedStat = Stat.totalImpressions;
+                case "total Clicks" -> selectedStat = Stat.totalClicks;
+                case "total Uniques" -> selectedStat = Stat.totalUniques;
+                case "total Bounces" -> selectedStat = Stat.totalBounces;
+                case "total Conversions" -> selectedStat = Stat.totalConversions;
+                case "total Cost" -> selectedStat = Stat.totalCost;
+                case "CTR" -> selectedStat = Stat.CTR;
+                case "CPA" -> selectedStat = Stat.CPA;
+                case "CPC" -> selectedStat = Stat.CPC;
+                case "CPM" -> selectedStat = Stat.CPM;
+                case "bounce Rate" -> selectedStat = Stat.bounceRate;
+                case "Click Cost" -> selectedStat = Stat.totalClickCost;
+                default -> {
+                }
+            }
+            logger.info("Selected stat: " + selectedStat);
+            if(selectedStat != null) {
+                AppWindow.getController().setStatType(selectedStat);
+            }
+
+            if(selectedOption.equals("Click Cost")) {
+                graphBox.getChildren().get(1).setVisible(false);
+                graphBox.getChildren().get(1).setManaged(false);
+                graphBox.getChildren().get(2).setVisible(true);
+                graphBox.getChildren().get(2).setManaged(true);
+            }
+            else {
+                graphBox.getChildren().get(1).setVisible(true);
+                graphBox.getChildren().get(1).setManaged(true);
+                graphBox.getChildren().get(2).setVisible(false);
+                graphBox.getChildren().get(2).setManaged(false);
+            }
+        });
 
         // This is the right side of the borderPane which includes a "filterPane"
         HBox filterSide = new HBox(30);
