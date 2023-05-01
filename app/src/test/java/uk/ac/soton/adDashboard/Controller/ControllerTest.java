@@ -9,8 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import javafx.util.Pair;
 import static org.easymock.EasyMock.*;
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.AfterEach;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,6 +46,7 @@ public class ControllerTest {
     dataSet.setUsers(generateUser());
     dataSet.setServerAccess(generateServerAccess());
     dataSet.setClicks(generateClicks());
+
     cost = 42.5;
     controller = new Controller();
     controller.addModel(dataSet);
@@ -113,6 +113,7 @@ public class ControllerTest {
       defaultFilter.setStartDate(controller.getModel().earliestDate());
       defaultFilter.setEndDate(controller.getModel().latestDate());
       defaultFilter.setId(0);
+//      defaultFilter.setDataSetId(controller);
       return defaultFilter;
 
   }
@@ -280,5 +281,34 @@ public class ControllerTest {
     public List<Filter> getFilters() {
       return filters;
     }
+  }
+
+
+
+  @Test
+  void multipleCampaigns() throws Exception {
+    Filter f1 = defaultFilter();
+    f1.setStartDate(LocalDateTime.now());
+    f1.setEndDate(LocalDateTime.now().plusDays(2));
+    DataSet dataSet2 = new DataSet();
+    dataSet2.setImpressions(generateImpressions());
+    dataSet2.setUsers(generateUser());
+    dataSet2.setServerAccess(generateServerAccess());
+    dataSet2.setClicks(generateClicks());
+    Filter f2 = defaultFilter();
+    f2.setStartDate(LocalDateTime.now());
+    f2.setEndDate(LocalDateTime.now().plusDays(2));
+    f2.setId(1);
+    controller.setFilterWindow(new FilterStub(List.of(f1,f2)));
+    List<Pair<Integer, Double>> points = controller.getModels().get(0).generateY(LocalDateTime.now(),LocalDateTime.now().plusDays(2),Granularity.DAY,Stat.totalImpressions);
+    data.add(new Pair<>(2,0.0));
+    GraphFeatures g = niceMock(GraphFeatures.class);
+    g.plot(f1.getId(),data);
+    g.plot(f2.getId(),data);
+    replay(g);
+    controller.setGraph(g);
+    controller.setGranularity(Granularity.DAY);
+    verify(g);
+
   }
 }
