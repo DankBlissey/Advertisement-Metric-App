@@ -947,7 +947,7 @@ public class DataSet {
         break;
       }
     }
-    while (impressions.get(mid).getDate().isAfter(time) && impressions.get(mid).getId() != id
+    while (impressions.get(mid).getId() != id
         && mid > 0) {
       mid -= 1;
     }

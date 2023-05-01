@@ -326,5 +326,109 @@ public class DataSetTest {
   }
 
 
+  @Test
+  void nearestImpression() {
+    dataSet.filteringEnabled(true);
+    Impression i = dataSet.nearestImpression(dataSet.getServerAccess().get(0).getStartDate(),dataSet.getServerAccess().get(0).getId());
+    assertEquals(25,i.getId());
+    assertEquals(dataSet.getImpressions().get(0),i);
+    dataSet.filteringEnabled(false);
+  }
+
+  /**
+   * Checks how nearestImpression handles impressions which are before the server access between the impression with the correct id.
+   * @throws Exception Exception if data is incorrect.
+   */
+  @Test
+  void nearestImpressionInbetween() throws Exception { //found errors
+    DataSet dataSet = new DataSet();
+    dataSet.setImpressions(generateImpressions2());
+    dataSet.setUsers(generateUser2());
+    dataSet.setServerAccess(generateServerAccess2());
+    dataSet.setClicks(generateClicks2());
+
+    dataSet.setPagesViewedBounceMetric(true);
+    dataSet.filteringEnabled(false);
+
+    dataSet.filteringEnabled(true);
+    Impression i = dataSet.nearestImpression(dataSet.getServerAccess().get(0).getStartDate(),dataSet.getServerAccess().get(0).getId());
+    assertEquals(25,i.getId());
+    assertEquals(dataSet.getImpressions().get(0),i);
+    dataSet.filteringEnabled(false);
+
+  }
+
+  @Test
+  void nearestImpressionJustBefore() throws Exception {
+    DataSet dataSet = new DataSet();
+    dataSet.setImpressions(generateImpressions3());
+    dataSet.setUsers(generateUser2());
+    dataSet.setServerAccess(generateServerAccess2());
+    dataSet.setClicks(generateClicks2());
+
+    dataSet.setPagesViewedBounceMetric(true);
+    dataSet.filteringEnabled(false);
+
+    dataSet.filteringEnabled(true);
+    Impression i = dataSet.nearestImpression(dataSet.getServerAccess().get(0).getStartDate(),dataSet.getServerAccess().get(0).getId());
+    assertEquals(25,i.getId());
+    assertEquals(dataSet.getImpressions().get(2),i);
+    dataSet.filteringEnabled(false);
+  }
+
+
+
+  static ArrayList<Impression> generateImpressions2() throws Exception {
+    var impressions = new ArrayList<Impression>();
+    impressions.add(new Impression("2015-01-01 23:00:02", "25", "12.5", "Shopping"));
+
+    impressions.add(new Impression("2015-01-01 23:00:02", "30", "12.5", "Shopping"));
+
+    impressions.add(new Impression("2015-02-01 23:05:00", "26", "10", "Shopping"));
+    impressions.add(new Impression("2015-02-03 23:10:00", "27", "15", "Blog"));
+    impressions.add(new Impression("2015-05-01 23:05:00", "26", "0", "Hobbies"));
+    return impressions;
+  }
+
+  static ArrayList<Impression> generateImpressions3() throws Exception {
+    var impressions = new ArrayList<Impression>();
+    impressions.add(new Impression("2015-01-01 22:00:02", "90", "12.5", "Shopping"));
+
+    impressions.add(new Impression("2015-01-01 22:00:03", "95", "12.5", "Shopping"));
+
+    impressions.add(new Impression("2015-01-01 23:00:02", "25", "12.5", "Shopping"));
+
+    impressions.add(new Impression("2015-01-01 23:01:02", "29", "12.5", "Shopping"));
+      //the above item is exactly the right time so will be selected. however, afterwards the previous left shifter won't move because it is not after the time.
+
+    impressions.add(new Impression("2015-02-01 23:05:00", "26", "10", "Shopping"));
+    impressions.add(new Impression("2015-01-01 23:06:02", "30", "12.5", "Shopping"));
+
+    return impressions;
+  }
+
+  static HashMap<Long, User> generateUser2() throws Exception {
+    var users = new HashMap<Long, User>();
+    users.put(25L, new User("25", "<25", "Male", "Low"));
+    users.put(26L, new User("26", "25-34", "Female", "High"));
+    users.put(27L, new User("27", "25-34", "Female", "Medium"));
+    return users;
+  }
+
+  static ArrayList<ServerAccess> generateServerAccess2() throws Exception {
+    var access = new ArrayList<ServerAccess>();
+    access.add(new ServerAccess("2015-01-01 23:01:02", "25", "2015-01-01 23:02:02", "2", "Yes"));
+    access.add(new ServerAccess("2015-02-01 23:05:03", "26", "2015-01-01 23:05:08", "1", "Yes"));
+    access.add(new ServerAccess("2015-05-01 23:05:00", "26", "2015-05-01 23:05:50", "1", "No"));
+    return access;
+  }
+  static ArrayList<Click> generateClicks2() throws Exception {
+    var clicks = new ArrayList<Click>();
+    clicks.add(new Click("2015-01-01 23:01:02", "25", "2.5"));
+    clicks.add(new Click("2015-02-01 23:05:03", "26", "2.5"));
+    clicks.add(new Click("2015-05-01 23:05:00", "26", "0"));
+    return clicks;
+  }
+
 
 }
