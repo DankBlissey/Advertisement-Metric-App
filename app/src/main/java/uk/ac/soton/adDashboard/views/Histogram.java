@@ -39,7 +39,6 @@ public class Histogram implements HistogramFeatures {
         chart.setLayoutX(50);
         chart.setLayoutY(50);
         chart.setPrefSize(500, 500);
-        this.chart.getData().add(this.series);
 
         return chart;
     }
