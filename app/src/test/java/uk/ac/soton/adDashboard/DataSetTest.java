@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import uk.ac.soton.adDashboard.records.Click;
@@ -32,6 +31,8 @@ public class DataSetTest {
     dataSet.setServerAccess(generateServerAccess());
     dataSet.setClicks(generateClicks());
     cost = 42.5;
+    dataSet.setPagesViewedBounceMetric(true);
+    dataSet.filteringEnabled(false);
   }
 
   // Resets the DataSet object after each test case is executed
@@ -40,6 +41,7 @@ public class DataSetTest {
     dataSet.setInterval(30);
     dataSet.setPagesForBounce(2);
     dataSet.setPagesViewedBounceMetric(true);
+    dataSet.filteringEnabled(false);
   }
 
   //  Creates sample data for the DataSet
@@ -64,7 +66,7 @@ public class DataSetTest {
   static ArrayList<ServerAccess> generateServerAccess() throws Exception {
     var access = new ArrayList<ServerAccess>();
     access.add(new ServerAccess("2015-01-01 23:01:02", "25", "2015-01-01 23:02:02", "2", "Yes"));
-    access.add(new ServerAccess("2015-01-01 23:05:03", "26", "2015-01-01 23:05:08", "1", "Yes"));
+    access.add(new ServerAccess("2015-02-01 23:05:03", "26", "2015-01-01 23:05:08", "1", "Yes"));
     access.add(new ServerAccess("2015-05-01 23:05:00", "26", "2015-05-01 23:05:50", "1", "No"));
     return access;
   }
@@ -83,6 +85,20 @@ public class DataSetTest {
   @Test
   void totalImpressions() {
     assertEquals(4, dataSet.totalImpressions(dataSet.earliestDate(), dataSet.latestDate()));
+
+
+  }
+
+  @Test
+  void totalImpressionsConsecutive() { //found bugs in values on the date boundaries being counted in two days.
+    dataSet.setEfficiency(true);
+    dataSet.resetAllAccess();
+    assertEquals(2, dataSet.totalImpressions(LocalDateTime.of(2014, 2, 1, 1, 1),
+        LocalDateTime.of(2015, 2, 1, 23, 5)));
+    assertEquals(1, dataSet.totalImpressions(LocalDateTime.of(2015, 2, 1, 23, 5),
+        LocalDateTime.of(2015, 2, 3, 23, 11)));
+    dataSet.setEfficiency(false);
+    dataSet.resetAllAccess();
   }
 
   // Number of Clicks
@@ -92,11 +108,35 @@ public class DataSetTest {
 
   }
 
+  @Test
+  void totalClicksConsecutive() {
+    dataSet.setEfficiency(true);
+    dataSet.resetAllAccess();
+    assertEquals(1, dataSet.totalClicks(LocalDateTime.of(2014, 2, 1, 1, 1),
+        LocalDateTime.of(2015, 1, 1, 23, 1,2)));
+    assertEquals(2, dataSet.totalClicks(LocalDateTime.of(2015, 1, 1, 23, 1,2),
+        LocalDateTime.now()));
+    dataSet.setEfficiency(false);
+    dataSet.resetAllAccess();
+  }
+
   // Number of Uniques
   @Test
   void calcUniqueUsersClick() {
     assertEquals(2, dataSet.calcUniqueUsersClick(dataSet.earliestDate(), dataSet.latestDate()));
   }
+  @Test
+  void totalUniqueUsersConsecutive() {
+    dataSet.setEfficiency(true);
+    dataSet.resetAllAccess();
+    assertEquals(1, dataSet.calcUniqueUsersClick(LocalDateTime.of(2014, 2, 1, 1, 1),
+        LocalDateTime.of(2015, 1, 1, 23, 1,2)));
+    assertEquals(1, dataSet.calcUniqueUsersClick(LocalDateTime.of(2015, 1, 1, 23, 1,2),
+        LocalDateTime.now()));
+    dataSet.setEfficiency(false);
+    dataSet.resetAllAccess();
+  }
+
 
   // Bounce
   @Test
@@ -121,7 +161,21 @@ public class DataSetTest {
   @Test
   void calcBounces() {
     dataSet.setPagesForBounce(2);
+    dataSet.setPagesViewedBounceMetric(true);
     assertEquals(2, dataSet.calcBounces(dataSet.earliestDate(), dataSet.latestDate()));
+  }
+
+  @Test
+  void bounceConsecutive() {
+    //default pages and 2
+    dataSet.setEfficiency(true);
+    dataSet.resetAllAccess();
+    assertEquals(0, dataSet.calcBounces(LocalDateTime.of(2014, 2, 1, 1, 1),
+        LocalDateTime.of(2015, 1, 1, 23, 1,2)));
+    assertEquals(2, dataSet.calcBounces(LocalDateTime.of(2015, 1, 1, 23, 1,2),
+        LocalDateTime.now()));
+    dataSet.setEfficiency(false);
+    dataSet.resetAllAccess();
   }
 
   // Number of Bounces (Time Interval)
@@ -138,6 +192,18 @@ public class DataSetTest {
     assertEquals(2, dataSet.calcNumConversions(dataSet.earliestDate(), dataSet.latestDate()));
   }
 
+  @Test
+  void conversionsConsecutive() {
+    dataSet.setEfficiency(true);
+    dataSet.resetAllAccess();
+    assertEquals(1, dataSet.calcNumConversions(LocalDateTime.of(2014, 2, 1, 1, 1),
+        LocalDateTime.of(2015, 1, 1, 23, 1,2)));
+    assertEquals(1, dataSet.calcNumConversions(LocalDateTime.of(2015, 1, 1, 23, 1,2),
+        LocalDateTime.now()));
+    dataSet.setEfficiency(false);
+    dataSet.resetAllAccess();
+  }
+
   // Total Cost
   @Test
   void calcTotalCost() {
@@ -145,10 +211,38 @@ public class DataSetTest {
 
   }
 
+
+  @Test
+  void totalCostConsecutive() {
+    dataSet.setEfficiency(true);
+    dataSet.resetAllAccess();
+    assertEquals(15, dataSet.calcTotalCost(LocalDateTime.of(2014, 2, 1, 1, 1),
+        LocalDateTime.of(2015, 1, 1, 23, 1,2)));
+    assertEquals(cost-15, dataSet.calcTotalCost(LocalDateTime.of(2015, 1, 1, 23, 1,2),
+        LocalDateTime.now()));
+    dataSet.setEfficiency(false);
+    dataSet.resetAllAccess();
+  }
+
+
   // CTR
   @Test
   void calcClickThrough() {
     assertEquals(3 / 4.0, dataSet.calcClickThrough(dataSet.earliestDate(), dataSet.latestDate()));
+  }
+
+
+
+  @Test
+  void clickThroughConsecutive() { //clicks per impression
+    dataSet.setEfficiency(true);
+    dataSet.resetAllAccess();
+    assertEquals(1, dataSet.calcClickThrough(LocalDateTime.of(2014, 2, 1, 1, 1),
+        LocalDateTime.of(2015, 1, 1, 23, 1,2)));
+    assertEquals(2/3.0, dataSet.calcClickThrough(LocalDateTime.of(2015, 1, 1, 23, 1,2),
+        LocalDateTime.now()));
+    dataSet.setEfficiency(false);
+    dataSet.resetAllAccess();
   }
 
   // CPA
@@ -158,10 +252,34 @@ public class DataSetTest {
         dataSet.calcCostAcquisition(dataSet.earliestDate(), dataSet.latestDate()));
   }
 
+  @Test
+  void cpaConsecutive() { //cost per conversion    //todo: recheck
+    dataSet.setEfficiency(true);
+    dataSet.resetAllAccess();
+    assertEquals(15/1, dataSet.calcCostAcquisition(LocalDateTime.of(2014, 2, 1, 1, 1),
+        LocalDateTime.of(2015, 1, 1, 23, 1,2)));
+    assertEquals((42.5-15)/1, dataSet.calcCostAcquisition(LocalDateTime.of(2015, 1, 1, 23, 1,2),
+        LocalDateTime.now()));
+    dataSet.setEfficiency(false);
+    dataSet.resetAllAccess();
+  }
+
   // CPC
   @Test
   void calcCostPerClick() {
     assertEquals(cost / 3, dataSet.calcCostPerClick(dataSet.earliestDate(), dataSet.latestDate()));
+  }
+
+  @Test
+  void cpcConsecutive() { //found bugs
+    dataSet.setEfficiency(true);
+    dataSet.resetAllAccess();
+    assertEquals(15, dataSet.calcCostPerClick(LocalDateTime.of(2014, 2, 1, 1, 1),
+        LocalDateTime.of(2015, 1, 1, 23, 1,2)));
+    assertEquals((42.5-15)/2, dataSet.calcCostPerClick(LocalDateTime.of(2015, 1, 1, 23, 1,2),
+        LocalDateTime.now()));
+    dataSet.setEfficiency(false);
+    dataSet.resetAllAccess();
   }
 
   // CPM
@@ -172,6 +290,18 @@ public class DataSetTest {
     assertEquals(cost / (4.0 / 1000), value);
   }
 
+  @Test
+  void cpmConsecutive() {
+    dataSet.setEfficiency(true);
+    dataSet.resetAllAccess();
+    assertEquals(15/(1/1000.0), dataSet.costPerThousandImpre(LocalDateTime.of(2014, 2, 1, 1, 1),
+        LocalDateTime.of(2015, 1, 1, 23, 1,2)));
+    assertEquals(27.5/(3/1000.0), dataSet.costPerThousandImpre(LocalDateTime.of(2015, 1, 1, 23, 1,2),
+        LocalDateTime.now()));
+    dataSet.setEfficiency(false);
+    dataSet.resetAllAccess();
+  }
+
   // Bounce Rate
   @Test
   void calcBounceRate() {
@@ -180,5 +310,21 @@ public class DataSetTest {
     assertEquals(2.0 / 3, dataSet.calcBounceRate(dataSet.earliestDate(), dataSet.latestDate()));
     //test the effects of changing the bounce rate measurement
   }
+
+  @Test
+  void bounceRateConsecutive() { //bounces per click
+    dataSet.setEfficiency(true);
+    dataSet.resetAllAccess();
+    dataSet.setPagesForBounce(2);
+    dataSet.setPagesViewedBounceMetric(true);
+    assertEquals(0, dataSet.calcBounceRate(LocalDateTime.of(2014, 2, 1, 1, 1),
+        LocalDateTime.of(2015, 1, 1, 23, 1,2)));
+    assertEquals(2/2, dataSet.calcBounceRate(LocalDateTime.of(2015, 1, 1, 23, 1,2),
+        LocalDateTime.now()));
+    dataSet.setEfficiency(false);
+    dataSet.resetAllAccess();
+  }
+
+
 
 }

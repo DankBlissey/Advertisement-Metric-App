@@ -291,7 +291,7 @@ public class DataSet {
           impressions.get(i))) { //if user legal
         if (!impressions.get(i).getDate().isBefore(start)
             && !impressions.get(i).getDate().isAfter(end)) {
-          setLastImpression(i);
+          setLastImpression(i+1);
           totalCost += impressions.get(i).getCost();
         } else if (!impressions.get(i).getDate().isAfter(end)) {
           setLastImpression(i);
@@ -322,11 +322,11 @@ public class DataSet {
         if (!clicks.get(i).getDate().isBefore(start)
             && !clicks.get(i).getDate().isAfter(end)) {
           totalCost += clicks.get(i).getCost();
-          setLastClick(i);
+          setLastClick(i+1);
         } else if (!clicks.get(i).getDate().isAfter(end)) {
           setLastClick(i);
 
-        } else {
+        } else { //we don't set the last click because we are setting the last click to be the last one in the range (that matches)
           break;
         }
       }
@@ -366,7 +366,7 @@ public class DataSet {
           nearestImpression(clicks.get(i).getDate(), clicks.get(i).getId()))) { //if user legal
         if (clicks.get(i).getDate().compareTo(start) >= 0
             && clicks.get(i).getDate().compareTo(end) <= 0) {
-          setLastClick(i);
+          setLastClick(i+1);
           count += 1;
         } else if (!clicks.get(i).getDate().isAfter(end)) {
           setLastClick(i);
@@ -395,7 +395,8 @@ public class DataSet {
           impressions.get(i))) { //if user legal
         if (!impressions.get(i).getDate().isBefore(start)
             && !impressions.get(i).getDate().isAfter(end)) {
-          setLastImpression(i);
+          setLastImpression(i+1);
+
           count += 1;
         } else if (!impressions.get(i).getDate().isAfter(end)) {
           setLastImpression(i);
@@ -425,7 +426,7 @@ public class DataSet {
           nearestImpression(serverAccess.get(i).getStartDate(), serverAccess.get(i).getId()))) {
         if (!serverAccess.get(i).getStartDate().isBefore(start)
             && !serverAccess.get(i).getStartDate().isAfter(end)) {
-          setLastAccess(i);
+          setLastAccess(i+1);
           conversions += 1;
         } else if (!serverAccess.get(i).getStartDate().isAfter(end)) {
           setLastAccess(i);
@@ -469,13 +470,14 @@ public class DataSet {
   public double calcBounces(LocalDateTime start, LocalDateTime end) {
     int bounces = 0;
     for (int i = getLastAccess(); i < serverAccess.size(); i++) {
-
       if (isBounce(serverAccess.get(i)) && matchesFilters(users.get(serverAccess.get(i).getId()),
           nearestImpression(serverAccess.get(i).getStartDate(), serverAccess.get(i).getId()))) {
+
         if (!serverAccess.get(i).getStartDate().isBefore(start)
             && !serverAccess.get(i).getStartDate().isAfter(end)) {
           bounces += 1;
-          setLastAccess(i);
+          setLastAccess(i+1);
+
         } else if (!serverAccess.get(i).getStartDate().isAfter(end)) {
           setLastAccess(i);
 
@@ -506,7 +508,7 @@ public class DataSet {
         if (clicks.get(i).getDate().compareTo(start) >= 0
             && clicks.get(i).getDate().compareTo(end) <= 0) {
           if (!visited.contains(clicks.get(i).getId())) {
-            setLastClick(i);
+            setLastClick(i+1);
             uniques += 1;
             visited.add(clicks.get(i).getId());
           } else {
@@ -520,7 +522,7 @@ public class DataSet {
   }
 
   /**
-   * Calculates the average amount spent on a campaign per thousand impressions.
+   * Calculates the average amount spent on a campaign per thousand impressions. Inclusive at both ends.
    *
    * @param start The start of the range as LocalDateTime.
    * @param end   The end of the range as LocalDateTime.
@@ -528,8 +530,19 @@ public class DataSet {
    * match a filter.
    */
   public double costPerThousandImpre(LocalDateTime start, LocalDateTime end) {
+    int resetFlagAtEnd = -1;
+    if (efficiency) {
+      resetFlagAtEnd = getLastImpression();
+    }
     double cost = calcTotalCost(start, end);
+    if (resetFlagAtEnd!=-1) {
+      setLastImpression(resetFlagAtEnd);
+      setEfficiency(true);
+    }
+
     double impressions = totalImpressions(start, end);
+
+
     if (impressions <= 0) {
       return cost / (1.0 / 1000);
     }
@@ -564,9 +577,24 @@ public class DataSet {
    * @return Returns the cost per click.
    */
   public double calcCostPerClick(LocalDateTime start, LocalDateTime end) {
+    int resetFlagAtEnd = -1;
+    if (efficiency) {
+      resetFlagAtEnd = getLastClick();
+
+    }
+
     double cost = calcTotalCost(start, end);
+
+
+    if (resetFlagAtEnd!=-1) {
+      setLastClick(resetFlagAtEnd);
+      setEfficiency(true);
+    }
     double clicks = totalClicks(start, end);
+
+
     if (clicks <= 0) {
+
       return cost;
     }
     return cost / clicks;
