@@ -212,18 +212,13 @@ public class Controller {
     DataSet model = getModels().get(filter.getDataSetId());
     model.setFilter(filter);
 
-    if(statType == Stat.CTR) {
-//      List<Pair<String, Double>> points = model.generateHistogramY(filter.getStartDate(),filter.getEndDate(), getGranularity(), statType);
-//      histogram.plot(points);
-    }
-
-    else{
       List<Pair<Integer, Double>> points = model.generateY(filter.getStartDate(),
               filter.getEndDate(), getGranularity(),
               statType); //todo: should the filter contain the unit?
       graph.delete(filter.getId());
+    System.out.println("id" +filter.getId()+points.toString());
       graph.plot(filter.getId(), points);
-    }
+
 
   }
 
