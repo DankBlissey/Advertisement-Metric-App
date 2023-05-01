@@ -13,7 +13,7 @@ public class Histogram implements HistogramFeatures {
     protected BarChart<String, Number> chart;
     protected String xAxis;
     protected NumberAxis yAxis;
-    protected XYChart.Series<String, Number> series;
+    protected XYChart.Series<String, Number> series = new XYChart.Series<>();
 
     public Histogram(){
         this.chart = createChart();
@@ -34,6 +34,11 @@ public class Histogram implements HistogramFeatures {
         chart.setVerticalZeroLineVisible(true);
         chart.setLegendVisible(true);
         chart.setLegendSide(Side.RIGHT);
+        chart.getXAxis().setTickLabelRotation(90);
+        chart.getXAxis().setTickLabelGap(10);
+        chart.setLegendVisible(false);
+        chart.setBarGap(0);
+        chart.setCategoryGap(0);
 
         //Set the size and position of the graph within the layout container.
         chart.setLayoutX(50);
@@ -48,28 +53,29 @@ public class Histogram implements HistogramFeatures {
     }
 
     //Used to add all points to the Series
-    private void addDataPoints(List<Pair<String, Number>> data) {
+    private XYChart.Series<String, Number> addDataPoints(List<Pair<String, Number>> data) {
         //Iterate through the data and add each point to the series.
+        XYChart.Series<String, Number> newSeries = new XYChart.Series<>();
+
         for (Pair<String, Number> point : data) {
             String xValue = point.getKey();
             Number yValue = point.getValue();
-            this.series.getData().add(new XYChart.Data<>(xValue, yValue));
+            newSeries.getData().add(new XYChart.Data<>(xValue, yValue));
         }
+        return newSeries;
     }
 
     //Creates a new Series
     private XYChart.Series<String, Number> ChangeSeries(List<Pair<String, Double>> data) {
         //removes old series from graph
-        this.chart.getData().remove(this.series);
-
-        //Creates a new Series
-        XYChart.Series<String, Number> newSeries = new XYChart.Series<>();
+        chart.getData().remove(series);
 
         //Gets the points for the series
         List<Pair<String, Number>> points = data.stream()
                 .map(pair -> new Pair<String, Number>(pair.getKey(), pair.getValue()))
                 .collect(Collectors.toList());
-        addDataPoints(points);
+        //Creates a new Series
+        XYChart.Series<String, Number> newSeries = addDataPoints(points);
 
         //Returns the new Series
         return newSeries;
@@ -80,8 +86,8 @@ public class Histogram implements HistogramFeatures {
     public void plot(List<Pair<String, Double>> values) {
         //creates the new series and adds
         XYChart.Series<String, Number> newSeries = ChangeSeries(values);
-        this.series = newSeries;
-        this.chart.getData().add(this.series);
+        series = newSeries;
+        chart.getData().add(series);
     }
 
 
