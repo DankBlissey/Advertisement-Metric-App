@@ -212,13 +212,16 @@ public class Controller {
     DataSet model = getModels().get(filter.getDataSetId());
     model.setFilter(filter);
 
-      List<Pair<Integer, Double>> points = model.generateY(filter.getStartDate(),
-              filter.getEndDate(), getGranularity(),
-              statType); //todo: should the filter contain the unit?
-      graph.delete(filter.getId());
-    System.out.println("id" +filter.getId()+points.toString());
-      graph.plot(filter.getId(), points);
-
+      if(statType == Stat.totalClickCost){
+        List<Pair<String, Double>> points = model.generateHistogramY(filter.getStartDate(), filter.getEndDate(), getGranularity());
+        histogram.plot(points);
+      }
+      else {
+        List<Pair<Integer, Double>> points = model.generateY(filter.getStartDate(), filter.getEndDate(), getGranularity(), statType); //todo: should the filter contain the unit?
+        graph.delete(filter.getId());
+        System.out.println("id" +filter.getId()+points.toString());
+        graph.plot(filter.getId(), points);
+      }
 
   }
 
