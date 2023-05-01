@@ -4,6 +4,7 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
@@ -15,6 +16,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.soton.adDashboard.Interfaces.FilterWindow;
 import uk.ac.soton.adDashboard.components.FilterSet;
+import uk.ac.soton.adDashboard.controller.Controller;
 import uk.ac.soton.adDashboard.enums.Granularity;
 import uk.ac.soton.adDashboard.enums.Stat;
 import uk.ac.soton.adDashboard.filter.Filter;
@@ -34,9 +36,11 @@ public class GraphView extends BaseView implements FilterWindow {
     protected DataSet dataSet;
     protected ArrayList<String> filenames;
     protected Graph graph;
-    protected Histogram histogram;
+    protected ArrayList<Histogram> histograms;
     private int noCampains;
     private HBox longBarContent;
+    private ScrollPane histogramScroll;
+    private VBox histogramBox;
 
     /**
      * VBox which contains multiple FilterSets that are displayed in a scrollable view
@@ -222,10 +226,13 @@ public class GraphView extends BaseView implements FilterWindow {
         cmb.setValue("total Impressions");
 
         graph = new Graph();
-        histogram = new Histogram();
+        Histogram histogram = new Histogram();
 
         controller.setGraph(graph);
-        controller.setHistogram(histogram);
+        controller.addHistogram(histogram);
+
+        histograms = new ArrayList<>();
+        histograms.add(histogram);
 
         ComboBox<String> granularity = new ComboBox<>();
         granularity.getStyleClass().add("bounce-dropdown-grey");
@@ -253,7 +260,13 @@ public class GraphView extends BaseView implements FilterWindow {
         HBox itemMenus = new HBox(cmb, region3, granularity);
         HBox.setHgrow(region3, Priority.ALWAYS);
 
-        graphBox.getChildren().addAll(itemMenus, graph.getChart(), histogram.getChart());
+        histogramBox = new VBox();
+        histogramBox.getChildren().add(histogram.getChart());
+
+        histogramScroll = new ScrollPane();
+        histogramScroll.setContent(histogramBox);
+
+        graphBox.getChildren().addAll(itemMenus, graph.getChart(), histogramScroll);
         graphBox.getChildren().get(2).setVisible(false);
         graphBox.getChildren().get(2).setManaged(false);
         graphsList.getChildren().addAll(graphBox);
@@ -427,6 +440,15 @@ public class GraphView extends BaseView implements FilterWindow {
         AppWindow.getController().setFontSize(AppWindow.getController().getFontSize().get() + 1);
     }
 
+    private void addHistogram(){
+        System.out.println("I got here");
+        Histogram histogram = new Histogram();
+        controller.addHistogram(histogram);
+        this.histograms.add(histogram);
+        histogramBox.getChildren().add(histogram.getChart());
+        histogramScroll.setContent(histogramBox);
+    }
+
     private void toggleFilterPane(Boolean option, VBox filterPane, Button showPaneButton) {
 
         if(!option) {
@@ -483,6 +505,8 @@ public class GraphView extends BaseView implements FilterWindow {
      * then creates a new FilterSet to display in the FilterSetPane.
      */
     private void addNewFilter() {
+        addHistogram();
+
         int index = getValidIndex();
 
         Filter newFilter = defaultFilter();
