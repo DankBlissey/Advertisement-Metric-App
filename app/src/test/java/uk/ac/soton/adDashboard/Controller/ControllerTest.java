@@ -113,7 +113,7 @@ public class ControllerTest {
       defaultFilter.setStartDate(controller.getModel().earliestDate());
       defaultFilter.setEndDate(controller.getModel().latestDate());
       defaultFilter.setId(0);
-//      defaultFilter.setDataSetId(controller);
+      defaultFilter.setDataSetId(controller.getLatestId());
       return defaultFilter;
 
   }
@@ -308,6 +308,7 @@ public class ControllerTest {
     dataSet2.setUsers(generateUser());
     dataSet2.setServerAccess(generateServerAccess());
     dataSet2.setClicks(generateClicks());
+    controller.addModel(dataSet2);
     Filter f2 = defaultFilter();
     f2.setStartDate(LocalDateTime.now());
     f2.setEndDate(LocalDateTime.now().plusDays(2));

@@ -819,7 +819,7 @@ public class DataSet {
     for (LocalDateTime day = startTime; !day.isAfter(endTime);
         day = day.plus(amount)) {
 
-      points.add(new Pair<>(stringify(day, next, unit), f.run(day, next)));
+      points.add(new Pair<>(stringify(day, next, unit), (f.run(day, next)/100)));
       next = next.plus(amount);
     }
     return points;

@@ -358,8 +358,12 @@ public class DataSetTest {
 
   }
 
+  /**
+   * Tests nearest impression if there's an invalid id but correct time.
+   * @throws Exception Thrown for invalid data.
+   */
   @Test
-  void nearestImpressionJustBefore() throws Exception {
+  void nearestImpressionJustBefore() throws Exception { //found errors
     DataSet dataSet = new DataSet();
     dataSet.setImpressions(generateImpressions3());
     dataSet.setUsers(generateUser2());
