@@ -16,9 +16,10 @@ public class Histogram implements HistogramFeatures {
     protected XYChart.Series<String, Number> series = new XYChart.Series<>();
     protected int index;
 
-    public Histogram(){
+    public Histogram(int id){
         this.chart = createChart();
-        this.index = -1;
+        this.index = id;
+
     }
 
     private BarChart<String, Number> createChart(){
@@ -86,19 +87,15 @@ public class Histogram implements HistogramFeatures {
     //Adds/changes the histogram bars
     @Override
     public void plot(int id, List<Pair<String, Double>> values) {
-        if(index == -1){
-            this.index = id;
-            series = ChangeSeries(values);
-            chart.getData().add(series);
-        }
-
         if(index == id){
             series = ChangeSeries(values);
             chart.getData().add(series);
         }
     }
 
-
+    public int getIndex() {
+        return index;
+    }
 }
 
 

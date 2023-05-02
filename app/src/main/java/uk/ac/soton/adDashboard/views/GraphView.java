@@ -226,7 +226,7 @@ public class GraphView extends BaseView implements FilterWindow {
         cmb.setValue("total Impressions");
 
         graph = new Graph();
-        Histogram histogram = new Histogram();
+        Histogram histogram = new Histogram(0);
 
         controller.setGraph(graph);
         controller.addHistogram(histogram);
@@ -289,6 +289,7 @@ public class GraphView extends BaseView implements FilterWindow {
                 case "Click Cost" -> selectedStat = Stat.totalClickCost;
                 default -> {
                 }
+
             }
             logger.info("Selected stat: " + selectedStat);
             if(selectedStat != null) {
@@ -440,9 +441,9 @@ public class GraphView extends BaseView implements FilterWindow {
         AppWindow.getController().setFontSize(AppWindow.getController().getFontSize().get() + 1);
     }
 
-    private void addHistogram(){
+    private void addHistogram(Filter filter){
         System.out.println("I got here");
-        Histogram histogram = new Histogram();
+        Histogram histogram = new Histogram(filter.getId());
         controller.addHistogram(histogram);
         this.histograms.add(histogram);
         histogramBox.getChildren().add(histogram.getChart());
@@ -505,13 +506,12 @@ public class GraphView extends BaseView implements FilterWindow {
      * then creates a new FilterSet to display in the FilterSetPane.
      */
     private void addNewFilter() {
-        addHistogram();
-
         int index = getValidIndex();
 
         Filter newFilter = defaultFilter();
         newFilter.setId(index);
         filters.add(newFilter);
+        addHistogram(newFilter);
 
         Button deleteButton = new Button("x");
 
@@ -656,5 +656,13 @@ public class GraphView extends BaseView implements FilterWindow {
     public void removeFilter(Filter f) {
         controller.getModels().removeListener(f.getListener());
         filters.remove(f);
+        Histogram histogram1 = null;
+        for(Histogram histogram : histograms){
+            if(histogram.getIndex() == f.getId()){
+                histogram1 = histogram;
+            }
+        }
+        histograms.remove(histogram1);
+        histogramBox.getChildren().remove(histogram1.getChart());
     }
 }

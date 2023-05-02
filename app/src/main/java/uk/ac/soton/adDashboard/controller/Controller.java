@@ -221,6 +221,7 @@ public class Controller {
         for(HistogramFeatures histogram : histogramFeatures){
           histogram.plot(filter.getId(), points);
         }
+
       }
       else {
         List<Pair<Integer, Double>> points = model.generateY(filter.getStartDate(), filter.getEndDate(), getGranularity(), statType); //todo: should the filter contain the unit?
