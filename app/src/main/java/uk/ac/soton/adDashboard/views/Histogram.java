@@ -11,8 +11,9 @@ import java.util.stream.Collectors;
 public class Histogram implements HistogramFeatures {
 
     protected BarChart<String, Number> chart;
-    protected String xAxis;
-    protected NumberAxis yAxis;
+    public NumberAxis yAxis;
+    public CategoryAxis xAxis;
+    protected String YLabel;
     protected XYChart.Series<String, Number> series = new XYChart.Series<>();
     protected int index;
 
@@ -23,9 +24,10 @@ public class Histogram implements HistogramFeatures {
     }
 
     private BarChart<String, Number> createChart(){
-        CategoryAxis xAxis = new CategoryAxis();
-        NumberAxis yAxis = new NumberAxis();
+        xAxis = new CategoryAxis();
+        yAxis = new NumberAxis();
 
+        yAxis.setLabel("Cost /Pounds");
         chart = new BarChart<>(xAxis,yAxis);
 
         //Set the axis and graph titles.
@@ -80,17 +82,20 @@ public class Histogram implements HistogramFeatures {
         //Creates a new Series
         XYChart.Series<String, Number> newSeries = addDataPoints(points);
 
+
+
         //Returns the new Series
         return newSeries;
     }
 
     //Adds/changes the histogram bars
     @Override
-    public void plot(int id, List<Pair<String, Double>> values) {
+    public void plot(int id, List<Pair<String, Double>> values, String x) {
         if(index == id){
             series = ChangeSeries(values);
             chart.getData().add(series);
         }
+        xAxis.setLabel(x);
     }
 
     public int getIndex() {

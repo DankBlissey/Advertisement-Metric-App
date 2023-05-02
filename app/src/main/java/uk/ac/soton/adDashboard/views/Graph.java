@@ -14,8 +14,8 @@ import uk.ac.soton.adDashboard.Interfaces.GraphFeatures;
 public class Graph implements GraphFeatures {
 
     protected LineChart<Number, Number> chart;
-    protected NumberAxis xAxis;
-    protected NumberAxis yAxis;
+    public NumberAxis xAxis;
+    public NumberAxis yAxis;
     protected HashMap<Integer, XYChart.Series<Number, Number>> series;
 
     public Graph() {
@@ -83,9 +83,11 @@ public class Graph implements GraphFeatures {
 
     //Adds data to an existing series in the chart
     @Override
-    public void plot(int id, List<Pair<Integer, Double>> values) {
+    public void plot(int id, List<Pair<Integer, Double>> values, String x, String y) {
         // Gets the existing series for the specified ID
         XYChart.Series<Number, Number> existingSeries = series.get(id);
+        xAxis.setLabel(x);
+        yAxis.setLabel(y);
 
         if (existingSeries == null) {
             // If the series doesn't exist, create a new series and add it to the chart

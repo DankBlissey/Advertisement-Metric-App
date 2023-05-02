@@ -216,19 +216,74 @@ public class Controller {
     DataSet model = getModels().get(filter.getDataSetId());
     model.setFilter(filter);
 
-      if(statType == Stat.totalClickCost){
-        List<Pair<String, Double>> points = model.generateHistogramY(filter.getStartDate(), filter.getEndDate(), getGranularity());
-        for(HistogramFeatures histogram : histogramFeatures){
-          histogram.plot(filter.getId(), points);
-        }
+    String y = null;
+    if(statType == Stat.totalImpressions){
+      y = "Total Impressions /Impressions";
+    }
+    if(statType == Stat.totalClicks){
+      y = "Total Clicks /Clicks";
+    }
+    if(statType == Stat.totalUniques){
+      y = "Total Unique clicks /Clicks";
+    }
+    if(statType == Stat.totalBounces){
+      y = "Total Bounces /Bounces";
+    }
+    if(statType == Stat.totalConversions){
+      y = "Total Conversions /Conversions";
+    }
+    if(statType == Stat.totalCost){
+      y = "total Cost /Pounds";
+    }
+    if(statType == Stat.CTR){
+      y = "Click-through-rate /CTR";
+    }
 
+    if(statType == Stat.CPA){
+      y = "Cost-per-acquisition /Pounds";
+    }
+
+    if(statType == Stat.CPC){
+      y = "Cost-per-click /Pounds";
+    }
+
+    if(statType == Stat.CPM){
+      y = "Cost-per-thousand impressions /Pounds";
+    }
+
+    if(statType == Stat.bounceRate){
+      y = "Bounces per click /BPC";
+    }
+
+    Granularity g = getGranularity();
+    String x = null;
+    if(g == Granularity.DAY){
+      x = "Day";
+    }
+    if(g == Granularity.MONTH){
+      x = "Month";
+    }
+    if(g == Granularity.WEEK){
+      x = "Week";
+    }
+    if(g == Granularity.YEAR){
+      x = "Year";
+    }
+
+    if(statType == Stat.totalClickCost){
+      List<Pair<String, Double>> points = model.generateHistogramY(filter.getStartDate(), filter.getEndDate(), getGranularity());
+
+      for(HistogramFeatures histogram : histogramFeatures){
+          histogram.plot(filter.getId(), points, x);
       }
-      else {
-        List<Pair<Integer, Double>> points = model.generateY(filter.getStartDate(), filter.getEndDate(), getGranularity(), statType); //todo: should the filter contain the unit?
-        graph.delete(filter.getId());
-        System.out.println("id" +filter.getId()+points.toString());
-        graph.plot(filter.getId(), points);
-      }
+
+    }
+    else {
+      List<Pair<Integer, Double>> points = model.generateY(filter.getStartDate(), filter.getEndDate(), getGranularity(), statType); //todo: should the filter contain the unit?
+      graph.delete(filter.getId());
+      System.out.println("id" +filter.getId()+points.toString());
+      graph.plot(filter.getId(), points, x, y);
+    }
 
   }
 

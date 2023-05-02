@@ -124,11 +124,12 @@ public class ControllerTest {
   @Test
   void graphClearedAndPlotted() {
 
-
+    String x = "XLabel";
+    String y = "YLabel";
     GraphFeatures graph = niceMock(GraphFeatures.class);
 
     graph.delete(0);
-    graph.plot(0,data);
+    graph.plot(0,data, x, y);
     expectLastCall().times(1);
 
     replay(graph);
@@ -149,6 +150,9 @@ public class ControllerTest {
   @ValueSource(ints = {0,1,2,3,4,5,6,7,8,9,10})
   void filterMatches(int id) {
 
+    String x = " ";
+    String y = " ";
+
     filter = defaultFilter();
     filter.setStartDate(LocalDateTime.now());
     filter.setEndDate( LocalDateTime.now().plusDays(1));
@@ -156,7 +160,7 @@ public class ControllerTest {
     GraphFeatures graph = niceMock(GraphFeatures.class);
     graph.delete(id);
 
-    graph.plot(id,data);
+    graph.plot(id,data,x,y);
     replay(graph);
     controller.setGraph(graph);
 
@@ -191,6 +195,9 @@ public class ControllerTest {
   @EnumSource(value = Granularity.class, names = {"DAY","WEEK","MONTH","YEAR"})
   void granularityChange(Granularity granularity) {
 
+    String x = " ";
+    String y = " ";
+
     var f1 = new Filter();
     f1.setId(0);
     f1.setDataSetId(controller.getLatestId());
@@ -204,9 +211,9 @@ public class ControllerTest {
     controller.setFilterWindow(new FilterStub(List.of(f1,f2)));
     GraphFeatures graph = niceMock(GraphFeatures.class);
     var d1 = dataSet.generateY(f1.getStartDate(),f1.getEndDate(),granularity,controller.getStatType());
-    graph.plot(0,d1);
+    graph.plot(0,d1,x,y);
     var d2 = dataSet.generateY(f2.getStartDate(),f2.getEndDate(),granularity,controller.getStatType());
-    graph.plot(1,d2);
+    graph.plot(1,d2,x,y);
     replay(graph);
     controller.setGraph(graph);
 
@@ -236,6 +243,9 @@ public class ControllerTest {
   @EnumSource(value = Stat.class, names = { "totalImpressions",  "totalClicks","totalUniques","totalBounces","totalConversions","totalCost","CTR","CPA","CPC","CPM","bounceRate"})
   void statChange(Stat stat) {
 
+    String x = " ";
+    String y = " ";
+
     var f1 = new Filter();
     f1.setId(0);
     f1.setStartDate(LocalDateTime.now());
@@ -249,9 +259,9 @@ public class ControllerTest {
     controller.setFilterWindow(new FilterStub(List.of(f1,f2)));
     GraphFeatures graph = niceMock(GraphFeatures.class);
     var d1 = dataSet.generateY(f1.getStartDate(),f1.getEndDate(),Granularity.DAY,stat);
-    graph.plot(0,d1);
+    graph.plot(0,d1,x,y);
     var d2 = dataSet.generateY(f2.getStartDate(),f2.getEndDate(),Granularity.DAY,stat);
-    graph.plot(1,d2);
+    graph.plot(1,d2,x,y);
     replay(graph);
     controller.setGraph(graph);
 
@@ -287,6 +297,9 @@ public class ControllerTest {
 
   @Test
   void multipleCampaigns() throws Exception {
+    String x = " ";
+    String y = " ";
+
     Filter f1 = defaultFilter();
     f1.setStartDate(LocalDateTime.now());
     f1.setEndDate(LocalDateTime.now().plusDays(2));
@@ -303,8 +316,8 @@ public class ControllerTest {
     List<Pair<Integer, Double>> points = controller.getModels().get(0).generateY(LocalDateTime.now(),LocalDateTime.now().plusDays(2),Granularity.DAY,Stat.totalImpressions);
     data.add(new Pair<>(2,0.0));
     GraphFeatures g = niceMock(GraphFeatures.class);
-    g.plot(f1.getId(),data);
-    g.plot(f2.getId(),data);
+    g.plot(f1.getId(),data,x,y);
+    g.plot(f2.getId(),data,x,y);
     replay(g);
     controller.setGraph(g);
     controller.setGranularity(Granularity.DAY);
