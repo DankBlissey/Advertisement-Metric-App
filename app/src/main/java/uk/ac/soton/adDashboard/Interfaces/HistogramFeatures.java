@@ -5,6 +5,6 @@ import javafx.util.Pair;
 import java.util.List;
 
 public interface HistogramFeatures {
-   void plot(int index, List<Pair<String, Double>> values);
+   void plot(int index, List<Pair<String, Double>> values, String s);
 
 }

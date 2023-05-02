@@ -4,6 +4,6 @@ import java.util.List;
 import javafx.util.Pair;
 
 public interface GraphFeatures {
-  void plot(int id,List<Pair<Integer,Double>> values);
+  void plot(int id,List<Pair<Integer,Double>> values, String x, String y);
   void delete(int id);
 }
