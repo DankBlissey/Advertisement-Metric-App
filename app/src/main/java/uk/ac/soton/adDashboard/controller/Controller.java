@@ -26,6 +26,8 @@ import uk.ac.soton.adDashboard.views.Histogram;
 public class Controller {
 
   private GraphFeatures graph;
+
+  private ArrayList<HistogramFeatures> histogramFeatures = new ArrayList<>();
   private HistogramFeatures histogram;
   /**
    * Tracks all of the models. The key is the id of the model.
@@ -74,6 +76,8 @@ public class Controller {
   public void setGraph(GraphFeatures graph) {
     this.graph = graph;
   }
+
+  public void addHistogram(HistogramFeatures histogram){this.histogramFeatures.add(histogram);}
 
   public void setHistogram(HistogramFeatures histogram) {this.histogram = histogram;}
 
@@ -214,7 +218,10 @@ public class Controller {
 
       if(statType == Stat.totalClickCost){
         List<Pair<String, Double>> points = model.generateHistogramY(filter.getStartDate(), filter.getEndDate(), getGranularity());
-        histogram.plot(points);
+        for(HistogramFeatures histogram : histogramFeatures){
+          histogram.plot(filter.getId(), points);
+        }
+
       }
       else {
         List<Pair<Integer, Double>> points = model.generateY(filter.getStartDate(), filter.getEndDate(), getGranularity(), statType); //todo: should the filter contain the unit?
