@@ -20,7 +20,6 @@ public class Histogram implements HistogramFeatures {
     public Histogram(int id){
         this.chart = createChart();
         this.index = id;
-
     }
 
     private BarChart<String, Number> createChart(){
@@ -42,13 +41,13 @@ public class Histogram implements HistogramFeatures {
         chart.getXAxis().setTickLabelRotation(90);
         chart.getXAxis().setTickLabelGap(10);
         chart.setLegendVisible(false);
-        chart.setBarGap(0);
+        chart.setBarGap(0.1);
         chart.setCategoryGap(0);
 
         //Set the size and position of the graph within the layout container.
         chart.setLayoutX(50);
         chart.setLayoutY(50);
-        chart.setPrefSize(550, 415);
+        chart.setPrefSize(500, 500);
 
         return chart;
     }
