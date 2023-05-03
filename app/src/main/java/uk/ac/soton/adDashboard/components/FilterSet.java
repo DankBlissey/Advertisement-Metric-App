@@ -195,8 +195,8 @@ public class FilterSet extends VBox {
         LocalDate today = LocalDate.now();
         LocalDate oneWeekAgo = today.minusWeeks(1);
 
-        startDate.setValue(oneWeekAgo);
-        endDate.setValue(today);
+        startDate.setValue(filter.getStartDate().toLocalDate());
+        endDate.setValue(filter.getEndDate().toLocalDate());
 
         startDate.setOnAction(e -> {
             LocalDateTime selected = startDate.getValue().atStartOfDay();
@@ -316,9 +316,11 @@ public class FilterSet extends VBox {
             } else if(newValue.equals("Last 12 months")) {
                 filter.setStartDate(oneYearAgo);
             } else if(newValue.equals("Custom")) {
-                filter.setStartDate(oneWeekAgo);
+
+                filter.setStartDate(controller.getModel(filter.getDataSetId()).earliestDate());
                 datePickerVisible(true);
                 filter.setStartDate(controller.getModel(filter.getDataSetId()).earliestDate());
+
             }
         }
         logger.info("Changed filter " + filterType + " to value: " + newValue);

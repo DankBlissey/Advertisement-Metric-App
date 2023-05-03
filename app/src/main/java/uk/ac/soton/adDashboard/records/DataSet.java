@@ -684,6 +684,10 @@ public class DataSet {
     return clicks / imp;
   }
 
+  public double clickThroughPercentage(LocalDateTime start, LocalDateTime end) {
+    return calcClickThrough(start,end)*100;
+  }
+
   /**
    * Overloaded version that calculates the clickthroughrate using a precalculated total number of
    * impressions.
@@ -764,7 +768,7 @@ public class DataSet {
       case totalBounces -> f = this::calcBounces;
       case totalConversions -> f = this::calcNumConversions;
       case totalCost -> f = this::calcTotalCost;
-      case CTR -> f = this::calcClickThrough;
+      case CTR -> f =this::clickThroughPercentage;
       case CPA -> f = this::calcCostAcquisition;
       case CPC -> f = this::calcCostPerClick;
       case CPM -> f = this::costPerThousandImpre;
@@ -789,11 +793,12 @@ public class DataSet {
       LocalDateTime endTime, Granularity unit, Function f) {
     ArrayList<Pair<Integer, Double>> points = new ArrayList<>();
     TemporalAmount amount = unit.generateStep();
+    startTime = startTime.truncatedTo(ChronoUnit.DAYS);
     LocalDateTime next = startTime.plus(amount);
     int x = 0;
-    for (LocalDateTime day = startTime; !day.isAfter(endTime);
+    for (LocalDateTime day = startTime; !day.isAfter(endTime.truncatedTo(ChronoUnit.DAYS));
         day = day.plus(amount)) {
-
+      System.out.println(day);
       points.add(new Pair<>(x, f.run(day, next)));
       next = next.plus(amount);
       x++;
@@ -815,8 +820,10 @@ public class DataSet {
       Granularity unit, Function f) {
     ArrayList<Pair<String, Double>> points = new ArrayList<>();
     TemporalAmount amount = unit.generateStep();
+    startTime = startTime.truncatedTo(ChronoUnit.DAYS);
+
     LocalDateTime next = startTime.plus(amount);
-    for (LocalDateTime day = startTime; !day.isAfter(endTime);
+    for (LocalDateTime day = startTime; !day.isAfter(endTime.truncatedTo(ChronoUnit.DAYS));
         day = day.plus(amount)) {
 
       points.add(new Pair<>(stringify(day, next, unit), (f.run(day, next)/100)));
@@ -876,7 +883,7 @@ public class DataSet {
   }
 
   public LocalDateTime latestDate() {
-    return impressions.get(impressions.size() - 1).getDate();
+    return clicks.get(clicks.size() - 1).getDate();
   }
 
 
