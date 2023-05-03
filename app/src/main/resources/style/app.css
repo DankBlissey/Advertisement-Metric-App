@@ -33,6 +33,12 @@
     -fx-font-size: 25px;
 }
 
+.campaignTitle {
+    -fx-font-family: 'Google Sans Bold';
+    -fx-fill: #545454;
+    -fx-font-size: 17px;
+}
+
 
 .smallText {
     -fx-font-family: 'Google Sans Bold';
@@ -72,6 +78,11 @@
     -fx-font-family: 'Google Sans Bold';
     -fx-fill: #615665;
     -fx-font-size: 17px;
+}
+.listKeyTitle {
+    -fx-font-family: 'Google Sans Bold';
+    -fx-fill: grey;
+    -fx-font-size: 15px;
 }
 
 .buttonTitle {

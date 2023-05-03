@@ -48,9 +48,13 @@ public class Histogram implements HistogramFeatures {
         //Set the size and position of the graph within the layout container.
         chart.setLayoutX(50);
         chart.setLayoutY(50);
-        chart.setPrefSize(500, 500);
+        chart.setPrefSize(550, 415);
 
         return chart;
+    }
+
+    public void setPrefSize(int height, int width) {
+        chart.setPrefSize(height, width);
     }
 
     public BarChart<String, Number> getChart(){
