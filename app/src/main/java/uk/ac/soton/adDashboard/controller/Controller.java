@@ -274,7 +274,7 @@ public class Controller {
       List<Pair<String, Double>> points = model.generateHistogramY(filter.getStartDate(), filter.getEndDate(), getGranularity());
 
       for(HistogramFeatures histogram : histogramFeatures){
-          histogram.plot(filter.getId(), points, x);
+          histogram.plot(filter.getId(), points);
       }
 
     }
