@@ -876,7 +876,7 @@ public class DataSet {
   }
 
   public LocalDateTime latestDate() {
-    return impressions.get(impressions.size() - 1).getDate();
+    return clicks.get(clicks.size() - 1).getDate();
   }
 
 
