@@ -7,9 +7,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import javafx.util.Pair;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import uk.ac.soton.adDashboard.enums.Granularity;
 import uk.ac.soton.adDashboard.records.Click;
 import uk.ac.soton.adDashboard.records.DataSet;
 import uk.ac.soton.adDashboard.records.Impression;
@@ -434,5 +437,28 @@ public class DataSetTest {
     return clicks;
   }
 
+    // Click cost
+    @Test
+    void calcClickCost() {
+        assertEquals(5, dataSet.calcClickCost(dataSet.earliestDate(), dataSet.latestDate()));
+    }
 
-}
+    // Tests if the generated plot points for the histogram are correct.
+    @Test
+    void calcHistogram() {
+        var histogram = dataSet.generateHistogramY(dataSet.earliestDate(), dataSet.latestDate(), Granularity.WEEK);
+        String actualValue = String.valueOf(histogram.get(0));
+        double actualHistogram = Double.parseDouble(actualValue.split("=")[1]);
+        assertEquals(0.025, actualHistogram);
+
+        actualValue = String.valueOf(histogram.get(1));
+        actualHistogram = Double.parseDouble(actualValue.split("=")[1]);
+        assertEquals(0.0, actualHistogram);
+
+        actualValue = String.valueOf(histogram.get(4));
+        actualHistogram = Double.parseDouble(actualValue.split("=")[1]);
+        assertEquals(0.025, actualHistogram);
+
+    }
+
+    }
