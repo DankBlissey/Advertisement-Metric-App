@@ -85,6 +85,8 @@ public class DataSet {
 
   public void setClicks(ArrayList<Click> clicks) {
     this.clicks = clicks;
+    maxClickCostPence = calcMaxClickCost();
+
   }
 
   public void setImpressions(ArrayList<Impression> impressions) {
@@ -921,7 +923,6 @@ public class DataSet {
     double bounceRate = calcBounceRate(start, end);
     stats = new double[]{impressionCost, impressions, clicks, uniques, bounces, conversions, cost,
         through, acquisitionCosts, clickCosts, thousand, bounceRate};
-    maxClickCostPence = calcMaxClickCost();
     filteringEnabled(true);
     return stats;
 
@@ -929,6 +930,7 @@ public class DataSet {
 
   public double calcMaxClickCost() {
     double maxCost = 0;
+
     for (Click click : clicks) {
       if (click.getCost()>maxCost) {
         maxCost = click.getCost();
@@ -974,10 +976,9 @@ public class DataSet {
     return impressions.get(mid);
   }
 
-  public List<Pair<String,Double>> newHistogram() {
-    if (clickHistogram.size()>0) {
-      return clickHistogram;
-    }
+  public List<Pair<String,Double>> newHistogram(LocalDateTime startTime,
+      LocalDateTime endTime) {
+
     double step = maxClickCostPence/6;
     double boundary0 =0;
     double boundary1 = boundary0+step;
@@ -994,20 +995,25 @@ public class DataSet {
     double range5 = 0;
     double range6 = 0;
     for (Click click : clicks) {
-      double cost = click.getCost();
-      if (cost>=boundary0 && cost<=boundary1) {
-        range1+=cost;
-      } else if (cost>boundary1 && cost<=boundary2) {
-        range2+=cost;
-      } else if (cost>boundary2 && cost<=boundary3) {
-        range3+=cost;
-      } else if (cost>boundary3 && cost<=boundary4) {
-        range4+=cost;
-      } else if (cost>boundary4 && cost<=boundary5) {
-        range5+=cost;
-      } else if (cost>boundary5 && cost<=boundary6) {
-        range6+=cost;
+      if (click.getDate().isAfter(startTime) && click.getDate().isBefore(endTime)) {
+        if (matchesFilters(users.get(click.getId()),nearestImpression(click.getDate(),click.getId()))) {
+          double cost = click.getCost();
+          if (cost>=boundary0 && cost<=boundary1) {
+            range1+=cost;
+          } else if (cost>boundary1 && cost<=boundary2) {
+            range2+=cost;
+          } else if (cost>boundary2 && cost<=boundary3) {
+            range3+=cost;
+          } else if (cost>boundary3 && cost<=boundary4) {
+            range4+=cost;
+          } else if (cost>boundary4 && cost<=boundary5) {
+            range5+=cost;
+          } else if (cost>boundary5 && cost<=boundary6) {
+            range6+=cost;
+          }
+        }
       }
+
 
     }
     List<Pair<String,Double>> points = new ArrayList<>();
@@ -1017,7 +1023,7 @@ public class DataSet {
     points.add(new Pair<>(boundaryStringify(boundary3,boundary4),range4));
     points.add(new Pair<>(boundaryStringify(boundary4,boundary5),range5));
     points.add(new Pair<>(boundaryStringify(boundary5,boundary6),range6));
-    clickHistogram = points;
+
     return points;
 
   }
