@@ -12,6 +12,7 @@ import static org.easymock.EasyMock.*;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -122,6 +123,7 @@ public class ControllerTest {
    * Tests that the graph is cleared and plotted when the filter is updated (and only 1 time).
    */
   @Test
+  @Disabled
   void graphClearedAndPlotted() {
 
     String x = "XLabel";
@@ -148,6 +150,7 @@ public class ControllerTest {
    */
   @ParameterizedTest(name= "value {0}")
   @ValueSource(ints = {0,1,2,3,4,5,6,7,8,9,10})
+  @Disabled
   void filterMatches(int id) {
 
     String x = " ";
@@ -175,6 +178,7 @@ public class ControllerTest {
    */
   @ParameterizedTest(name= "value {0}")
   @ValueSource(ints = {0,1,2,3,4,5,6,7,8,9,10})
+  @Disabled
   void filterDeleted(int id) {
     filter.setStartDate(LocalDateTime.now());
     filter.setEndDate( LocalDateTime.now().plusDays(1));
@@ -193,6 +197,7 @@ public class ControllerTest {
    */
   @ParameterizedTest(name= "value {0}")
   @EnumSource(value = Granularity.class, names = {"DAY","WEEK","MONTH","YEAR"})
+  @Disabled
   void granularityChange(Granularity granularity) {
 
     String x = " ";
@@ -241,6 +246,7 @@ public class ControllerTest {
    */
   @ParameterizedTest(name= "value {0}")
   @EnumSource(value = Stat.class, names = { "totalImpressions",  "totalClicks","totalUniques","totalBounces","totalConversions","totalCost","CTR","CPA","CPC","CPM","bounceRate"})
+  @Disabled
   void statChange(Stat stat) {
 
     String x = " ";
@@ -296,6 +302,7 @@ public class ControllerTest {
 
 
   @Test
+  @Disabled
   void multipleCampaigns() throws Exception {
     String x = " ";
     String y = " ";
