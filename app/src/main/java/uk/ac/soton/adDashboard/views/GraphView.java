@@ -260,15 +260,16 @@ public class GraphView extends BaseView implements FilterWindow {
         HBox itemMenus = new HBox(cmb, region3, granularity);
         HBox.setHgrow(region3, Priority.ALWAYS);
 
+        histogramScroll = new ScrollPane();
+        histogramScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        histogramScroll.setFitToWidth(true);
+
         histogramBox = new VBox();
         histogramBox.getChildren().add(histogram.getChart());
-        histogramBox.setStyle("-fx-background-color: white;");
+        histogramBox.prefWidthProperty().bind(histogramScroll.widthProperty());
+        histogramBox.getStyleClass().add("histogram-vbox");
 
-        histogramScroll = new ScrollPane();
-        histogramScroll.getStyleClass().add("scroll-pane");
         histogramScroll.setContent(histogramBox);
-        histogramScroll.setPrefWidth(graphBox.USE_COMPUTED_SIZE);
-        histogramScroll.setStyle("-fx-background-color: white;");
 
         graphBox.getChildren().addAll(itemMenus, graph.getChart(), histogramScroll);
         graphBox.getChildren().get(2).setVisible(false);
@@ -451,7 +452,7 @@ public class GraphView extends BaseView implements FilterWindow {
         controller.addHistogram(histogram);
         this.histograms.add(histogram);
         histogramBox.getChildren().add(histogram.getChart());
-        histogramScroll.setContent(histogramBox);
+        //histogramScroll.setContent(histogramBox);
     }
 
     private void toggleFilterPane(Boolean option, VBox filterPane, Button showPaneButton) {
