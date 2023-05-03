@@ -1,12 +1,14 @@
 package uk.ac.soton.adDashboard.views;
 
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -45,6 +47,8 @@ public class BounceRateView extends BaseView {
         logger.info("Building " + this.getClass().getName());
 
         root = new AppPane(appWindow.getWidth(), appWindow.getHeight());
+
+        BorderPane borderPane = new BorderPane();
 
         Text title = new Text("Almost there!");
         title.getStyleClass().add("title");
@@ -113,11 +117,14 @@ public class BounceRateView extends BaseView {
         back.setText("Back");
         back.getStyleClass().add("card");
         back.setEffect(new DropShadow(5, Color.valueOf("555BFF")));
-        back.setTranslateX(-600);
-        back.setTranslateY(-375);
+        //back.setTranslateX(-600);
+        //back.setTranslateY(-375);
         back.getStyleClass().add("blueButton");
 
-        VBox vbox1 = new VBox(title, subtext1, back);
+        borderPane.setTop(back);
+        back.setAlignment(Pos.TOP_LEFT);
+
+        VBox vbox1 = new VBox(title, subtext1);
 
         VBox vbox3 = new VBox(text2, pages, finished, pageCheckBox, text1, custom, itemBox, customCheckBox,error);
 
@@ -239,9 +246,11 @@ public class BounceRateView extends BaseView {
             }
         });
 
+        borderPane.setCenter(stackPane);
 
+        borderPane.setMargin(back, new Insets(10,10,10,10));
 
-        root.getChildren().addAll(stackPane);
+        root.getChildren().addAll(borderPane);
     }
 
     /**
