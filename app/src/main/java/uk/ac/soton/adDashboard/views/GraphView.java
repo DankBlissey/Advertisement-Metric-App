@@ -444,6 +444,7 @@ public class GraphView extends BaseView implements FilterWindow {
         });
         AppWindow.getController().setFontSize(AppWindow.getController().getFontSize().get() - 1);
         AppWindow.getController().setFontSize(AppWindow.getController().getFontSize().get() + 1);
+        controller.setStatType(Stat.totalImpressions);
     }
 
     private void addHistogram(Filter filter){

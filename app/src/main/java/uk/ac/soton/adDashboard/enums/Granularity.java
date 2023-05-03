@@ -29,6 +29,18 @@ public enum Granularity {
     return step;
   }
 
+  public ChronoUnit generateUnit() {
+    ChronoUnit step;
+    switch (this) {
+      case DAY -> step = ChronoUnit.DAYS;
+      case WEEK -> step = ChronoUnit.WEEKS;
+      case MONTH -> step = ChronoUnit.MONTHS;
+      case YEAR -> step = ChronoUnit.YEARS;
+      default -> step = ChronoUnit.DAYS;
+    }
+    return step;
+  }
+
 
 
 }

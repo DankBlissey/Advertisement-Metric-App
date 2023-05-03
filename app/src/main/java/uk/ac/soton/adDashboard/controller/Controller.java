@@ -271,7 +271,7 @@ public class Controller {
     }
 
     if(statType == Stat.totalClickCost){
-      List<Pair<String, Double>> points = model.generateHistogramY(filter.getStartDate(), filter.getEndDate(), getGranularity());
+      List<Pair<String, Double>> points = model.newHistogram();
 
       for(HistogramFeatures histogram : histogramFeatures){
           histogram.plot(filter.getId(), points);
