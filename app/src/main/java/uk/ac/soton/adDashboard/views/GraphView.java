@@ -262,9 +262,13 @@ public class GraphView extends BaseView implements FilterWindow {
 
         histogramBox = new VBox();
         histogramBox.getChildren().add(histogram.getChart());
+        histogramBox.setStyle("-fx-background-color: white;");
 
         histogramScroll = new ScrollPane();
+        histogramScroll.getStyleClass().add("scroll-pane");
         histogramScroll.setContent(histogramBox);
+        histogramScroll.setPrefWidth(graphBox.USE_COMPUTED_SIZE);
+        histogramScroll.setStyle("-fx-background-color: white;");
 
         graphBox.getChildren().addAll(itemMenus, graph.getChart(), histogramScroll);
         graphBox.getChildren().get(2).setVisible(false);

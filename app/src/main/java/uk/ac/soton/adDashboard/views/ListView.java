@@ -305,8 +305,8 @@ public class ListView extends BaseView {
             for (int idIndex = 0; idIndex < ids.size(); idIndex++) {
                 int modelId = ids.get(idIndex);
                 Text valueText;
-                valueText= new Text("model id "+modelId);
-                valueText.getStyleClass().add("listNumbers");
+                valueText= new Text("Campaign " + modelId);
+                valueText.getStyleClass().add("campaignTitle");
                 vBox.getChildren().add(valueText);
 
                 AppWindow.getController().getFontSize().addListener((obs, oldVal, newVal) -> {
@@ -339,11 +339,20 @@ public class ListView extends BaseView {
                     DecimalFormat df = new DecimalFormat("#.##");
                     String formattedNumber = df.format(value);
                     valueText = new Text(formattedNumber + "%");
-                } else if (text.equals("CPA") || text.equals("CPC") || text.equals("Bounce rate")) {
+                } else if (text.equals("Bounce rate")) {
                     DecimalFormat df = new DecimalFormat("#,###.##");
                     String formattedNumber = df.format(value);
                     valueText = new Text(formattedNumber);
-                } else {
+                } else if (text.equals("CPA") || text.equals("CPC")) {
+                    DecimalFormat df = new DecimalFormat("#,###.##");
+                    String formattedNumber = df.format(value);
+                    valueText = new Text("£" + formattedNumber);
+                } else if (text.equals("CPM") || text.equals("Total cost")) {
+                    DecimalFormat df = new DecimalFormat("#,###");
+                    String formattedNumber = df.format(value);
+                    valueText = new Text("£" + formattedNumber);
+                }
+                else {
                     DecimalFormat df = new DecimalFormat("#,###");
                     String formattedNumber = df.format(value);
                     valueText = new Text(formattedNumber);
