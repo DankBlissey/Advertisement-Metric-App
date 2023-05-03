@@ -52,10 +52,6 @@ public class Histogram implements HistogramFeatures {
         return chart;
     }
 
-    public void setPrefSize(int height, int width) {
-        chart.setPrefSize(height, width);
-    }
-
     public BarChart<String, Number> getChart(){
         return this.chart;
     }
@@ -97,7 +93,7 @@ public class Histogram implements HistogramFeatures {
             series = ChangeSeries(values);
             chart.getData().add(series);
         }
-        xAxis.setLabel("Click costs /Pounds");
+        xAxis.setLabel("Click costs /Pence");
     }
 
     public int getIndex() {
