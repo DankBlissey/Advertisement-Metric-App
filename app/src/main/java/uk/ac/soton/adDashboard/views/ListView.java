@@ -344,10 +344,12 @@ public class ListView extends BaseView {
                     String formattedNumber = df.format(value);
                     valueText = new Text(formattedNumber);
                 } else if (text.equals("CPA") || text.equals("CPC")) {
+                    value = value / 100;
                     DecimalFormat df = new DecimalFormat("#,###.##");
                     String formattedNumber = df.format(value);
                     valueText = new Text("£" + formattedNumber);
                 } else if (text.equals("CPM") || text.equals("Total cost")) {
+                    value = value / 100;
                     DecimalFormat df = new DecimalFormat("#,###");
                     String formattedNumber = df.format(value);
                     valueText = new Text("£" + formattedNumber);
