@@ -346,11 +346,11 @@ public class ListView extends BaseView {
                 } else if (text.equals("CPA") || text.equals("CPC")) {
                     DecimalFormat df = new DecimalFormat("#,###.##");
                     String formattedNumber = df.format(value);
-                    valueText = new Text("£" + formattedNumber);
+                    valueText = new Text("£" + formattedNumber);  //todo: pence or pounds
                 } else if (text.equals("CPM") || text.equals("Total cost")) {
                     DecimalFormat df = new DecimalFormat("#,###");
                     String formattedNumber = df.format(value);
-                    valueText = new Text("£" + formattedNumber);
+                    valueText = new Text("£" + formattedNumber); //todo: pence or pounds
                 }
                 else {
                     DecimalFormat df = new DecimalFormat("#,###");

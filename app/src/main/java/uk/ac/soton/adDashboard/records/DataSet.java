@@ -513,12 +513,14 @@ public class DataSet {
         if (clicks.get(i).getDate().compareTo(start) >= 0
             && clicks.get(i).getDate().compareTo(end) <= 0) {
           if (!visited.contains(clicks.get(i).getId())) {
-            setLastClick(i+1);
+            setLastClick(i + 1);
             uniques += 1;
             visited.add(clicks.get(i).getId());
-          } else {
-            break;
           }
+        } else if (!clicks.get(i).getDate().isAfter(end)) {
+          setLastClick(i);
+        } else {
+          break;
         }
       }
 
