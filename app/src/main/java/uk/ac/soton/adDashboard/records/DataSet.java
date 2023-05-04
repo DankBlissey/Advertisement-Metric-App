@@ -1,5 +1,6 @@
 package uk.ac.soton.adDashboard.records;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -71,6 +72,8 @@ public class DataSet {
    * A flag to internally toggle efficiency gains. Should usually be false.
    */
   private boolean efficiency = false;
+  private double maxClickCostPence;
+  private List<Pair<String, Double>> clickHistogram = new ArrayList<>();
 
 
   /**
@@ -82,6 +85,8 @@ public class DataSet {
 
   public void setClicks(ArrayList<Click> clicks) {
     this.clicks = clicks;
+    maxClickCostPence = calcMaxClickCost();
+
   }
 
   public void setImpressions(ArrayList<Impression> impressions) {
@@ -508,12 +513,14 @@ public class DataSet {
         if (clicks.get(i).getDate().compareTo(start) >= 0
             && clicks.get(i).getDate().compareTo(end) <= 0) {
           if (!visited.contains(clicks.get(i).getId())) {
-            setLastClick(i+1);
+            setLastClick(i + 1);
             uniques += 1;
             visited.add(clicks.get(i).getId());
-          } else {
-            break;
           }
+        } else if (!clicks.get(i).getDate().isAfter(end)) {
+          setLastClick(i);
+        } else {
+          break;
         }
       }
 
@@ -798,7 +805,7 @@ public class DataSet {
     int x = 0;
     for (LocalDateTime day = startTime; !day.isAfter(endTime.truncatedTo(ChronoUnit.DAYS));
         day = day.plus(amount)) {
-      System.out.println(day);
+
       points.add(new Pair<>(x, f.run(day, next)));
       next = next.plus(amount);
       x++;
@@ -923,6 +930,16 @@ public class DataSet {
 
   }
 
+  public double calcMaxClickCost() {
+    double maxCost = 0;
+
+    for (Click click : clicks) {
+      if (click.getCost()>maxCost) {
+        maxCost = click.getCost();
+      }
+    }
+    return maxCost;
+  }
   /**
    * Gets the nearest impression to a datetime that matches an id using a binary search.
    *
@@ -960,6 +977,65 @@ public class DataSet {
     }
     return impressions.get(mid);
   }
+
+  public List<Pair<String,Double>> newHistogram(LocalDateTime startTime,
+      LocalDateTime endTime) {
+
+    double step = maxClickCostPence/6;
+    double boundary0 =0;
+    double boundary1 = boundary0+step;
+    double boundary2 = boundary1+step;
+    double boundary3 = boundary2+step;
+    double boundary4 = boundary3+step;
+    double boundary5 = boundary4+step;
+    double boundary6 = boundary5+step;
+
+    double range1 = 0;
+    double range2 = 0;
+    double range3 = 0;
+    double range4 = 0;
+    double range5 = 0;
+    double range6 = 0;
+    for (Click click : clicks) {
+      if (click.getDate().isAfter(startTime) && click.getDate().isBefore(endTime)) {
+        if (matchesFilters(users.get(click.getId()),nearestImpression(click.getDate(),click.getId()))) {
+          double cost = click.getCost();
+          if (cost>=boundary0 && cost<=boundary1) {
+            range1+=cost;
+          } else if (cost>boundary1 && cost<=boundary2) {
+            range2+=cost;
+          } else if (cost>boundary2 && cost<=boundary3) {
+            range3+=cost;
+          } else if (cost>boundary3 && cost<=boundary4) {
+            range4+=cost;
+          } else if (cost>boundary4 && cost<=boundary5) {
+            range5+=cost;
+          } else if (cost>boundary5 && cost<=boundary6) {
+            range6+=cost;
+          }
+        }
+      }
+
+
+    }
+    List<Pair<String,Double>> points = new ArrayList<>();
+    points.add(new Pair<>(boundaryStringify(boundary0,boundary1),range1));
+    points.add(new Pair<>(boundaryStringify(boundary1,boundary2),range2));
+    points.add(new Pair<>(boundaryStringify(boundary2,boundary3),range3));
+    points.add(new Pair<>(boundaryStringify(boundary3,boundary4),range4));
+    points.add(new Pair<>(boundaryStringify(boundary4,boundary5),range5));
+    points.add(new Pair<>(boundaryStringify(boundary5,boundary6),range6));
+
+    return points;
+
+  }
+
+
+  public String boundaryStringify(double d1,double d2) {
+    DecimalFormat df = new DecimalFormat("0.00");
+    return String.valueOf(df.format(d1))+"-" + df.format(d2);
+  }
+
 
 
 }

@@ -497,3 +497,7 @@
     -fx-background-radius: 7px;
     -fx-effect: dropshadow(gaussian, #00000029, 2.0, 0.0, 1.0, 2.0);
 }
+
+.histogram-vbox {
+    -fx-background-color: #181A1B;
+}

@@ -13,21 +13,19 @@ public class Histogram implements HistogramFeatures {
     protected BarChart<String, Number> chart;
     public NumberAxis yAxis;
     public CategoryAxis xAxis;
-    protected String YLabel;
     protected XYChart.Series<String, Number> series = new XYChart.Series<>();
     protected int index;
 
     public Histogram(int id){
         this.chart = createChart();
         this.index = id;
-
     }
 
     private BarChart<String, Number> createChart(){
         xAxis = new CategoryAxis();
         yAxis = new NumberAxis();
 
-        yAxis.setLabel("Cost /Pounds");
+        yAxis.setLabel("Amount of clicks");
         chart = new BarChart<>(xAxis,yAxis);
 
         //Set the axis and graph titles.
@@ -42,19 +40,15 @@ public class Histogram implements HistogramFeatures {
         chart.getXAxis().setTickLabelRotation(90);
         chart.getXAxis().setTickLabelGap(10);
         chart.setLegendVisible(false);
-        chart.setBarGap(0);
+        chart.setBarGap(0.1);
         chart.setCategoryGap(0);
 
         //Set the size and position of the graph within the layout container.
         chart.setLayoutX(50);
         chart.setLayoutY(50);
-        chart.setPrefSize(550, 415);
+        chart.setPrefSize(500, 500);
 
         return chart;
-    }
-
-    public void setPrefSize(int height, int width) {
-        chart.setPrefSize(height, width);
     }
 
     public BarChart<String, Number> getChart(){
@@ -83,10 +77,9 @@ public class Histogram implements HistogramFeatures {
         List<Pair<String, Number>> points = data.stream()
                 .map(pair -> new Pair<String, Number>(pair.getKey(), pair.getValue()))
                 .collect(Collectors.toList());
+
         //Creates a new Series
         XYChart.Series<String, Number> newSeries = addDataPoints(points);
-
-
 
         //Returns the new Series
         return newSeries;
@@ -94,12 +87,12 @@ public class Histogram implements HistogramFeatures {
 
     //Adds/changes the histogram bars
     @Override
-    public void plot(int id, List<Pair<String, Double>> values, String x) {
+    public void plot(int id, List<Pair<String, Double>> values) {
         if(index == id){
             series = ChangeSeries(values);
             chart.getData().add(series);
         }
-        xAxis.setLabel(x);
+        xAxis.setLabel("Click costs /Pence");
     }
 
     public int getIndex() {

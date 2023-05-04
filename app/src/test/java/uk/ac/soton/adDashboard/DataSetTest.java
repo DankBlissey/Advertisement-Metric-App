@@ -277,9 +277,9 @@ public class DataSetTest {
   void cpcConsecutive() { //found bugs
     dataSet.setEfficiency(true);
     dataSet.resetAllAccess();
-    assertEquals(15, dataSet.calcCostPerClick(LocalDateTime.of(2014, 2, 1, 1, 1),
+    assertEquals(11, dataSet.calcCostPerClick(LocalDateTime.of(2014, 2, 1, 1, 1),
         LocalDateTime.of(2015, 1, 1, 23, 1,2)));
-    assertEquals((42.5-15)/2, dataSet.calcCostPerClick(LocalDateTime.of(2015, 1, 1, 23, 1,2),
+    assertEquals((42.5-5)/2, dataSet.calcCostPerClick(LocalDateTime.of(2015, 1, 1, 23, 1,2),
         LocalDateTime.now()));
     dataSet.setEfficiency(false);
     dataSet.resetAllAccess();
@@ -314,7 +314,17 @@ public class DataSetTest {
     //test the effects of changing the bounce rate measurement
   }
 
+  // Click cost
   @Test
+  void calcClickCost() throws Exception {
+      assertEquals(5, dataSet.calcClickCost(dataSet.earliestDate(), dataSet.latestDate()));
+
+      dataSet.setClicks(generateClicks3());
+      assertEquals(12.5, dataSet.calcClickCost(dataSet.earliestDate(), dataSet.latestDate()));
+  }
+
+
+    @Test
   void bounceRateConsecutive() { //bounces per click
     dataSet.setEfficiency(true);
     dataSet.resetAllAccess();
@@ -327,7 +337,6 @@ public class DataSetTest {
     dataSet.setEfficiency(false);
     dataSet.resetAllAccess();
   }
-
 
   @Test
   void nearestImpression() {
@@ -384,6 +393,39 @@ public class DataSetTest {
   }
 
 
+    // Tests if the generated plot points for the histogram are correct, using new logs.
+    @Test
+  void calcNewHistogram () throws Exception{
+    var histogram = dataSet.newHistogram(dataSet.earliestDate(), dataSet.latestDate());
+    String actualValue = String.valueOf(histogram.get(2));
+    double actualHistogram = Double.parseDouble(actualValue.split("=")[1]);
+    assertEquals(0.0, actualHistogram);
+
+    actualValue = String.valueOf(histogram.get(5));
+    actualHistogram = Double.parseDouble(actualValue.split("=")[1]);
+    assertEquals(5.0, actualHistogram);
+
+    DataSet dataSet2 = new DataSet(); // new dataset to test new logs
+    dataSet2.setImpressions(generateImpressions3());
+    dataSet2.setUsers(generateUser3());
+    dataSet2.setServerAccess(generateServerAccess3());
+    dataSet2.setClicks(generateClicks3());
+    dataSet2.setPagesViewedBounceMetric(true);
+    dataSet2.filteringEnabled(true);
+
+    var histogram2 = dataSet2.newHistogram(dataSet2.earliestDate(), dataSet2.latestDate());
+    actualValue = String.valueOf(histogram2.get(0));
+    actualHistogram = Double.parseDouble(actualValue.split("=")[1]);
+    assertEquals(1.5, actualHistogram);
+
+    actualValue = String.valueOf(histogram2.get(1));
+    actualHistogram = Double.parseDouble(actualValue.split("=")[1]);
+    assertEquals(3.0, actualHistogram);
+
+    dataSet2.filteringEnabled(false);
+  }
+
+  // Manually generated logs to allow for boundary testing with the DataSet.
 
   static ArrayList<Impression> generateImpressions2() throws Exception {
     var impressions = new ArrayList<Impression>();
@@ -422,6 +464,15 @@ public class DataSetTest {
     return users;
   }
 
+  static HashMap<Long, User> generateUser3() throws Exception {
+    var users = new HashMap<Long, User>();
+    users.put(25L, new User("90", "<25", "Female", "Medium"));
+    users.put(26L, new User("95", "25-34", "Female", "High"));
+    users.put(27L, new User("26", "25-34", "Female", "Medium"));
+    users.put(28L, new User("30", "<25", "Male", "Low"));
+    return users;
+  }
+
   static ArrayList<ServerAccess> generateServerAccess2() throws Exception {
     var access = new ArrayList<ServerAccess>();
     access.add(new ServerAccess("2015-01-01 23:01:02", "25", "2015-01-01 23:02:02", "2", "Yes"));
@@ -429,6 +480,17 @@ public class DataSetTest {
     access.add(new ServerAccess("2015-05-01 23:05:00", "26", "2015-05-01 23:05:50", "1", "No"));
     return access;
   }
+
+  static ArrayList<ServerAccess> generateServerAccess3() throws Exception {
+    var access = new ArrayList<ServerAccess>();
+    access.add(new ServerAccess("2015-01-01 23:01:02", "90", "2015-01-01 23:02:02", "4", "No"));
+    access.add(new ServerAccess("2015-02-01 23:05:03", "95", "2015-01-01 23:05:08", "2", "Yes"));
+    access.add(new ServerAccess("2015-05-01 23:05:00", "26", "2015-05-01 23:05:50", "1", "No"));
+    access.add(new ServerAccess("2015-01-01 22:00:03", "30", "2015-01-01 23:07:02", "3", "Yes"));
+    access.add(new ServerAccess("2015-05-01 23:06:02", "95", "2015-01-01 23:07:02", "2", "Yes"));
+    return access;
+  }
+
   static ArrayList<Click> generateClicks2() throws Exception {
     var clicks = new ArrayList<Click>();
     clicks.add(new Click("2015-01-01 23:01:02", "25", "2.5"));
@@ -437,28 +499,13 @@ public class DataSetTest {
     return clicks;
   }
 
-    // Click cost
-    @Test
-    void calcClickCost() {
-        assertEquals(5, dataSet.calcClickCost(dataSet.earliestDate(), dataSet.latestDate()));
-    }
+   static ArrayList<Click> generateClicks3() throws Exception {
+       var clicks = new ArrayList<Click>();
+       clicks.add(new Click("2015-01-01 22:00:02", "90", "6.5"));
+       clicks.add(new Click("2015-01-01 22:00:03", "95", "3.0"));
+       clicks.add(new Click("2015-02-01 23:05:00", "26", "1.5"));
+       clicks.add(new Click("2015-05-01 23:06:02", "30", "11"));
+       return clicks;
+   }
 
-    // Tests if the generated plot points for the histogram are correct.
-    @Test
-    void calcHistogram() {
-        var histogram = dataSet.generateHistogramY(dataSet.earliestDate(), dataSet.latestDate(), Granularity.WEEK);
-        String actualValue = String.valueOf(histogram.get(0));
-        double actualHistogram = Double.parseDouble(actualValue.split("=")[1]);
-        assertEquals(0.025, actualHistogram);
-
-        actualValue = String.valueOf(histogram.get(1));
-        actualHistogram = Double.parseDouble(actualValue.split("=")[1]);
-        assertEquals(0.0, actualHistogram);
-
-        actualValue = String.valueOf(histogram.get(4));
-        actualHistogram = Double.parseDouble(actualValue.split("=")[1]);
-        assertEquals(0.025, actualHistogram);
-
-    }
-
-    }
+}
