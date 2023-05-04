@@ -298,7 +298,7 @@ public class ListView extends BaseView {
     private void createListBlock(String text, int dataIndex, int xGrid, int yGrid) {
         Text title = new Text(text);
         VBox vBox = new VBox(title);
-        ArrayList<Integer> ids = controller.getModelIds(); //todo: will this be the same for each list block?
+        ArrayList<Integer> ids = controller.getModelIds();
         if (dataIndex==-1) {
             title.getStyleClass().add("listKeyTitle");
 
@@ -347,12 +347,12 @@ public class ListView extends BaseView {
                     value = value / 100;
                     DecimalFormat df = new DecimalFormat("#,###.##");
                     String formattedNumber = df.format(value);
-                    valueText = new Text("£" + formattedNumber);  //todo: pence or pounds
+                    valueText = new Text("£" + formattedNumber);
                 } else if (text.equals("CPM") || text.equals("Total cost")) {
                     value = value / 100;
                     DecimalFormat df = new DecimalFormat("#,###");
                     String formattedNumber = df.format(value);
-                    valueText = new Text("£" + formattedNumber); //todo: pence or pounds
+                    valueText = new Text("£" + formattedNumber);
                 }
                 else {
                     DecimalFormat df = new DecimalFormat("#,###");
